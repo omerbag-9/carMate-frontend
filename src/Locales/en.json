@@ -1,0 +1,10 @@
+{
+    "welcome": "Welcome to our App",
+    "home": "Home",
+    "MarketPlace": "Market Place",
+    "community":"Community",
+    "about": "About Us",
+    "navbar": {
+      "title": "My Application"
+    }
+  }

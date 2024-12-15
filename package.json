@@ -11,13 +11,19 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.1",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
+    "@tailwindcss/forms": "^0.5.9",
     "axios": "^1.7.8",
     "bootstrap": "^5.3.3",
     "formik": "^2.4.6",
+    "i18next": "^24.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-i18next": "^15.2.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^7.0.1",
+    "tailwindcss-rtl": "^0.9.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
@@ -32,7 +38,7 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.15",
+    "tailwindcss": "^3.4.16",
     "vite": "^6.0.1"
   }
 }
