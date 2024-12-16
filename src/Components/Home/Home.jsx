@@ -61,12 +61,12 @@ export default function Home() {
       {/* third part of home */}
       <div className="mb-20 grid sm:grid-cols-2 grid-cols-1 items-center justify-start">
         <div className="ms-3">
-          <p className='text-2xl font-bold text-start'>{t('My Car')}</p>
-          <div className="w-[15%]">
+          <p className='text-2xl font-bold text-center sm:text-start'>{t('My Car')}</p>
+          <div className="w-[15%] sm:ms-0 m-auto">
             <UnderLine/>
           </div>
-          <p className='text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br/> {t('updates for every ride.')}</p>
-          <div className="ms-0 text-start">
+          <p className='text-center sm:text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br/> {t('updates for every ride.')}</p>
+          <div className="ms-0 text-center sm:text-start">
           <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button>
           </div>
           
