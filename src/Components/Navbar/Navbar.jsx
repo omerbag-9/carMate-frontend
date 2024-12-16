@@ -72,7 +72,7 @@ export default function Navbar() {
                                 <Link to="/"><span className='text-red-600'>Car</span>Mate</Link>
                             </div>
                         </div>
-    
+                        
                         {/* Centered Navigation */}
                         <div className="absolute left-1/2 transform -translate-x-1/2">
                             <div className="hidden md:block">
