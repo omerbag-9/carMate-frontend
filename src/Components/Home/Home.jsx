@@ -55,6 +55,7 @@ export default function Home() {
           <Link to={'about'}><p className='sm:text-lg text-sm bg-[#232326] sm:px-3 px-3 py-1 rounded-xl whitespace-nowrap'>{t('More About CarMate')} <i className="fa-solid fa-arrow-up rotate-45"></i> </p></Link>
         </div>
       </div>
+
       {/* second part of home */}
       <div className="mt-20 sm:mb-0 mb-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-16 sm:gap-y-6 md:gap-y-10">
         <div className="text-center">
@@ -90,6 +91,7 @@ export default function Home() {
           <p>{t('Unlock opportunities to connect')} <br /> {t('with car owners and grow your')} <br /> {t('mechanic career.')}</p>
         </div>
       </div>
+      
       {/* third part of home */}
       <div className="grid sm:grid-cols-2 grid-cols-1 items-center justify-start">
         <div className="ms-3">
