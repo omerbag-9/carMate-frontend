@@ -40,3 +40,95 @@
 .read-the-docs {
   color: #888;
 }
+
+/* General Embla styles */
+.embla {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 40px; /* Space for dots and arrows */
+}
+
+.embla__viewport {
+  overflow: hidden;
+}
+
+/* .embla__container {
+  display: flex;
+  will-change: transform;
+} */
+ 
+/* Default to LTR layout */
+.embla__container {
+  display: flex;
+  flex-direction: row; 
+}
+
+/* When the language is Arabic (RTL), change flex direction */
+html[dir="rtl"] .embla__container {
+  flex-direction: row-reverse; /* Reverse the order for RTL */
+}
+
+.embla__slide {
+  flex: 0 0 33.33%; /* Show 3 slides in the viewport */
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+  /* height: 300px; */
+  background: #d5d5d7;
+  color: black;
+  font-size: 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-right: 10px; /* Spacing between slides */
+}
+
+/* Controls Container */
+.embla__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* Navigation Arrows */
+.embla__button {
+  background: #d5d5d7;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Dots (Pagination) */
+.embla__dots {
+  display: flex;
+  gap: 8px;
+}
+
+.embla__dot {
+  background-color: #d5d5d7;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.embla__dot.is-selected {
+  background-color: #5D5D60;
+}
+
+/* Media query for small screens like phones */
+@media (max-width: 600px) {
+  .embla__slide {
+    flex: 0 0 100%; /* Show 1 slide on smaller screens */
+  }
+}
