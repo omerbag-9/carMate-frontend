@@ -35,7 +35,7 @@ export default function Footer() {
         <div className="text-start">
           <p className='font-bold'>Comment Section</p>
           <div className=" w-[150px] bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
-          <span className=''>Add Your Opinion Or Any idea</span>
+          <span className=''>Add Your Opinion Or Any idea </span>
           <div className="mt-3">
             <textarea name="" id="" className='bg-black rounded-xl h-20' placeholder="message"></textarea>
           </div>
