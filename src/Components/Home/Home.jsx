@@ -19,6 +19,8 @@ import { useTranslation } from 'react-i18next'
 import UnderLine from '../UnderLine/UnderLine'
 import { Link } from 'react-router-dom'
 import useEmblaCarousel from "embla-carousel-react";
+import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
+
 // import "./EmblaCarousel.css";
 export default function Home() {
   const { t } = useTranslation()
@@ -99,8 +101,8 @@ export default function Home() {
           <div className="w-[15%] sm:ms-0 m-auto">
             <UnderLine />
           </div>
-          <p className='text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br /> {t('updates for every ride.')}</p>
-          <div className="ms-0 text-start">
+          <p className='text-center sm:text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br /> {t('updates for every ride.')}</p>
+          <div className="ms-0 text-center sm:text-start">
             <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button>
           </div>
 
@@ -114,26 +116,25 @@ export default function Home() {
         </div>
       </div>
       {/* fourth part of home */}
-      <div className="mb-20 sm:gap-y-0 gap-y-16 grid sm:grid-cols-2 grid-cols-1 items-center justify-start">
-        <div className="ms-3 border-dashed border-white ltr:border-r-2 rtl:border-l-2">
-          <img src={icon5} className="w-10 mb-2" alt="" />
-          <p className='text-2xl font-bold text-start'>{t('Save Your Car Data')}</p>
-          <div className="w-[38%]">
+      <div className="mb-20 sm:gap-y-0 gap-y-16 grid sm:grid-cols-2 grid-cols-1 items-center justify-center">
+        <div className="ms-3 sm:border-dashed sm:border-white sm:ltr:border-r-2 sm:rtl:border-l-2 text-center sm:text-start">
+          <img src={icon5} className="w-10 mb-2 mx-auto sm:mx-0" alt="" />
+          <p className='text-2xl font-bold'>{t('Save Your Car Data')}</p>
+          <div className="w-[38%] mx-auto sm:mx-0">
             <UnderLine />
           </div>
-          <p className='text-start'>
+          <p className='text-center sm:text-start'>
             {t('You Can Save Your Car Information')} <br />
             {t('to Easy Access.')}
           </p>
         </div>
-
-        <div className="sm:ms-32 ms-3">
-          <img src={icon6} className="w-10 mb-2" alt="" />
-          <p className='text-2xl font-bold text-start'>{t('Reminder For Your Tasks')}</p>
-          <div className="w-[45%]">
+        <div className="sm:ms-32 ms-3 text-center sm:text-start">
+          <img src={icon6} className="w-10 mb-2 mx-auto sm:mx-0" alt="" />
+          <p className='text-2xl font-bold'>{t('Reminder For Your Tasks')}</p>
+          <div className="w-[45%] mx-auto sm:mx-0">
             <UnderLine />
           </div>
-          <p className='text-start'>
+          <p className='text-center sm:text-start'>
             {t('You Can Set a Reminder To remember')} <br />
             {t('important Things.')}
           </p>
@@ -142,15 +143,15 @@ export default function Home() {
       {/* fifth part of home */}
       <div className="mb-20 grid sm:gap-y-0 gap-y-16 sm:grid-cols-2 grid-cols-1 items-center justify-start">
         <div className="ms-3">
-          <p className="text-2xl font-bold text-start">{t('Car Alerts & Signs')}</p>
-          <div className="w-[35%]">
+          <p className="text-2xl font-bold text-center sm:text-start">{t('Car Alerts & Signs')}</p>
+          <div className="w-[35%] ltr:sm:ml-0 rtl:sm:mr-0 m-auto">
             <UnderLine />
           </div>
-          <p className="text-start">
+          <p className="text-center sm:text-start">
             {t('Monitor, Respond, and Stay on Top of Your Car’s')} <br />
             {t('Alerts!')}
           </p>
-          <div className="ms-0 text-start">
+          <div className="ms-0 text-center sm:text-start">
             <button className="bg-[#5D5D60] mt-5 p-1">{t('Download App Now')}</button>
           </div>
         </div>
@@ -165,31 +166,31 @@ export default function Home() {
           <p className='font-bold'>{t('Some of Product Market Place')}</p>
           <p className='ltr:ml-auto rtl:mr-auto text-start'>{t('View All')}<i className="fa-solid fa-angle-right ms-2"></i></p>
         </div>
-        <div className="grid sm:grid-cols-3 grid-cols-1 gap-5">
-          <div className="relative group overflow-hidden">
-            <img src={img1} className='w-[100%] rounded-2xl' alt="" />
+        <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
+          <div className="relative group overflow-hidden w-[100%]">
+            <img src={img1} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
             <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                <p className='font-bold text-2xl text-start'>{t('Used Car Body')}</p>
-                <p className='text-start'>{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
+                <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
+                <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
               </div>
             </div>
           </div>
-          <div className="relative group overflow-hidden">
-            <img src={img2} className='w-[100%] rounded-2xl' alt="" />
+          <div className="relative group overflow-hidden w-[100%]">
+            <img src={img2} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
             <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                <p className='font-bold text-2xl text-start'>{t('Used Car Body')}</p>
-                <p className='text-start'>{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
+                <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
+                <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
               </div>
             </div>
           </div>
-          <div className="relative group overflow-hidden">
-            <img src={img3} className='w-[100%] rounded-2xl' alt="" />
+          <div className="relative group overflow-hidden w-[100%]">
+            <img src={img3} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
             <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                <p className='font-bold text-2xl text-start'>{t('Used Car Body')}</p>
-                <p className='text-start'>{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
+                <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
+                <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
               </div>
             </div>
           </div>
@@ -213,7 +214,8 @@ export default function Home() {
                     <img src={comma} className="w-10 h-10" alt="" />
                   </div>
                 </div>
-                <p className="text-[16px] mt-5 font-medium">
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
                 <div className="mt-4 flex">
@@ -233,7 +235,7 @@ export default function Home() {
                     <img src={comma} className="w-10 h-10" alt="" />
                   </div>
                 </div>
-                <p className="text-[16px] mt-5 font-medium">
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
                 <div className="mt-4 flex">
@@ -253,7 +255,7 @@ export default function Home() {
                     <img src={comma} className="w-10 h-10" alt="" />
                   </div>
                 </div>
-                <p className="text-[16px] mt-5 font-medium">
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
                 <div className="mt-4 flex">
@@ -273,7 +275,7 @@ export default function Home() {
                     <img src={comma} className="w-10 h-10" alt="" />
                   </div>
                 </div>
-                <p className="text-[16px] mt-5 font-medium">
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
                 <div className="mt-4 flex">
@@ -293,7 +295,7 @@ export default function Home() {
                     <img src={comma} className="w-10 h-10" alt="" />
                   </div>
                 </div>
-                <p className="text-[16px] mt-5 font-medium">
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
                 <div className="mt-4 flex">
@@ -313,7 +315,7 @@ export default function Home() {
                     <img src={comma} className="w-10 h-10" alt="" />
                   </div>
                 </div>
-                <p className="text-[16px] mt-5 font-medium">
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
                 <div className="mt-4 flex">
@@ -348,7 +350,7 @@ export default function Home() {
         </div>
       </div>
       {/* 8th part of home */}
-      <div className="mb-44 bg-[#d5d5d7] text-black sm:flex px-6 pt-8 relative rounded-xl overflow-hidden">
+      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 pt-8 relative rounded-xl overflow-hidden">
         <div className="flex-1 text-start">
           <p className='font-bold text-xl'>
             {t('Take care of your Own car, anywhere, anytime.')}
@@ -359,14 +361,14 @@ export default function Home() {
             {t(' whenever you need!')}
           </p>
           <div className="sm:flex mx-4">
-            <button className='bg-black text-white py-2 px-6 rounded-2xl my-4 flex items-center mr-4'>
+            <button className='bg-black text-white py-2 px-6 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
               <i className="fa-brands fa-apple ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-3xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Download on the')}</span><br />
                 <span className='font-bold'>{t('Apple Store')}</span>
               </div>
             </button>
-            <button className='bg-black text-white rtl:mx-4 py-2 pl-6 rtl:pr-2 ltr:pr-12 rounded-2xl my-4 flex items-center'>
+            <button className='bg-black text-white rtl:mx-4 py-2 pl-6 rtl:pr-2 ltr:pr-14 rounded-2xl my-4 flex items-center'>
               <i className="fa-brands fa-google-play ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-2xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Get it on')}</span><br />
@@ -375,8 +377,9 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="absolute left-0 ltr:mr-16 rtl:ml-16 top-8 hidden md:block">
-          <img src={myCar} className='w-[15%] ltr:ml-auto rtl:mr-auto rounded-3xl' alt="" />
+        {/* hidden md:block */}
+        <div className="absolute left-0 ltr:sm:mr-16 rtl:sm:ml-16 sm:top-8 top-64 ltr:mr-1">
+          <img src={myCar} className='sm:w-[15%] w-[30%] ltr:ml-auto rtl:mr-auto rounded-3xl' alt="" />
         </div>
       </div>
     </div>)
