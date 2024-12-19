@@ -59,6 +59,16 @@
     "Comment Section": "قسم التعليقات",
     "Add Your Opinion Or Any idea": "أضف رأيك أو أي فكرة",
     "message": "رسالة",
+      "profilePage": {
+        "title": "صفحة الملف الشخصي",
+          "subtitle1": "قم بتحديث صورتك وتفاصيلك الشخصية وكن مسيطرًا على منتجك.",
+        "subtitle2": "كن مسيطرًا على منتجك.",
+        "firstNamePlaceholder": "الاسم الأول",
+        "lastNamePlaceholder": "اسم العائلة",
+        "phonePlaceholder": "الهاتف",
+        "emailPlaceholder": "البريد الإلكتروني",
+        "saveChanges": "حفظ التغييرات"
+      },
     "navbar": {
       "title": "تطبيقي"
     }
