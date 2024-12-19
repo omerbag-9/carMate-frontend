@@ -5,4 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
     base: '/carMate-frontend/', // Make sure the base is set to your repository name
   plugins: [react()],
+  base: '/carMate-frontend/',
 })

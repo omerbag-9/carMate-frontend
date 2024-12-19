@@ -62,8 +62,8 @@ export default function Navbar() {
 
     return (
         <>
-        <div className="min-h-full">
-            <Disclosure as="nav" className="fixed top-0 left-0 right-0 z-50">
+        <div className="min-h-full mb-20">
+            <Disclosure as="nav" className="absolute top-0 left-0 right-0 z-50">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
                         {/* Left side - Logo */}
@@ -72,7 +72,7 @@ export default function Navbar() {
                                 <Link to="/"><span className='text-red-600'>Car</span>Mate</Link>
                             </div>
                         </div>
-    
+                        
                         {/* Centered Navigation */}
                         <div className="absolute left-1/2 transform -translate-x-1/2">
                             <div className="hidden md:block">

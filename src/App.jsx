@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -9,22 +9,26 @@ import AboutUs from './Components/AboutUs/AboutUs'
 import Register from './Components/Register/Register'
 import Login from './Components/Login/Login'
 import NotFound from './Components/NotFound/NotFound'
+import { useTranslation } from 'react-i18next'
 
 
 let routers = createHashRouter([
   {
-    path: "", element:<Layout />,children: [
-      {index: true, element: <Home />},
-      {path: "about", element: <AboutUs />},
-      {path: "register", element: <Register />},
-      {path: "login", element: <Login />},
-      {path: "*", element: <NotFound />},
+    path: "", element: <Layout />, children: [
+      { index: true, element: <Home /> },
+      { path: "about", element: <AboutUs /> },
+      { path: "register", element: <Register /> },
+      { path: "login", element: <Login /> },
+      { path: "*", element: <NotFound /> },
     ]
   }
 ])
 function App() {
   const [count, setCount] = useState(0)
-
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    document.documentElement.setAttribute('dir', i18n.language === 'ar' ? 'rtl' : 'ltr');
+  }, [i18n.language]);
   return (
     <>
       <RouterProvider router={routers}></RouterProvider>
