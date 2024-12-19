@@ -5,6 +5,8 @@ import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
+import UnderLine from '../UnderLine/UnderLine';
+import profileImg1 from '../../assets/images/profileImg1.jpg'
 
 export default function Navbar() {
     const [language, setLanguage] = useState('en');
@@ -47,12 +49,12 @@ export default function Navbar() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 400,
+        // width: 400,
         bgcolor: 'black',
         border: '2px solid #000',
         borderRadius: '30px',
         boxShadow: 24,
-        p: 4,
+        p: 2,
     };
 
     const handleOpen = (content) => {
@@ -211,7 +213,60 @@ export default function Navbar() {
                         </>
                     )}
                 </Disclosure>
+                {/* Modal */}
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <IconButton
+                            onClick={handleClose}
+                            sx={{
+                                position: 'absolute',
+                                top: 10,
+                                right: 10,
+                            }}
+                        >
+                            <i className="fa-solid fa-xmark text-white"></i>
+                        </IconButton>
+
+                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                            <p className='font-bold text-center'>{t('profilePage.title')}</p>
+                            <div className="w-[35%] m-auto">
+                                <UnderLine />
+                            </div>
+                            <p className='text-center text-sm'>{t('profilePage.subtitle1')}<br/>{t('profilePage.subtitle2')}</p>
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            <div className="flex p-2 sm:flex-row flex-col">
+                                <div className="text-center">
+                                    <img src={profileImg1} className='w-[60%] rounded-full m-auto' alt="" />
+                                    <p className='pt-3'>Dina Mohsen</p>
+                                    <p className='text-[12px]'>@dinamohsen</p>
+                                </div>
+                                <div className="">
+                                    <form action="" className="flex flex-col gap-y-4 sm:mt-0 mt-4">
+                                        <div className="flex sm:flex-row gap-y-4 flex-col">
+                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500 ltr:mr-3 rtl:ml-3" placeholder={t('profilePage.firstNamePlaceholder')} />
+                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500" placeholder={t('profilePage.lastNamePlaceholder')} />
+                                        </div>
+                                        <div className="flex sm:flex-row gap-y-4 flex-col">
+                                            <input type="tel" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500 ltr:mr-3 rtl:ml-3" placeholder={t('profilePage.phonePlaceholder')} />
+                                            <input type="email" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500" placeholder={t('profilePage.emailPlaceholder')} />
+                                        </div>
+                                        <div className="m-auto">
+                                            <button className='bg-[#650000] px-14 py-2 rounded-xl'>{t('profilePage.saveChanges')}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </Typography>
+                    </Box>
+                </Modal>
             </div>
         </>
     );
 }
+

@@ -58,6 +58,16 @@
   "carMate@Gmail.com": "carMate@Gmail.com",
   "Comment Section": "Comment Section",
   "Add Your Opinion Or Any idea": "Add Your Opinion Or Any idea",
+  "profilePage": {
+    "title": "Profile Page",
+    "subtitle1": "Update Your Photo And Personal Details and Control on Your Product.",
+    "subtitle2": "Control on Your Product.",
+    "firstNamePlaceholder": "First name",
+    "lastNamePlaceholder": "Last name",
+    "phonePlaceholder": "Phone",
+    "emailPlaceholder": "Email",
+    "saveChanges": "Save Changes"
+  },
   "message": "message",
     "navbar": {
       "title": "My Application"
