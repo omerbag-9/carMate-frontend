@@ -38,8 +38,8 @@ export default function Navbar() {
     ];
 
     const userNavigation = [
-        { name: 'Your Profile', action: () => handleOpen('Profile Details') },
-        { name: 'Sign out', action: () => handleOpen('Sign Out') },
+        { name: t('navbar.your profile'), action: () => handleOpen('Profile Details') },
+        { name: t('navbar.Sign out') },
     ];
 
     const classNames = (...classes) => classes.filter(Boolean).join(' ');
@@ -126,10 +126,10 @@ export default function Navbar() {
                                                         />
                                                     </MenuButton>
                                                 </div>
-                                                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg focus:outline-none">
+                                                <MenuItems className="absolute ltr:right-0 rtl:left-0  z-10 mt-2 w-48  rounded-md bg-white py-1 shadow-lg focus:outline-none">
                                                     {userNavigation.map((item) => (
                                                         <MenuItem key={item.name}>
-                                                            <Button onClick={item.action} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                            <Button onClick={item.action} className="block  w-full px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100">
                                                                 <p className='text-black'>{item.name}</p>
                                                             </Button>
                                                         </MenuItem>

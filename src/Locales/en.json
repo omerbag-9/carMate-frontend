@@ -70,6 +70,8 @@
   },
   "message": "message",
     "navbar": {
-      "title": "My Application"
+      "title": "My Application",
+      "your profile": "Your Profile",
+      "Sign out": "Sign out"
     }
   }
