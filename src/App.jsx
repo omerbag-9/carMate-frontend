@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { createHashRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './Components/Layout/Layout'
 import Home from './Components/Home/Home'
 import AboutUs from './Components/AboutUs/AboutUs'
@@ -12,7 +12,7 @@ import NotFound from './Components/NotFound/NotFound'
 import { useTranslation } from 'react-i18next'
 
 
-let routers = createHashRouter([
+let routers = createBrowserRouter([
   {
     path: "", element: <Layout />, children: [
       { index: true, element: <Home /> },
