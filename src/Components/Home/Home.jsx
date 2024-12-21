@@ -30,7 +30,7 @@ export default function Home() {
     align: "start", // Align to start to fit 3 slides
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const slides = [1, 2, 3, 4, 5, 6];
+  const slides = [1, 2, 3];
 
   const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
   const scrollNext = () => emblaApi && emblaApi.scrollNext();
@@ -162,14 +162,14 @@ export default function Home() {
       </div>
       {/* sixth part of home */}
       <div className="pt-10 mb-20">
-        <div className="flex mb-4">
-          <p className='font-bold'>{t('Some of Product Market Place')}</p>
-          <p className='ltr:ml-auto rtl:mr-auto text-start'>{t('View All')}<i className="fa-solid fa-angle-right ms-2"></i></p>
+        <div className="flex mb-4 px-4">
+          <p className='font-bold text-xl'>{t('Some of Product Market Place')}</p>
+          <p className='ltr:ml-auto rtl:mr-auto text-start text-xl'>{t('View All')}<i className="fa-solid fa-angle-right ms-2"></i></p>
         </div>
         <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
           <div className="relative group overflow-hidden w-[100%]">
             <img src={img1} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
                 <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
                 <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
@@ -178,7 +178,7 @@ export default function Home() {
           </div>
           <div className="relative group overflow-hidden w-[100%]">
             <img src={img2} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
                 <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
                 <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
@@ -187,7 +187,7 @@ export default function Home() {
           </div>
           <div className="relative group overflow-hidden w-[100%]">
             <img src={img3} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
                 <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
                 <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
@@ -199,7 +199,7 @@ export default function Home() {
       {/* seventh part of home */}
       <div className="pt-10 mb-20">
         <div className="flex mb-4">
-          <p className="font-bold">{t('What our Users say About us')}</p>
+          <p className="font-bold text-xl">{t('What our Users say About us')}</p>
         </div>
         <div className="embla">
           {/* Embla Container */}
@@ -215,6 +215,7 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  Lorem ipsum dolor sit amet.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
@@ -332,7 +333,7 @@ export default function Home() {
           {/* Dots and Arrows */}
           <div className="embla__controls">
             <button className="embla__button embla__button--prev" onClick={scrollPrev}>
-              &larr;
+            <i class="fa-solid fa-arrow-left ltr:rotate-0 rtl:rotate-180"></i>
             </button>
             <div className="embla__dots">
               {slides.map((_, index) => (
@@ -344,7 +345,7 @@ export default function Home() {
               ))}
             </div>
             <button className="embla__button embla__button--next" onClick={scrollNext}>
-              &rarr;
+            <i class="fa-solid fa-arrow-right ltr:rotate-0 rtl:rotate-180"></i>
             </button>
           </div>
         </div>
