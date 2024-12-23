@@ -215,15 +215,53 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
+                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
+                </p>
+                <div className="mt-4 flex fixed bottom-5 items-center">
+                  <img src={profileImg1} className="w-12 rounded-full" alt="" />
+                  <div className="ms-5">
+                    <p className="text-[16px]">Leslie Alexander</p>
+                  </div>
+                </div>
+              </div>
+              <div className="embla__slide p-6">
+                <div className="flex">
+                  <div className="">
+                    <p className="text-2xl">Good Job</p>
+                  </div>
+                  <div className="ltr:ml-auto rtl:mr-auto">
+                    <img src={comma} className="w-10 h-10" alt="" />
+                  </div>
+                </div>
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
+                </p>
+                <div className="mt-4 flex fixed bottom-5 items-center">
+                  <img src={profileImg2} className="w-12 rounded-full" alt="" />
+                  <div className="ms-5">
+                    <p className="text-[16px]">Dianne Russell</p>
+                  </div>
+                </div>
+              </div>
+              <div className="embla__slide p-6">
+                <div className="flex">
+                  <div className="">
+                    <p className="text-2xl">Great Work</p>
+                  </div>
+                  <div className="ltr:ml-auto rtl:mr-auto">
+                    <img src={comma} className="w-10 h-10" alt="" />
+                  </div>
+                </div>
+                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   Lorem ipsum dolor sit amet.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg1} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Leslie Alexander</p>
-                    <p className="text-[16px] font-medium text-start">Designer</p>
                   </div>
                 </div>
               </div>
@@ -239,11 +277,10 @@ export default function Home() {
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg2} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Dianne Russell</p>
-                    <p className="text-[16px] font-medium text-start">Marketing</p>
                   </div>
                 </div>
               </div>
@@ -257,13 +294,14 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  Lorem ipsum dolor sit amet.
+                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg1} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Leslie Alexander</p>
-                    <p className="text-[16px] font-medium text-start">Designer</p>
                   </div>
                 </div>
               </div>
@@ -279,51 +317,10 @@ export default function Home() {
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex items-center">
                   <img src={profileImg2} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Dianne Russell</p>
-                    <p className="text-[16px] font-medium text-start">Marketing</p>
-                  </div>
-                </div>
-              </div>
-              <div className="embla__slide p-6">
-                <div className="flex">
-                  <div className="">
-                    <p className="text-2xl">Great Work</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
-                  </div>
-                </div>
-                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
-                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
-                </p>
-                <div className="mt-4 flex">
-                  <img src={profileImg1} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Leslie Alexander</p>
-                    <p className="text-[16px] font-medium text-start">Designer</p>
-                  </div>
-                </div>
-              </div>
-              <div className="embla__slide p-6">
-                <div className="flex">
-                  <div className="">
-                    <p className="text-2xl">Good Job</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
-                  </div>
-                </div>
-                <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
-                  CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
-                </p>
-                <div className="mt-4 flex">
-                  <img src={profileImg2} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Dianne Russell</p>
-                    <p className="text-[16px] font-medium text-start">Marketing</p>
                   </div>
                 </div>
               </div>
@@ -351,9 +348,9 @@ export default function Home() {
         </div>
       </div>
       {/* 8th part of home */}
-      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 pt-8 relative rounded-xl overflow-hidden">
+      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 py-8 relative rounded-xl overflow-hidden">
         <div className="flex-1 text-start">
-          <p className='font-bold text-xl'>
+          <p className='font-bold text-2xl'>
             {t('Take care of your Own car, anywhere, anytime.')}
           </p>
           <p>
@@ -362,14 +359,14 @@ export default function Home() {
             {t(' whenever you need!')}
           </p>
           <div className="sm:flex mx-4">
-            <button className='bg-black text-white py-2 px-6 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
+            <button className='bg-black text-sm text-white py-2 px-4 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
               <i className="fa-brands fa-apple ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-3xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Download on the')}</span><br />
                 <span className='font-bold'>{t('Apple Store')}</span>
               </div>
             </button>
-            <button className='bg-black text-white rtl:mx-4 py-2 pl-6 rtl:pr-2 ltr:pr-14 rounded-2xl my-4 flex items-center'>
+            <button className='bg-black text-sm text-white rtl:mx-4 py-2 pl-4 rtl:pr-2 ltr:pr-11 rounded-2xl my-4 flex items-center'>
               <i className="fa-brands fa-google-play ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-2xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Get it on')}</span><br />
@@ -380,7 +377,7 @@ export default function Home() {
         </div>
         {/* hidden md:block */}
         <div className="absolute left-0 ltr:sm:mr-16 rtl:sm:ml-16 sm:top-8 top-64 ltr:mr-1">
-          <img src={myCar} className='sm:w-[15%] w-[30%] ltr:ml-auto rtl:mr-auto rounded-3xl' alt="" />
+          <img src={myCar} className='sm:w-[20%] w-[30%] ltr:ml-auto rtl:mr-auto rounded-3xl' alt="" />
         </div>
       </div>
     </div>)
