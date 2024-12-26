@@ -14,13 +14,19 @@ import { useTranslation } from 'react-i18next'
 
 let routers = createBrowserRouter([
   {
-    path: "", element: <Layout />, children: [
+    path: "/",
+    element: <Layout />,
+    children: [
       { index: true, element: <Home /> },
       { path: "about", element: <AboutUs /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
-      { path: "*", element: <NotFound /> },
     ]
+  },
+  // Separate route for NotFound page
+  {
+    path: "*",
+    element: <NotFound />
   }
 ])
 function App() {
