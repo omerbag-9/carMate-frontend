@@ -358,15 +358,16 @@ export default function Home() {
             {t('details, and shop products—all in one app. Connect with expert mechanics')}<br />
             {t(' whenever you need!')}
           </p>
-          <div className="sm:flex mx-4">
-            <button className='bg-black text-sm text-white py-2 px-4 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
+          <div className="sm:block flex justify-center">
+          <div className="sm:flex mx-4 sm:pb-0 pb-64">
+            <button className='bg-black text-sm text-white py-2 sm:px-4 px-6 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
               <i className="fa-brands fa-apple ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-3xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Download on the')}</span><br />
                 <span className='font-bold'>{t('Apple Store')}</span>
               </div>
             </button>
-            <button className='bg-black text-sm text-white rtl:mx-4 py-2 pl-4 rtl:pr-2 ltr:pr-11 rounded-2xl my-4 flex items-center'>
+            <button className='bg-black text-sm text-white rtl:mx-4 py-2 pl-4 rtl:pr-2 ltr:sm:pr-11 ltr:pr-14 ltr:pl-6 rtl:pl-7 rounded-2xl my-4 flex items-center'>
               <i className="fa-brands fa-google-play ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-2xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Get it on')}</span><br />
@@ -374,10 +375,11 @@ export default function Home() {
               </div>
             </button>
           </div>
+          </div>
         </div>
         {/* hidden md:block */}
-        <div className="absolute left-0 ltr:sm:mr-16 rtl:sm:ml-16 sm:top-8 top-64 ltr:mr-1">
-          <img src={myCar} className='sm:w-[20%] w-[30%] ltr:ml-auto rtl:mr-auto rounded-3xl' alt="" />
+        <div className="absolute left-0 ltr:sm:mr-16 rtl:sm:ml-16 sm:top-8 top-96 ltr:mr-1">
+          <img src={myCar} className='sm:w-[20%] w-[60%] ltr:ml-auto rtl:mr-auto sm:m-0 m-auto rounded-3xl' alt="" />
         </div>
       </div>
     </div>)

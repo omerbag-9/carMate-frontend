@@ -10,6 +10,7 @@ import Register from './Components/Register/Register'
 import Login from './Components/Login/Login'
 import NotFound from './Components/NotFound/NotFound'
 import { useTranslation } from 'react-i18next'
+import ResetPassword from './Components/ResetPassword/ResetPassword'
 
 
 let routers = createBrowserRouter([
@@ -18,6 +19,7 @@ let routers = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "about", element: <AboutUs /> },
       { path: "register", element: <Register /> },
+      { path: "resetpassword", element: <ResetPassword /> },
       { path: "login", element: <Login /> },
       { path: "*", element: <NotFound /> },
     ]
