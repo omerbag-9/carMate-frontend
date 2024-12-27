@@ -55,7 +55,6 @@ export default function ResetPassword() {
                             </div>
                         </>
                     )}
-
                     {step === 'verify' && (
                         <>
                             <div className="mt-0">
