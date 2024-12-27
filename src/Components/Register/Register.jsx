@@ -1,7 +1,6 @@
 import React from 'react'
 import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
-import emailImage from '../../assets/images/emailImage.png'
 import { Link } from 'react-router-dom'
 export default function Register() {
   return <>

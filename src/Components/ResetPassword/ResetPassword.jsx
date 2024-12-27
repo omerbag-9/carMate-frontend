@@ -1,26 +1,42 @@
 import React from 'react'
 import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
+import emailImage from '../../assets/images/emailImage.png'
 import { useState } from "react";
-
 export default function ResetPassword() {
-    const [step, setStep] = useState("reset"); // 'reset' or 'create'
+    const [step, setStep] = useState('reset'); // 'reset', 'verify', 'create'
+    const [code, setCode] = useState(['', '', '', '']); // Store individual digits of the code
+
+    // Handle change for the code inputs
+    const handleChange = (e, index) => {
+        const value = e.target.value;
+
+        if (/[^0-9]/.test(value)) return; // Ensure only numbers are entered
+
+        const newCode = [...code];
+        newCode[index] = value;
+        setCode(newCode);
+
+        // Move to the next input if a value is entered
+        if (index < 3 && value !== '') {
+            document.getElementById(`code-input-${index + 1}`).focus();
+        }
+    };
+
     return (
         <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20">
             {/* Left Section */}
             <div className="w-1/2 ml-4 mt-32">
-                <img src={heroLogo} className="w-[20%] m-auto mb-6" alt="Logo" />
                 <div className="text-start">
-                    {step === "reset" ? (
+                    {step === 'reset' && (
                         <>
+                            <img src={heroLogo} className="w-[20%] m-auto mb-6" alt="Logo" />
                             <div className="mt-0">
-                                {/* Reset Password */}
                                 <p className="text-lg font-bold mb-1">Reset Password</p>
                                 <p className="text-base mb-6">
                                     Enter the email associated with your account and we'll send an email with instructions to reset your password.
                                 </p>
                                 <form className="space-y-5">
-                                    {/* Email Input */}
                                     <div className="relative w-full">
                                         <i className="fa-solid fa-envelope absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-500"></i>
                                         <input
@@ -29,9 +45,8 @@ export default function ResetPassword() {
                                             className="rounded-xl p-3 pl-10 text-sm w-full bg-[#232326] border-0 text-white"
                                         />
                                     </div>
-                                    {/* Send Code Button */}
                                     <button
-                                        onClick={() => setStep("create")}
+                                        onClick={() => setStep('verify')}
                                         className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4"
                                     >
                                         Send Code
@@ -39,15 +54,54 @@ export default function ResetPassword() {
                                 </form>
                             </div>
                         </>
-                    ) : (
+                    )}
+
+                    {step === 'verify' && (
                         <>
-                            {/* Create New Password */}
+                            <div className="mt-0">
+                                <img src={emailImage} className="w-[25%] m-auto mb-6" alt="Logo" />
+                                <p className="text-lg font-bold mb-1 text-center">Verify Your Email Number</p>
+                                <p className="text-base mb-6 text-center">
+                                    Verify with the code just Now we have send
+                                </p>
+                                <div className="flex justify-center mb-4">
+                                </div>
+                                <form className="space-y-5">
+                                    <div className="flex gap-2 justify-center">
+                                        {code.map((digit, i) => (
+                                            <input
+                                                key={i}
+                                                id={`code-input-${i}`}
+                                                type="text"
+                                                maxLength="1"
+                                                value={digit}
+                                                onChange={(e) => handleChange(e, i)}
+                                                className="w-12 h-12 text-center text-lg font-bold bg-[#232326] border-0 text-white rounded-xl"
+                                            />
+                                        ))}
+                                    </div>
+                                    <p className="text-sm text-center text-[#8E0606]">
+                                        Resend? <span className="text-white">5:00 min</span>
+                                    </p>
+                                    <button
+                                        onClick={() => setStep('create')}
+                                        className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4"
+                                    >
+                                        Verify
+                                    </button>
+                                </form>
+                            </div>
+                        </>
+                    )}
+
+                    {step === 'create' && (
+                        <>
+                            <img src={heroLogo} className="w-[20%] m-auto mb-6" alt="Logo" />
                             <p className="text-lg font-bold mb-1">Create New Password</p>
                             <p className="text-base mb-6">
                                 Please enter a new password. Ensure that your new password is different from the previous one for better security.
                             </p>
                             <form className="space-y-5">
-                                {/* Password Input */}
                                 <div className="relative w-full">
                                     <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-500"></i>
                                     <input
@@ -56,7 +110,6 @@ export default function ResetPassword() {
                                         className="rounded-xl p-3 pl-10 text-sm w-full bg-[#232326] border-0 text-white"
                                     />
                                 </div>
-                                {/* Confirm Password Input */}
                                 <div className="relative w-full">
                                     <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-500"></i>
                                     <input
@@ -65,13 +118,11 @@ export default function ResetPassword() {
                                         className="rounded-xl p-3 pl-10 text-sm w-full bg-[#232326] border-0 text-white"
                                     />
                                 </div>
-                                {/* Password Guidelines */}
                                 <ul className="text-left text-sm text-gray-400 space-y-1">
                                     <li>• At least 6 characters</li>
                                     <li>• At least one number and one symbol</li>
                                     <li>• Must not match your old password</li>
                                 </ul>
-                                {/* Reset Password Button */}
                                 <button className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4">
                                     Reset Password
                                 </button>
@@ -90,6 +141,9 @@ export default function ResetPassword() {
                 />
             </div>
         </div>
-
-    )
+    );
 }
+
+
+
+
