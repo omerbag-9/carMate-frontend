@@ -3,7 +3,10 @@ import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
 import emailImage from '../../assets/images/emailImage.png'
 import { useState } from "react";
+import { useTranslation } from 'react-i18next'; // إضافة
+
 export default function ResetPassword() {
+    const { t } = useTranslation(); // استخدم الترجمة هنا
     const [step, setStep] = useState('reset'); // 'reset', 'verify', 'create'
     const [code, setCode] = useState(['', '', '', '']); // Store individual digits of the code
 
@@ -24,17 +27,17 @@ export default function ResetPassword() {
     };
 
     return (
-        <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20">
+        <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20 flex-col lg:flex-row">
             {/* Left Section */}
-            <div className="w-1/2 ml-4 mt-32">
+            <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
                 <div className="text-start">
                     {step === 'reset' && (
                         <>
                             <img src={heroLogo} className="w-[20%] m-auto mb-6" alt="Logo" />
                             <div className="mt-0">
-                                <p className="text-lg font-bold mb-1">Reset Password</p>
+                                <p className="text-lg font-bold mb-1">{t('Reset Password')}</p>
                                 <p className="text-base mb-6">
-                                    Enter the email associated with your account and we'll send an email with instructions to reset your password.
+                                    {t('Enter the email associated with your account and we\'ll send an email with instructions to reset your password.')}
                                 </p>
                                 <form className="space-y-5">
                                     <div className="relative w-full">
@@ -49,7 +52,7 @@ export default function ResetPassword() {
                                         onClick={() => setStep('verify')}
                                         className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4"
                                     >
-                                        Send Code
+                                        {t('Send Code')}
                                     </button>
                                 </form>
                             </div>
@@ -59,9 +62,9 @@ export default function ResetPassword() {
                         <>
                             <div className="mt-0">
                                 <img src={emailImage} className="w-[25%] m-auto mb-6" alt="Logo" />
-                                <p className="text-lg font-bold mb-1 text-center">Verify Your Email Number</p>
+                                <p className="text-lg font-bold mb-1 text-center">{t('Verify Your Email Number')}</p>
                                 <p className="text-base mb-6 text-center">
-                                    Verify with the code just Now we have send
+                                    {t('Verify with the code just Now we have send')}
                                 </p>
                                 <div className="flex justify-center mb-4">
                                 </div>
@@ -80,13 +83,13 @@ export default function ResetPassword() {
                                         ))}
                                     </div>
                                     <p className="text-sm text-center text-[#8E0606]">
-                                        Resend? <span className="text-white">5:00 min</span>
+                                        {t('Resend?')} <span className="text-white">5:00 min</span>
                                     </p>
                                     <button
                                         onClick={() => setStep('create')}
                                         className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4"
                                     >
-                                        Verify
+                                        {t('Verify')}
                                     </button>
                                 </form>
                             </div>
@@ -96,16 +99,16 @@ export default function ResetPassword() {
                     {step === 'create' && (
                         <>
                             <img src={heroLogo} className="w-[20%] m-auto mb-6" alt="Logo" />
-                            <p className="text-lg font-bold mb-1">Create New Password</p>
+                            <p className="text-lg font-bold mb-1">{t('Create New Password')}</p>
                             <p className="text-base mb-6">
-                                Please enter a new password. Ensure that your new password is different from the previous one for better security.
+                                {t('Please enter a new password. Ensure that your new password is different from the previous one for better security.')}
                             </p>
                             <form className="space-y-5">
                                 <div className="relative w-full">
                                     <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-500"></i>
                                     <input
                                         type="password"
-                                        placeholder="Password"
+                                        placeholder={t('Password')}
                                         className="rounded-xl p-3 pl-10 text-sm w-full bg-[#232326] border-0 text-white"
                                     />
                                 </div>
@@ -113,17 +116,17 @@ export default function ResetPassword() {
                                     <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 left-3 text-gray-500"></i>
                                     <input
                                         type="password"
-                                        placeholder="Confirm Password"
+                                        placeholder={t('Confirm Password')}
                                         className="rounded-xl p-3 pl-10 text-sm w-full bg-[#232326] border-0 text-white"
                                     />
                                 </div>
-                                <ul className="text-left text-sm text-gray-400 space-y-1">
-                                    <li>• At least 6 characters</li>
-                                    <li>• At least one number and one symbol</li>
-                                    <li>• Must not match your old password</li>
+                                <ul className="text-right text-sm text-gray-400 space-y-1">
+                                    <li>• {t('At least 6 characters')}</li>
+                                    <li>• {t('At least one number and one symbol')}</li>
+                                    <li>• {t('Must not match your old password')}</li>
                                 </ul>
                                 <button className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4">
-                                    Reset Password
+                                    {t('Reset Password')}
                                 </button>
                             </form>
                         </>
@@ -131,8 +134,8 @@ export default function ResetPassword() {
                 </div>
             </div>
 
-            {/* Right Section */}
-            <div className="w-[90%] flex justify-center items-center">
+            {/* Right Section (hidden on tablet and smaller screens) */}
+            <div className="hidden lg:flex w-[90%] justify-center items-center">
                 <img
                     src={registerImage}
                     className="w-[85%] h-[600px] ms-auto rounded-lg object-cover"
@@ -142,7 +145,3 @@ export default function ResetPassword() {
         </div>
     );
 }
-
-
-
-
