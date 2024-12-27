@@ -15,14 +15,20 @@ import ResetPassword from './Components/ResetPassword/ResetPassword'
 
 let routers = createBrowserRouter([
   {
-    path: "", element: <Layout />, children: [
+    path: "/",
+    element: <Layout />,
+    children: [
       { index: true, element: <Home /> },
       { path: "about", element: <AboutUs /> },
       { path: "register", element: <Register /> },
       { path: "resetpassword", element: <ResetPassword /> },
       { path: "login", element: <Login /> },
-      { path: "*", element: <NotFound /> },
     ]
+  },
+  // Separate route for NotFound page
+  {
+    path: "*",
+    element: <NotFound />
   }
 ])
 function App() {
