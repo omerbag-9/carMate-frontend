@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 export default function Register() {
   const { t, i18n } = useTranslation()
-  const isRtl = i18n.dir() === 'rtl' // Check if the language direction is RTL (Right-to-Left)
+  const isRtl = i18n.dir() === 'rtl'
 
   return <>
     <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20 flex-col lg:flex-row">

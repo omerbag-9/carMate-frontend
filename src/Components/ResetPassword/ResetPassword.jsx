@@ -3,24 +3,22 @@ import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
 import emailImage from '../../assets/images/emailImage.png'
 import { useState } from "react";
-import { useTranslation } from 'react-i18next'; // إضافة
+import { useTranslation } from 'react-i18next';
 
 export default function ResetPassword() {
-    const { t } = useTranslation(); // استخدم الترجمة هنا
-    const [step, setStep] = useState('reset'); // 'reset', 'verify', 'create'
-    const [code, setCode] = useState(['', '', '', '']); // Store individual digits of the code
+    const { t } = useTranslation();
+    const [step, setStep] = useState('reset');
+    const [code, setCode] = useState(['', '', '', '']);
 
-    // Handle change for the code inputs
     const handleChange = (e, index) => {
         const value = e.target.value;
 
-        if (/[^0-9]/.test(value)) return; // Ensure only numbers are entered
+        if (/[^0-9]/.test(value)) return;
 
         const newCode = [...code];
         newCode[index] = value;
         setCode(newCode);
 
-        // Move to the next input if a value is entered
         if (index < 3 && value !== '') {
             document.getElementById(`code-input-${index + 1}`).focus();
         }
