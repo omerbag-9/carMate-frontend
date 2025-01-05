@@ -44,6 +44,8 @@ export default function Home() {
       emblaApi.on("select", onSelect);
     }
   }, [emblaApi]);
+
+  
   return (
     <div className='mt-3'>
       {/* first part of home */}

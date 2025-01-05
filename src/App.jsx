@@ -9,6 +9,8 @@ import AboutUs from './Components/AboutUs/AboutUs'
 import Register from './Components/Register/Register'
 import Login from './Components/Login/Login'
 import NotFound from './Components/NotFound/NotFound'
+import Marketplace from './Components/MarketPlace/Marketplace'
+import Moredetails from './Components/Moredetails/Moredetails'
 import { useTranslation } from 'react-i18next'
 
 
@@ -19,6 +21,8 @@ let routers = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <Login /> },
+      {path: "marketplace", element: <Marketplace/>},
+      {path: "moredetails", element: <Moredetails/>},
       { path: "*", element: <NotFound /> },
     ]
   }

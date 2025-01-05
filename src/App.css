@@ -1,8 +1,8 @@
 #root {
-  max-width: 1280px;
+
   margin: 0 auto;
   /* padding: 2rem; */
-  text-align: center;
+  /* text-align: center; */
 }
 
 .logo {
@@ -33,9 +33,7 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
+
 
 .read-the-docs {
   color: #888;
@@ -60,7 +58,7 @@
 /* Default to LTR layout */
 .embla__container {
   display: flex;
-  flex-direction: row; 
+  /* flex-direction: row;  */
 }
 
 /* When the language is Arabic (RTL), change flex direction */
@@ -77,7 +75,7 @@ html[dir="rtl"] .embla__container {
   background: #d5d5d7;
   color: black;
   font-size: 2rem;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: bold;
   margin-right: 10px; /* Spacing between slides */
 }
@@ -146,4 +144,8 @@ html[dir="rtl"] .embla__container {
 .scrollbar-custom::-webkit-scrollbar-track {
   background-color: #f1f1f1; /* Change to your desired color */
   border-radius: 10px;
+}
+
+img{
+  width: 100%;
 }
