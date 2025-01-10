@@ -9,6 +9,8 @@ import AboutUs from './Components/AboutUs/AboutUs'
 import Register from './Components/Register/Register'
 import Login from './Components/Login/Login'
 import NotFound from './Components/NotFound/NotFound'
+import Marketplace from './Components/MarketPlace/Marketplace'
+import Moredetails from './Components/Moredetails/Moredetails'
 import { useTranslation } from 'react-i18next'
 import ResetPassword from './Components/ResetPassword/ResetPassword'
 
@@ -23,6 +25,8 @@ let routers = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "resetpassword", element: <ResetPassword /> },
       { path: "login", element: <Login /> },
+      {path: "marketplace", element: <Marketplace/>},
+      {path: "moredetails", element: <Moredetails/>},
     ]
   },
   // Separate route for NotFound page

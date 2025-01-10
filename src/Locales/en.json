@@ -60,6 +60,87 @@
   "Comment Section": "Comment Section",
   "Add Your Opinion Or Any idea": "Add Your Opinion Or Any idea",
   "profilePage": {
+  "title": "Profile Page",
+  "subtitle1": "Update Your Photo And Personal Details and Control on Your Product.", 
+  "subtitle2": "Control on Your Product.", 
+  "firstNamePlaceholder": "First name",
+  "lastNamePlaceholder": "Last name",
+  "phonePlaceholder": "Phone",
+  "emailPlaceholder": "Email",
+  "saveChanges": "Save Changes"
+},
+  
+    
+      "aboutUs": {
+        "title": "About Us",
+        "description": "CarMate is an innovative platform dedicated to providing smart and personalized solutions for car maintenance and repairs. Focusing on convenience, transparency, and quality, our mission is to connect drivers with trusted, skilled mechanics and services, all within an easy-to-use digital environment.Through our AI-powered diagnostic technology, we ensure that car problems are quickly identified and resolved, offering step-by-step instructions for a seamless experience. Our network of qualified and experienced mechanics is available to deliver top-quality service, either remotely or on-site.We provide a unique experience where drivers can manage all their vehicle details, receive maintenance reminders, and stay on top of their car's health with efficiency. CarMate also offers a secure platform for mechanics to expand their businesses and grow their customer base.With CarMate, your car gets the care it deserves, with total trust and agility." 
+      },
+
+      "whyUs": {
+        "title": "Why Us!",
+
+        "card1":{
+          "title": "AI-Powered",
+          "description": "' Our AI quickly identifies car issues and provides step-by-step solutions for easy repairs, saving you time and effort. '"
+        },
+        "card2": {
+          "title": "Car Management",
+          "description": "' Effortlessly track and manage your car’s details, maintenance history, and get timely reminders for important tasks to keep Good. '"
+        }
+      },
+      "values": {
+        "title": "Values",
+        "list1": "Inspire Users",
+        "list2": "Anticipate Needs",
+        "list3": "Excellence in Every Process",
+        "list4": "Complete Customer Satisfaction",
+        "list5": "Ongoing Social Impact",
+        "list6": "Sustainability Focused"
+      },
+
+      
+        "marketplaceTitle": "Market Place",
+        "marketplaceDescription": "Shop quality brakes, lights, and essential parts with ease, all from trusted sellers to keep your car running perfectly.",
+        "searchPlaceholder": "Search...",
+        "categories": "Categories",
+        "carParts":"Car Parts",
+        "liquids":"Liquids",
+        "carCare":"Car Care",
+        "lighting":"Lighting",
+        "accessories":"Accessories",
+        "usedCarBodyTitle": "Used Car Body",
+        "usedCarBodyDescription": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers, and the roof. It may show wear or minor damage but is often sold as-is or refurbished for repairs and replacements. These bodies are vital for restoring damaged cars or customizing vehicles.",
+        "moreDetailsbutton": "More Details",
+        "price": "$1299.00",
+      
+      
+
+        
+          "moreDetails": "More Details",
+          "moredetailsTitle": "More Details About The Product & Info To Contact With the seller that own the product.",
+          "productDescription": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers, and the roof. It may show wear or minor damage but is often sold as-is or refurbished for repairs and replacements. These bodies are vital for restoring damaged cars or customizing vehicles . It may show wear or minor damage but is often sold as-is or refurbished These bodies are vital for restoring damaged cars or customizing vehicles damaged cars or customizing vehicles is often sold as-is or refurbished for repairs and replacements. These bodies are vital for .",
+          "usedCarBody": "Used Car Body",
+          "category": "Category: Car Parts",
+          "productPrice": "$1299.00",
+          "productLink": "Product Link",
+          "sellerInfo": "Seller Info",
+          "contactSeller": "Info to contact the seller that owns the product.",
+          "sellerName": "Seller Name",
+          "sellerEmail": "selleremail@gmail.com",
+          "sellerPhone": "01020870445"
+        
+             
+        
+        }
+      
+      
+    
+
+
+
+
+  
+
     "title": "Profile Page",
     "subtitle1": "Update Your Photo And Personal Details and Control on Your Product.",
     "subtitle2": "Control on Your Product.",
@@ -109,3 +190,4 @@
       "Sign out": "Sign out"
     }
   }
+

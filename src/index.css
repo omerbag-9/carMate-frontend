@@ -141,3 +141,22 @@ button:focus-visible {
   transform: rotatey(180deg);
 }
 
+
+::placeholder{
+  color: black; 
+  font-size: 18px;
+  text-align: left;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+::placeholder:focus {
+  border: black;
+  box-shadow: black;
+  color: transparent;
+}
+
+
+
+
+
