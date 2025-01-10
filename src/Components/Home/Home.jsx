@@ -30,7 +30,7 @@ export default function Home() {
     align: "start", // Align to start to fit 3 slides
   });
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const slides = [1, 2, 3, 4, 5, 6];
+  const slides = [1, 2, 3];
 
   const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
   const scrollNext = () => emblaApi && emblaApi.scrollNext();
@@ -164,14 +164,14 @@ export default function Home() {
       </div>
       {/* sixth part of home */}
       <div className="pt-10 mb-20">
-        <div className="flex mb-4">
-          <p className='font-bold'>{t('Some of Product Market Place')}</p>
-          <p className='ltr:ml-auto rtl:mr-auto text-start'>{t('View All')}<i className="fa-solid fa-angle-right ms-2"></i></p>
+        <div className="flex mb-4 px-4">
+          <p className='font-bold text-xl'>{t('Some of Product Market Place')}</p>
+          <p className='ltr:ml-auto rtl:mr-auto text-start text-xl'>{t('View All')}<i className="fa-solid fa-angle-right ms-2"></i></p>
         </div>
         <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
           <div className="relative group overflow-hidden w-[100%]">
             <img src={img1} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
                 <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
                 <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
@@ -180,7 +180,7 @@ export default function Home() {
           </div>
           <div className="relative group overflow-hidden w-[100%]">
             <img src={img2} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
                 <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
                 <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
@@ -189,7 +189,7 @@ export default function Home() {
           </div>
           <div className="relative group overflow-hidden w-[100%]">
             <img src={img3} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
                 <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
                 <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
@@ -201,7 +201,7 @@ export default function Home() {
       {/* seventh part of home */}
       <div className="pt-10 mb-20">
         <div className="flex mb-4">
-          <p className="font-bold">{t('What our Users say About us')}</p>
+          <p className="font-bold text-xl">{t('What our Users say About us')}</p>
         </div>
         <div className="embla">
           {/* Embla Container */}
@@ -220,11 +220,10 @@ export default function Home() {
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg1} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Leslie Alexander</p>
-                    <p className="text-[16px] font-medium text-start">Designer</p>
                   </div>
                 </div>
               </div>
@@ -240,11 +239,10 @@ export default function Home() {
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg2} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Dianne Russell</p>
-                    <p className="text-[16px] font-medium text-start">Marketing</p>
                   </div>
                 </div>
               </div>
@@ -258,13 +256,14 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  Lorem ipsum dolor sit amet.
+                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg1} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Leslie Alexander</p>
-                    <p className="text-[16px] font-medium text-start">Designer</p>
                   </div>
                 </div>
               </div>
@@ -280,11 +279,10 @@ export default function Home() {
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg2} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Dianne Russell</p>
-                    <p className="text-[16px] font-medium text-start">Marketing</p>
                   </div>
                 </div>
               </div>
@@ -298,13 +296,14 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
+                  Lorem ipsum dolor sit amet.
+                  CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                   CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex fixed bottom-5 items-center">
                   <img src={profileImg1} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Leslie Alexander</p>
-                    <p className="text-[16px] font-medium text-start">Designer</p>
                   </div>
                 </div>
               </div>
@@ -320,11 +319,10 @@ export default function Home() {
                 <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom">
                   CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
                 </p>
-                <div className="mt-4 flex">
+                <div className="mt-4 flex items-center">
                   <img src={profileImg2} className="w-12 rounded-full" alt="" />
                   <div className="ms-5">
                     <p className="text-[16px]">Dianne Russell</p>
-                    <p className="text-[16px] font-medium text-start">Marketing</p>
                   </div>
                 </div>
               </div>
@@ -334,7 +332,7 @@ export default function Home() {
           {/* Dots and Arrows */}
           <div className="embla__controls">
             <button className="embla__button embla__button--prev" onClick={scrollPrev}>
-              &larr;
+            <i class="fa-solid fa-arrow-left ltr:rotate-0 rtl:rotate-180"></i>
             </button>
             <div className="embla__dots">
               {slides.map((_, index) => (
@@ -346,15 +344,15 @@ export default function Home() {
               ))}
             </div>
             <button className="embla__button embla__button--next" onClick={scrollNext}>
-              &rarr;
+            <i class="fa-solid fa-arrow-right ltr:rotate-0 rtl:rotate-180"></i>
             </button>
           </div>
         </div>
       </div>
       {/* 8th part of home */}
-      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 pt-8 relative rounded-xl overflow-hidden">
+      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 py-8 relative rounded-xl overflow-hidden">
         <div className="flex-1 text-start">
-          <p className='font-bold text-xl'>
+          <p className='font-bold text-2xl'>
             {t('Take care of your Own car, anywhere, anytime.')}
           </p>
           <p>
@@ -362,15 +360,16 @@ export default function Home() {
             {t('details, and shop products—all in one app. Connect with expert mechanics')}<br />
             {t(' whenever you need!')}
           </p>
-          <div className="sm:flex mx-4">
-            <button className='bg-black text-white py-2 px-6 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
+          <div className="sm:block flex justify-center">
+          <div className="sm:flex mx-4 sm:pb-0 pb-64">
+            <button className='bg-black text-sm text-white py-2 sm:px-4 px-6 rtl:pl-12 rounded-2xl my-4 flex items-center mr-4'>
               <i className="fa-brands fa-apple ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-3xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Download on the')}</span><br />
                 <span className='font-bold'>{t('Apple Store')}</span>
               </div>
             </button>
-            <button className='bg-black text-white rtl:mx-4 py-2 pl-6 rtl:pr-2 ltr:pr-14 rounded-2xl my-4 flex items-center'>
+            <button className='bg-black text-sm text-white rtl:mx-4 py-2 pl-4 rtl:pr-2 ltr:sm:pr-11 ltr:pr-14 ltr:pl-6 rtl:pl-7 rounded-2xl my-4 flex items-center'>
               <i className="fa-brands fa-google-play ltr:pr-3 rtl:pl-3 ltr:border-r-2 rtl:border-l-2 border-gray-500 text-2xl rtl:ml-3 ltr:mr-3"></i>
               <div>
                 <span className='font-medium'>{t('Get it on')}</span><br />
@@ -378,10 +377,11 @@ export default function Home() {
               </div>
             </button>
           </div>
+          </div>
         </div>
         {/* hidden md:block */}
-        <div className="absolute left-0 ltr:sm:mr-16 rtl:sm:ml-16 sm:top-8 top-64 ltr:mr-1">
-          <img src={myCar} className='sm:w-[15%] w-[30%] ltr:ml-auto rtl:mr-auto rounded-3xl' alt="" />
+        <div className="absolute left-0 ltr:sm:mr-16 rtl:sm:ml-16 sm:top-8 top-96 ltr:mr-1">
+          <img src={myCar} className='sm:w-[20%] w-[60%] ltr:ml-auto rtl:mr-auto sm:m-0 m-auto rounded-3xl' alt="" />
         </div>
       </div>
     </div>)

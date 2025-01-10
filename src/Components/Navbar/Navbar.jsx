@@ -70,7 +70,7 @@ export default function Navbar() {
                 <Disclosure as="nav" className="absolute top-0 left-0 right-0 z-50">
                     {({ open }) => (
                         <>
-                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-16">
                                 <div className="flex h-16 items-center justify-between">
                                     {/* Left side - Logo */}
                                     <div className="flex items-center">
@@ -220,7 +220,7 @@ export default function Navbar() {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={style}>
+                    <Box sx={{ ...style, width: { xs: '80%', sm: '50%' } }}>
                         <IconButton
                             onClick={handleClose}
                             sx={{
@@ -237,7 +237,7 @@ export default function Navbar() {
                             <div className="w-[35%] m-auto">
                                 <UnderLine />
                             </div>
-                            <p className='text-center text-sm'>{t('profilePage.subtitle1')}<br/>{t('profilePage.subtitle2')}</p>
+                            <p className='text-center text-sm'>{t('profilePage.subtitle1')}<br />{t('profilePage.subtitle2')}</p>
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                             <div className="flex p-2 sm:flex-row flex-col">
@@ -246,14 +246,14 @@ export default function Navbar() {
                                     <p className='pt-3'>Dina Mohsen</p>
                                     <p className='text-[12px]'>@dinamohsen</p>
                                 </div>
-                                <div className="">
-                                    <form action="" className="flex flex-col gap-y-4 sm:mt-0 mt-4">
-                                        <div className="flex sm:flex-row gap-y-4 flex-col">
-                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500 ltr:mr-3 rtl:ml-3" placeholder={t('profilePage.firstNamePlaceholder')} />
+                                <div className="w-full flex flex-col items-center">
+                                    <form action="" className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
+                                        <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
+                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 ltr:sm:mr-3 rtl:sm:ml-3 border-gray-500" placeholder={t('profilePage.firstNamePlaceholder')} />
                                             <input type="text" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500" placeholder={t('profilePage.lastNamePlaceholder')} />
                                         </div>
-                                        <div className="flex sm:flex-row gap-y-4 flex-col">
-                                            <input type="tel" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500 ltr:mr-3 rtl:ml-3" placeholder={t('profilePage.phonePlaceholder')} />
+                                        <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
+                                            <input type="tel" className="bg-black w-[80%] rounded-2xl border-2 ltr:sm:mr-3 rtl:sm:ml-3 rtl:text-right border-gray-500" placeholder={t('profilePage.phonePlaceholder')} />
                                             <input type="email" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500" placeholder={t('profilePage.emailPlaceholder')} />
                                         </div>
                                         <div className="m-auto">
