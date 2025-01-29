@@ -127,11 +127,9 @@
           "contactSeller": "Info to contact the seller that owns the product.",
           "sellerName": "Seller Name",
           "sellerEmail": "selleremail@gmail.com",
-          "sellerPhone": "01020870445"
+          "sellerPhone": "01020870445",
         
-             
-        
-        }
+      
       
       
     
@@ -148,8 +146,7 @@
     "lastNamePlaceholder": "Last name",
     "phonePlaceholder": "Phone",
     "emailPlaceholder": "Email",
-    "saveChanges": "Save Changes"
-  },
+    "saveChanges": "Save Changes",
   "Welcome To": "Welcome To",
   "Please Create Your Account": "Please Create Your Account",
   "First Name": "First Name",
@@ -188,6 +185,7 @@
       "title": "My Application",
       "your profile": "Your Profile",
       "Sign out": "Sign out"
-    }
+    
   }
+}
 

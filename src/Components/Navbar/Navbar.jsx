@@ -32,7 +32,7 @@ export default function Navbar() {
 
     const navigation = [
         { name: t('home'), href: '/', current: true },
-        { name: t('MarketPlace'), href: '/marketplace', current: false },
+        { name: t('marketplace'), href: '/marketplace', current: false },
         { name: t('community'), href: '/community', current: false },
         { name: t('about'), href: '/about', current: false },
     ];
