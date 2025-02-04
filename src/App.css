@@ -149,3 +149,37 @@ html[dir="rtl"] .embla__container {
 img{
   width: 100%;
 }
+
+input::placeholder{
+  color: black;
+  
+}
+
+
+::placeholder {
+  color: black; 
+  font-size: 18px;
+  text-align: right; /* Changed from left to right */
+  font-weight: 500;
+  padding-right: 20px; /* Changed from padding-left to padding-right */
+}
+
+[dir="ltr"] ::placeholder {
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 0;
+}
+
+[dir="rtl"] ::placeholder {
+  text-align: right;
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+::placeholder:focus {
+  border: black;
+  box-shadow: black;
+  color: transparent;
+}
+
+

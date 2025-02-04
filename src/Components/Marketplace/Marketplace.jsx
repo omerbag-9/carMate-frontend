@@ -10,18 +10,23 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+
 export default function Marketplace() {
-  const { t } = useTranslation();
+  
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
-    slidesToScroll: 3,
+    slidesToScroll:1,
     align: "start",
   });
 
   const [searchTerm, setSearchTerm] = useState('');
+  const { t , i18n } = useTranslation();
+  const isArabic = i18n.language === 'ar';
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
+ 
 
   const [selectedOption, setSelectedOption] = useState('Categories');
 
@@ -38,7 +43,7 @@ export default function Marketplace() {
   };
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const slides = [1, 2, 3];
+  const slides = [1 ];
 
   const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
   const scrollNext = () => emblaApi && emblaApi.scrollNext();
@@ -66,7 +71,7 @@ export default function Marketplace() {
   return (
     <div className="container mx-auto">
       <div className="flex-wrap justify-center justify-items-center">
-        <div className="market-title lg:w-1/4 sm:w-1/2 text-center my-10">
+        <div className="market-title lg:w-1/4 sm:w-1/2 text-center my-10 mt-28">
           <h1 className="mx-auto font-bold text-2xl ">
             {t('marketplaceTitle')}
             <div className="w-1/2 mx-auto">
@@ -76,18 +81,26 @@ export default function Marketplace() {
           <p className="mx-5">{t('marketplaceDescription')}</p>
         </div>
         <div className="flex mt-28 mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
-          <div className="w-[80%] relative my-2">
-            <p className="absolute left-3 top-2 text-gray-500">
-              <i className="fa-solid fa-magnifying-glass"></i>
-            </p>
-            <input
-              className="w-full rounded-xl text-left"
-              type="text"
-              placeholder={t('searchPlaceholder')}
-              value={searchTerm}
-              onChange={handleChange}
-            />
-          </div>
+          
+
+
+
+
+<div className="w-[80%] relative my-2" dir={isArabic ? "rtl" : "ltr"}>
+      <p className={`absolute ${isArabic ? "right-4" : "left-4"} top-2 text-black`}>
+        <i className="fa-solid fa-magnifying-glass"></i>
+      </p>
+      <input
+        className={`w-full rounded-xl px-8 ${isArabic ? "text-right" : "text-left"}`}
+        type="text"
+        placeholder={t('searchPlaceholder')}
+        value={searchTerm}
+        onChange={handleChange}
+        dir={isArabic ? "rtl" : "ltr"} 
+      />
+    </div>
+
+          
           <div className="list mx-2 my-2">
             <select
               className="rounded-xl px-11 font-semibold"
@@ -103,15 +116,16 @@ export default function Marketplace() {
             </select>
           </div>
         </div>
+
         <div className="embla overflow-hidden mb-32" ref={emblaRef}>
-          <div className="embla_container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 ml-2">
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+          <div className="embla_container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img4} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -124,13 +138,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img3} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -143,13 +157,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img6} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -162,13 +176,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img1} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -181,13 +195,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img5} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -200,13 +214,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img2} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -219,13 +233,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img4} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -238,13 +252,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img4} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40  text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -257,13 +271,13 @@ export default function Marketplace() {
                 </div>
               </div>
             </div>
-            <div className="card embla__slide overflow-hidden relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="card embla__slide overflow-hidden relative " onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <img className="rounded-3xl w-full" src={img4} alt="" />
               <div
-                className={`absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-0 text-white text-center p-2 z-50 text-start pt-20 hover:opacity-100`}
+                className={` absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 opacity-100 text-white text-center p-2 z-50 text-start pt-32 `}
               >
                 <h3>{t('usedCarBodyTitle')}</h3>
-                <p className="text-sm font-normal">{t('usedCarBodyDescription')}</p>
+                <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
                 <div className="flex justify-around">
                   <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-28 h-10 text-center py-1 mt-2">
                     {t('price')}
@@ -279,7 +293,7 @@ export default function Marketplace() {
           </div>
           <div className="embla__controls py-10">
             <button className="embla__button embla__button--prev " onClick={scrollPrev}>
-              <i className="fa-solid fa-chevron-left"></i>
+              <i className="fa-solid fa-chevron-left ltr:rotate-0 rtl:rotate-180"></i>
             </button>
             <div className="embla__dots">
               {slides.map((_, index) => (
@@ -291,7 +305,7 @@ export default function Marketplace() {
               ))}
             </div>
             <button className="embla__button embla__button--next" onClick={scrollNext}>
-              <i className="fa-solid fa-chevron-right"></i>
+              <i className="fa-solid fa-chevron-right ltr:rotate-0 rtl:rotate-180"></i>
             </button>
           </div>
         </div>

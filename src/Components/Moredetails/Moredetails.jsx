@@ -12,7 +12,7 @@ export default function Moredetails() {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="title text-center mx-auto">
+      <div className="title text-center mx-auto pt-11">
         <h1 className="text-3xl font-bold">
           {t('moreDetails')}
           <div className="w-48 mx-auto">
@@ -34,7 +34,7 @@ export default function Moredetails() {
         <div className="info text-center lg:text-left lg:w-3/5 w-full">
           <h2 className="text-4xl font-bold mb-3">{t('usedCarBody')}</h2>
           <span className="font-bold block lg:inline-block mb-2">{t('category')}</span>
-          <p className="mt-3 text-[27px] font-semibold">{t('productDescription')}</p>
+          <p className="mt-3 lg:text-[27px] sm:text-[15px] lg:font-semibold sm:font-normal">{t('productDescription')}</p>
           <div className="buttons mt-10 flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:mx-20 sm:mx-0 mb-3">
             <span className="bg-slate-50 border-2 border-black rounded-lg text-[#086302] text-[20px] w-32 h-10 flex items-center justify-center mb-4 lg:mb-0 lg:mr-4">
               {t('productPrice')}
