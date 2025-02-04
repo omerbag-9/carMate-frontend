@@ -91,7 +91,7 @@ export default function Marketplace() {
         <i className="fa-solid fa-magnifying-glass"></i>
       </p>
       <input
-        className={`w-full rounded-xl px-8 ${isArabic ? "text-right" : "text-left"}`}
+        className={`w-full rounded-xl px-8 text-black ${isArabic ? "text-right" : "text-left"}`}
         type="text"
         placeholder={t('searchPlaceholder')}
         value={searchTerm}
@@ -103,7 +103,7 @@ export default function Marketplace() {
           
           <div className="list mx-2 my-2">
             <select
-              className="rounded-xl px-11 font-semibold"
+              className="rounded-xl px-11 font-semibold text-black"
               value={selectedOption}
               onChange={handleOptionChange}
             >

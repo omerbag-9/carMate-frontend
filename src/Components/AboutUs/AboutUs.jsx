@@ -12,13 +12,13 @@ export default function AboutUs() {
         {/* first section of about us */}
         <div className="aboutUs flex justify-items-center lg:justify-around mt-10 flex-wrap sm:justify-center">
           <div className="aboutcontent sm:text-start bg-white relative lg:w-1/2 sm:w-full border rounded-2xl pl-9 py-10 text-xl font-semibold my-2">
-            <h2 className="text-4xl font-semibold mr-4">
+            <h2 className="text-4xl font-semibold mr-4 text-black">
               {t('aboutUs.title')}
               <div className="my-2 w-40">
                 <div className="bg-gradient-to-r from-gray-300 via-black to-gray-300 h-[2.5px] my-2"></div>
               </div>
             </h2>
-            <p className="lg:text-2xl sm:text-md relative top-4 w-[90%] mr-4">
+            <p className="lg:text-2xl text-black sm:text-md relative top-4 w-[90%] mr-4">
               {t('aboutUs.description')}
             </p>
           </div>

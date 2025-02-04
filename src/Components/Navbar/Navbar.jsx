@@ -32,7 +32,7 @@ export default function Navbar() {
 
     const navigation = [
         { name: t('home'), href: '/', current: true },
-        { name: t('marketplace'), href: '/marketplace', current: false },
+        { name: t('MarketPlace'), href: '/marketplace', current: false },
         { name: t('community'), href: '/community', current: false },
         { name: t('about'), href: '/about', current: false },
     ];
@@ -249,12 +249,12 @@ export default function Navbar() {
                                 <div className="w-full flex flex-col items-center">
                                     <form action="" className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
-                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 ltr:sm:mr-3 rtl:sm:ml-3 border-gray-500" placeholder={t('profilePage.firstNamePlaceholder')} />
-                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500" placeholder={t('profilePage.lastNamePlaceholder')} />
+                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 ltr:sm:mr-3 rtl:sm:ml-3 border-gray-500 placeholder:text-white" placeholder={t('profilePage.firstNamePlaceholder')} />
+                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 placeholder:text-white border-gray-500" placeholder={t('profilePage.lastNamePlaceholder')} />
                                         </div>
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
-                                            <input type="tel" className="bg-black w-[80%] rounded-2xl border-2 ltr:sm:mr-3 rtl:sm:ml-3 rtl:text-right border-gray-500" placeholder={t('profilePage.phonePlaceholder')} />
-                                            <input type="email" className="bg-black w-[80%] rounded-2xl border-2 border-gray-500" placeholder={t('profilePage.emailPlaceholder')} />
+                                            <input type="tel" className="bg-black w-[80%] rounded-2xl border-2 placeholder:text-white ltr:sm:mr-3 rtl:sm:ml-3 rtl:text-right border-gray-500" placeholder={t('profilePage.phonePlaceholder')} />
+                                            <input type="email" className="bg-black w-[80%] rounded-2xl border-2 placeholder:text-white border-gray-500" placeholder={t('profilePage.emailPlaceholder')} />
                                         </div>
                                         <div className="m-auto">
                                             <button className='bg-[#650000] px-14 py-2 rounded-xl'>{t('profilePage.saveChanges')}</button>
