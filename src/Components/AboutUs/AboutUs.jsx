@@ -18,12 +18,12 @@ export default function AboutUs() {
                 <div className="bg-gradient-to-r from-gray-300 via-black to-gray-300 h-[2.5px] my-2"></div>
               </div>
             </h2>
-            <p className="text-2xl relative top-4 w-[90%] mr-4">
+            <p className="lg:text-2xl sm:text-md relative top-4 w-[90%] mr-4">
               {t('aboutUs.description')}
             </p>
           </div>
 
-          <div className="aboutimg bg-white relative lg:w-[45%] md:w-1/2 border rounded-2xl pl-9 py-10 sm:text-start my-2">
+          <div className="aboutimg bg-white relative lg:w-[45%] md:w-[100%] border rounded-2xl pl-9 py-10 sm:text-start my-2">
             <img src={img1} className="w-full" alt="borsche car" />
           </div>
         </div>
@@ -43,12 +43,12 @@ export default function AboutUs() {
           {/* 2cards */}
           <div className="container py-10">
             <div className="cards flex flex-wrap justify-center justify-items-center">
-              <div className="card bg-[#232326] rounded-2xl lg:w-2/5 text-start text-white mx-2 sm:w-full sm:my-2 p-5">
+              <div className="card bg-[#232326] rounded-2xl lg:w-2/5 md:w-[49%] text-start text-white lg:mx-2 md:mx-1 sm:w-full sm:my-2 p-5">
                 <h3 className="text-2xl font-semibold pb-4">{t('whyUs.card1.title')}</h3>
                 <p className="text-lg py-4">{t('whyUs.card1.description')}</p>
               </div>
 
-              <div className="card bg-[#232326] rounded-2xl lg:w-2/5 text-start text-white mx-2 sm:w-full my-2 p-5">
+              <div className="card bg-[#232326] rounded-2xl lg:w-2/5 md:w-[49%] text-start text-white lg:mx-2 sm:w-full my-2 p-5">
                 <h3 className="text-2xl font-semibold pb-4">{t('whyUs.card2.title')}</h3>
                 <p className="text-lg py-4">{t('whyUs.card2.description')}</p>
               </div>
@@ -57,7 +57,7 @@ export default function AboutUs() {
             {/* values */}
             <div className="values text-start bg-gradient-to-r from-[#29292c] via-[#0e0e0e] to-[#0C0C0C] text-white rounded-2xl lg:w-[82%] lg:mx-auto sm:w-full mx-2">
               <div className="flex flex-wrap justify-between justify-items-center">
-                <div className="card lg:w-1/2 sm:my-2 p-5">
+                <div className="card lg:w-1/2 md:w-1/2 sm:my-2 p-5">
                   <h3 className="text-3xl font-semibold pb-4">{t('values.title')}</h3>
                   <p className="text-lg leading-7">
                     {t('values.list1')}<br />
@@ -69,9 +69,12 @@ export default function AboutUs() {
                   </p>
                 </div>
 
-                <div className="valueimg lg:w-[26%] sm:w-full">
-                  <img src={img2} className="w-full rounded-2xl" alt="borsche car" />
-                </div>
+                
+
+<div className="valueimg hidden md:block lg:w-[26%] md:w-[26%] sm:w-full">
+  <img src={img2} className="w-full rounded-2xl" alt="borschecar"/>
+</div>
+
               </div>
             </div>
           </div>
