@@ -18,7 +18,7 @@ export default function AboutUs() {
                 <div className="bg-gradient-to-r from-gray-300 via-black to-gray-300 h-[2.5px] my-2"></div>
               </div>
             </h2>
-            <p className="md:text-md text-black relative top-4 w-[90%] mr-4">
+            <p className="about-text text-black relative top-4 w-[90%] mr-4">
               {t('aboutUs.description')}
             </p>
           </div>
