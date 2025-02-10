@@ -26,58 +26,58 @@ export default function Register() {
             <div className="flex flex-col lg:flex-row justify-between">
               {/* First Name */}
               <div className="relative w-full lg:w-[45%] mb-4 lg:mb-0">
-                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
                 <input
                   type="text"
                   placeholder={t('First Name')}
-                  className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                  className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
                 />
               </div>
+
               {/* Last Name */}
               <div className="relative w-full lg:w-[45%]">
-                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
                 <input
                   type="text"
                   placeholder={t('Last Name')}
-                  className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                  className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
                 />
               </div>
             </div>
 
             {/* Email */}
             <div className="relative w-full">
-              <i className={`fa-solid fa-envelope absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+              <i className={`fa-solid fa-envelope absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
               <input
                 type="email"
                 placeholder={t('Email')}
-                className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
               />
             </div>
 
             {/* Password */}
             <div className="relative w-full">
-              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
               <input
                 type="password"
                 placeholder={t('Password')}
-                className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
               />
             </div>
 
             {/* Confirm Password */}
             <div className="relative w-full">
-              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
               <input
                 type="password"
                 placeholder={t('Confirm Password')}
-                className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
               />
             </div>
 
             {/* Role Selection */}
             <div className="relative w-full">
-              <i className={`fa-solid fa-user-check absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
-              <select className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}>
+              <select className={`rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm ${isRtl ? 'pr-3' : 'pl-3'}`}>
                 <option>{t('Choose Your Role')}</option>
                 <option>{t('Customer')}</option>
                 <option>{t('Seller')}</option>
@@ -85,12 +85,13 @@ export default function Register() {
             </div>
 
             {/* Register Button */}
-            <button className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4">
+            <button className="bg-[#650000] text-white text-sm py-3 rounded-xl w-full font-bold mt-4">
               {t('Register')}
             </button>
           </form>
-          <p className="text-center text-sm mt-4">
-            {t('Already have an account?')} <Link to={'/login'} className="text-[#8E0606]">{t('Log in')}</Link>
+
+          <p className="text-center text-sm mt-4 text-[#5D5D60] font-bold">
+            {t('Already have an account?')} <Link to={'/login'} className="text-[#EBA4A4] underline">{t('Log in')}</Link>
           </p>
         </div>
       </div>
