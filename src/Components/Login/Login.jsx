@@ -9,7 +9,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="pb-20 lg:pt-0 pt-20">
-      <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white">
+      <div className="flex py-6 w-[91%] m-auto gap-x-7 text-white">
         {/* Left Section */}
         <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
           <img src={heroLogo} className="w-[20%] mt-4 mb-6 m-auto" alt="Logo" />
