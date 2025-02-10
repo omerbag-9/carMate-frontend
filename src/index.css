@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Cairo", serif;
+  /* font-family: "Cairo", serif; */
+  /* font-family: "Cairo", serif; */
   line-height: 1.5;
   font-weight: 400;
 
@@ -155,6 +156,7 @@ button:focus-visible {
   box-shadow: black;
   color: transparent;
 }
+
 
 
 
