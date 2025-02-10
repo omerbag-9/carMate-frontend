@@ -8,7 +8,7 @@ export default function AboutUs() {
 
   return (
     <>
-      <div className="container mx-auto pt-10 flex flex-wrap sm:justify-center sm:justify-items-center sm:text-center">
+      <div className="container mx-auto pt-10 px-4 sm:px-6 lg:px-8 flex flex-wrap sm:justify-center sm:justify-items-center sm:text-center">
         {/* first section of about us */}
         <div className="aboutUs flex justify-items-center lg:justify-around mt-10 flex-wrap sm:justify-center">
           <div className="aboutcontent sm:text-start bg-white relative lg:w-1/2 sm:w-full border rounded-2xl pl-9 py-10 text-xl font-semibold my-2">
@@ -18,7 +18,7 @@ export default function AboutUs() {
                 <div className="bg-gradient-to-r from-gray-300 via-black to-gray-300 h-[2.5px] my-2"></div>
               </div>
             </h2>
-            <p className="lg:text-2xl text-black sm:text-md relative top-4 w-[90%] mr-4">
+            <p className="md:text-md text-black relative top-4 w-[90%] mr-4">
               {t('aboutUs.description')}
             </p>
           </div>
@@ -42,21 +42,25 @@ export default function AboutUs() {
 
           {/* 2cards */}
           <div className="container py-10">
-            <div className="cards flex flex-wrap justify-center justify-items-center">
+            <div className="cards mb-6 flex flex-wrap justify-center justify-items-center">
               <div className="card bg-[#232326] rounded-2xl lg:w-2/5 md:w-[49%] text-start text-white lg:mx-2 md:mx-1 sm:w-full sm:my-2 p-5">
-                <h3 className="text-2xl font-semibold pb-4">{t('whyUs.card1.title')}</h3>
+                <h3 className="text-2xl font-semibold pb-2">{t('whyUs.card1.title')}</h3>
                 <p className="text-lg py-4">{t('whyUs.card1.description')}</p>
               </div>
 
               <div className="card bg-[#232326] rounded-2xl lg:w-2/5 md:w-[49%] text-start text-white lg:mx-2 sm:w-full my-2 p-5">
-                <h3 className="text-2xl font-semibold pb-4">{t('whyUs.card2.title')}</h3>
+                <h3 className="text-2xl font-semibold pb-2">{t('whyUs.card2.title')}</h3>
                 <p className="text-lg py-4">{t('whyUs.card2.description')}</p>
               </div>
             </div>
 
             {/* values */}
-            <div className="values text-start bg-gradient-to-r from-[#29292c] via-[#0e0e0e] to-[#0C0C0C] text-white rounded-2xl lg:w-[82%] lg:mx-auto sm:w-full mx-2">
+            <div className="values text-start text-white rounded-2xl lg:w-[82%] lg:mx-auto sm:w-full mx-2
+  ltr:bg-gradient-to-r ltr:from-[#29292c] ltr:via-[#0e0e0e] ltr:to-[#0C0C0C]
+  rtl:bg-gradient-to-l rtl:from-[#29292c] rtl:via-[#0e0e0e] rtl:to-[#0C0C0C]">
+
               <div className="flex flex-wrap justify-between justify-items-center">
+                {/* Text Section */}
                 <div className="card lg:w-1/2 md:w-1/2 sm:my-2 p-5">
                   <h3 className="text-3xl font-semibold pb-4">{t('values.title')}</h3>
                   <p className="text-lg leading-7">
@@ -69,14 +73,13 @@ export default function AboutUs() {
                   </p>
                 </div>
 
-                
-
-<div className="valueimg hidden md:block lg:w-[26%] md:w-[26%] sm:w-full">
-  <img src={img2} className="w-full rounded-2xl" alt="borschecar"/>
-</div>
-
+                {/* Image Section */}
+                <div className="valueimg hidden md:block lg:w-[26%] md:w-[26%] sm:w-full">
+                  <img src={img2} className="w-full rounded-2xl" alt="borschecar" />
+                </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
