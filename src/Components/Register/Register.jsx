@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom'
 export default function Register() {
   const { t, i18n } = useTranslation()
   const isRtl = i18n.dir() === 'rtl'
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return <>
     <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20 flex-col lg:flex-row">
@@ -25,7 +27,7 @@ export default function Register() {
           <form className="space-y-5">
             <div className="flex flex-col lg:flex-row justify-between">
               {/* First Name */}
-              <div className="relative w-full lg:w-[45%] mb-4 lg:mb-0">
+              <div className="relative w-full lg:w-[48%] mb-4 lg:mb-0">
                 <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
                 <input
                   type="text"
@@ -35,7 +37,7 @@ export default function Register() {
               </div>
 
               {/* Last Name */}
-              <div className="relative w-full lg:w-[45%]">
+              <div className="relative w-full lg:w-[48%]">
                 <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
                 <input
                   type="text"
@@ -55,25 +57,41 @@ export default function Register() {
               />
             </div>
 
-            {/* Password */}
-            <div className="relative w-full">
-              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
-              <input
-                type="password"
-                placeholder={t('Password')}
-                className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
-              />
-            </div>
+{/* Password */}
+<div className="relative w-full">
+  <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder={t('Password')}
+    className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent focus:ring-0 focus:outline-none ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className={`absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'left-3' : 'right-3'} text-[#5D5D60] focus:outline-none focus:ring-0`}
+  >
+    <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+  </button>
+</div>
 
-            {/* Confirm Password */}
-            <div className="relative w-full">
-              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
-              <input
-                type="password"
-                placeholder={t('Confirm Password')}
-                className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
-              />
-            </div>
+{/* Confirm Password */}
+<div className="relative w-full">
+  <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
+  <input
+    type={showConfirmPassword ? "text" : "password"}
+    placeholder={t('Confirm Password')}
+    className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent focus:ring-0 focus:outline-none ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
+  />
+  <button
+    type="button"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    className={`absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'left-3' : 'right-3'} text-[#5D5D60] focus:outline-none focus:ring-0`}
+  >
+    <i className={`fa-solid ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+  </button>
+</div>
+
+
 
             {/* Role Selection */}
             <div className="relative w-full">

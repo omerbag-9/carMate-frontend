@@ -48,7 +48,7 @@ export default function Footer() {
               placeholder={t('message')}
             ></textarea>
           </div>
-          <div className="sm:text-end rtl:text-start text-center sm:me-6">
+          <div className="sm:text-end rtl:text-start text-center">
             <button>
               <i className="fa-solid fa-arrow-right bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]"></i>
             </button>
@@ -58,7 +58,7 @@ export default function Footer() {
       <div className="w-[50%] m-auto">
         <div className=" bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
       </div>
-      <p className='text-gray-400 font-thin my-4'>Copyright © 2024 CarMate , Inc.</p>
+      <p className='text-gray-400 font-thin my-4 text-center'>Copyright © 2024 CarMate , Inc.</p>
     </div>
   )
 }
