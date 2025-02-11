@@ -14,6 +14,7 @@ import Moredetails from './Components/Moredetails/Moredetails'
 import { useTranslation } from 'react-i18next'
 import ResetPassword from './Components/ResetPassword/ResetPassword'
 import Community from './Components/Community/Community'
+import Notification from './Components/Notification/Notification'
 
 
 let routers = createBrowserRouter([
@@ -29,6 +30,7 @@ let routers = createBrowserRouter([
       {path: "marketplace", element: <Marketplace/>},
       {path: "moredetails", element: <Moredetails/>},
       {path: "community", element: <Community/>},
+      {path: "notification", element: <Notification/>},
     ]
   },
   // Separate route for NotFound page

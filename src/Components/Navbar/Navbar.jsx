@@ -7,6 +7,8 @@ import i18n from '../../i18n';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import UnderLine from '../UnderLine/UnderLine';
 import profileImg1 from '../../assets/images/profileImg1.jpg'
+import Notification from '../Notification/Notification';
+
 
 export default function Navbar() {
     const [language, setLanguage] = useState('en');
@@ -107,13 +109,14 @@ export default function Navbar() {
                                             <button onClick={toggleLanguage} className='px-2 py-1 bg-zinc-900 my-3 text-gray-400 hover:text-white' aria-label='Toggle Language'>
                                                 {language === 'en' ? 'AR' : 'EN'}
                                             </button>
-                                            <button
-                                                type="button"
-                                                className="relative px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
+                                            <Link to="/notification"
+                                                
+                                                className="relative rounded-lg px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
+                                                
                                             >
                                                 <span className="sr-only">View notifications</span>
                                                 <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                            </button>
+                                            </Link>
 
                                             {/* Profile dropdown */}
                                             <Menu as="div" className="relative">

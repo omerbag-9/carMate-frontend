@@ -1,191 +1,281 @@
 {
-    "welcome": "Welcome to our App",
-    "sorry": "Sorry, we were unable to find that page",
-    "home": "Home",
-    "MarketPlace": "Market Place",
-    "community":"Community",
-    "about": "About Us",
-    "myCar":"my car",
-    "firstTitle":"Your ultimate car care companion, wherever you are.",
-    "More About CarMate": "More About CarMate",
-    "CarMate is Your Partner in Every": "CarMate is Your Partner in Every",
-    "Journey": "Journey",
-    "AI-Powered Car Solutions": "AI-Powered Car Solutions",
-    "Our AI quickly diagnoses issues and": "Our AI quickly diagnoses issues and",
-    "offers easy, step-by-step solutions": "offers easy, step-by-step solutions",
-    "for your car problems.": "for your car problems.",
-    "Top Mechanics, Top Service": "Top Mechanics, Top Service",
-    "Our network of skilled mechanics": "Our network of skilled mechanics",
-    "ensures top-quality service and": "ensures top-quality service and",
-    "expert care for every car.": "expert care for every car.",
-    "Smart Car Management": "Smart Car Management",
-    "Easily manage your car's details, track": "Easily manage your car's details, track",
-    "maintenance, and get timely reminders": "maintenance, and get timely reminders",
-    "for important tasks.": "for important tasks.",
-    "Boost Your Career": "Boost Your Career",
-    "Unlock opportunities to connect": "Unlock opportunities to connect",
-    "with car owners and grow your": "with car owners and grow your",
-    "mechanic career.": "mechanic career.",
-    "My Car": "My Car",
-    "Track, maintain, and never forget your car’s needs!": "Track, maintain, and never forget your car’s needs!",
-    "Stay ahead with smart reminders and effortless": "Stay ahead with smart reminders and effortless",
-    "updates for every ride.": "updates for every ride.",
-    "Download App Now": "Download App Now",
-    "Save Your Car Data": "Save Your Car Data",
-  "You Can Save Your Car Information": "You Can Save Your Car Information",
-  "to Easy Access.": "to Easy Access.",
-  "Reminder For Your Tasks": "Reminder For Your Tasks",
-  "You Can Set a Reminder To remember": "You Can Set a Reminder To remember",
-  "important Things.": "important Things.",
-  "Car Alerts & Signs": "Car Alerts & Signs",
-  "Monitor, Respond, and Stay on Top of Your Car’s": "Monitor, Respond, and Stay on Top of Your Car’s",
-  "Alerts!": "Alerts!",
-  "Some of Product Market Place": "Some of Product Market Place",
-  "View All": "View All",
-  "Used Car Body": "Used Car Body",
-  "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...",
-  "What our Users say About us": "What our Users say About us",
-  "Take care of your Own car, anywhere, anytime.": "Take care of your Own car, anywhere, anytime.",
-  "Download CarMate to diagnose issues, get maintenance reminders, store car": "Download CarMate to diagnose issues, get maintenance reminders, store car",
-  "details, and shop products—all in one app. Connect with expert mechanics": "details, and shop products—all in one app. Connect with expert mechanics",
-  " whenever you need!": " whenever you need!",
-  "Download on the": "Download on the",
-  "Apple Store": "Apple Store",
-  "Get it on": "Get it on",
-  "Google Play": "Google Play",
-  "Social Media": "Social Media",
-  "Contact": "Contact",
-  "WhatsApp": "WhatsApp",
-  "carMate@Gmail.com": "carMate@Gmail.com",
-  "Comment Section": "Comment Section",
-  "Add Your Opinion Or Any idea": "Add Your Opinion Or Any idea",
-  "profilePage": {
+  "welcome": "Welcome to our App",
+  "sorry": "Sorry, we were unable to find that page",
+  "home": "Home",
+  "MarketPlace": "Market Place",
+  "community":"Community",
+  "about": "About Us",
+  "myCar":"my car",
+  "firstTitle":"Your ultimate car care companion, wherever you are.",
+  "More About CarMate": "More About CarMate",
+  "CarMate is Your Partner in Every": "CarMate is Your Partner in Every",
+  "Journey": "Journey",
+  "AI-Powered Car Solutions": "AI-Powered Car Solutions",
+  "Our AI quickly diagnoses issues and": "Our AI quickly diagnoses issues and",
+  "offers easy, step-by-step solutions": "offers easy, step-by-step solutions",
+  "for your car problems.": "for your car problems.",
+  "Top Mechanics, Top Service": "Top Mechanics, Top Service",
+  "Our network of skilled mechanics": "Our network of skilled mechanics",
+  "ensures top-quality service and": "ensures top-quality service and",
+  "expert care for every car.": "expert care for every car.",
+  "Smart Car Management": "Smart Car Management",
+  "Easily manage your car's details, track": "Easily manage your car's details, track",
+  "maintenance, and get timely reminders": "maintenance, and get timely reminders",
+  "for important tasks.": "for important tasks.",
+  "Boost Your Career": "Boost Your Career",
+  "Unlock opportunities to connect": "Unlock opportunities to connect",
+  "with car owners and grow your": "with car owners and grow your",
+  "mechanic career.": "mechanic career.",
+  "My Car": "My Car",
+  "Track, maintain, and never forget your car’s needs!": "Track, maintain, and never forget your car’s needs!",
+  "Stay ahead with smart reminders and effortless": "Stay ahead with smart reminders and effortless",
+  "updates for every ride.": "updates for every ride.",
+  "Download App Now": "Download App Now",
+  "Save Your Car Data": "Save Your Car Data",
+"You Can Save Your Car Information": "You Can Save Your Car Information",
+"to Easy Access.": "to Easy Access.",
+"Reminder For Your Tasks": "Reminder For Your Tasks",
+"You Can Set a Reminder To remember": "You Can Set a Reminder To remember",
+"important Things.": "important Things.",
+"Car Alerts & Signs": "Car Alerts & Signs",
+"Monitor, Respond, and Stay on Top of Your Car’s": "Monitor, Respond, and Stay on Top of Your Car’s",
+"Alerts!": "Alerts!",
+"Some of Product Market Place": "Some of Product Market Place",
+"View All": "View All",
+"Used Car Body": "Used Car Body",
+"A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...",
+"What our Users say About us": "What our Users say About us",
+"Take care of your Own car, anywhere, anytime.": "Take care of your Own car, anywhere, anytime.",
+"Download CarMate to diagnose issues, get maintenance reminders, store car": "Download CarMate to diagnose issues, get maintenance reminders, store car",
+"details, and shop products—all in one app. Connect with expert mechanics": "details, and shop products—all in one app. Connect with expert mechanics",
+" whenever you need!": " whenever you need!",
+"Download on the": "Download on the",
+"Apple Store": "Apple Store",
+"Get it on": "Get it on",
+"Google Play": "Google Play",
+"Social Media": "Social Media",
+"Contact": "Contact",
+"WhatsApp": "WhatsApp",
+"carMate@Gmail.com": "carMate@Gmail.com",
+"Comment Section": "Comment Section",
+"Add Your Opinion Or Any idea": "Add Your Opinion Or Any idea",
+"profilePage": {
+"title": "Profile Page",
+"subtitle1": "Update Your Photo And Personal Details and Control on Your Product.", 
+"subtitle2": "Control on Your Product.", 
+"firstNamePlaceholder": "First name",
+"lastNamePlaceholder": "Last name",
+"phonePlaceholder": "Phone",
+"emailPlaceholder": "Email",
+"saveChanges": "Save Changes"
+},
+
+  
+    "aboutUs": {
+      "title": "About Us",
+      "description": "CarMate is an innovative platform dedicated to providing smart and personalized solutions for car maintenance and repairs. Focusing on convenience, transparency, and quality, our mission is to connect drivers with trusted, skilled mechanics and services, all within an easy-to-use digital environment.Through our AI-powered diagnostic technology, we ensure that car problems are quickly identified and resolved, offering step-by-step instructions for a seamless experience. Our network of qualified and experienced mechanics is available to deliver top-quality service, either remotely or on-site.We provide a unique experience where drivers can manage all their vehicle details, receive maintenance reminders, and stay on top of their car's health with efficiency. CarMate also offers a secure platform for mechanics to expand their businesses and grow their customer base.With CarMate, your car gets the care it deserves, with total trust and agility." 
+    },
+
+    "whyUs": {
+      "title": "Why Us!",
+
+      "card1":{
+        "title": "AI-Powered",
+        "description": "' Our AI quickly identifies car issues and provides step-by-step solutions for easy repairs, saving you time and effort. '"
+      },
+      "card2": {
+        "title": "Car Management",
+        "description": "' Effortlessly track and manage your car’s details, maintenance history, and get timely reminders for important tasks to keep Good. '"
+      }
+    },
+    "values": {
+      "title": "Values",
+      "list1": "Inspire Users",
+      "list2": "Anticipate Needs",
+      "list3": "Excellence in Every Process",
+      "list4": "Complete Customer Satisfaction",
+      "list5": "Ongoing Social Impact",
+      "list6": "Sustainability Focused"
+    },
+
+    
+      "marketplaceTitle": "Market Place",
+      "marketplaceDescription": "Shop quality brakes, lights, and essential parts with ease, all from trusted sellers to keep your car running perfectly.",
+      "searchPlaceholder": "Search ...",
+      "categories": "Categories",
+      "carParts":"Car Parts",
+      "liquids":"Liquids",
+      "carCare":"Car Care",
+      "lighting":"Lighting",
+      "accessories":"Accessories",
+      "usedCarBodyTitle": "Used Car Body",
+      "usedCarBodyDescription": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers, and the roof. It may show wear or minor damage but is often sold as-is or refurbished for repairs and replacements. These bodies are vital for restoring damaged cars or customizing vehicles.",
+      "moreDetailsbutton": "More Details",
+      "price": "$1299.00",
+    
+    
+
+      
+        "moreDetails": "More Details",
+        "moredetailsTitle": "More Details About The Product & Info To Contact With the seller that own the product.",
+        "productDescription": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers, and the roof. It may show wear or minor damage but is often sold as-is or refurbished for repairs and replacements. These bodies are vital for restoring damaged cars or customizing vehicles . It may show wear or minor damage but is often sold as-is or refurbished These bodies are vital for restoring damaged cars or customizing vehicles damaged cars or customizing vehicles is often sold as-is or refurbished for repairs and replacements. These bodies are vital for .",
+        "usedCarBody": "Used Car Body",
+        "category": "Category: Car Parts",
+        "productPrice": "$1299.00",
+        "productLink": "Product Link",
+        "sellerInfo": "Seller Info",
+        "contactSeller": "Info to contact the seller that owns the product.",
+        "sellerName": "Seller Name",
+        "sellerEmail": "selleremail@gmail.com",
+        "sellerPhone": "01020870445",
+      
+    
+    
+    
+  
+
+
+
+
+
+
   "title": "Profile Page",
-  "subtitle1": "Update Your Photo And Personal Details and Control on Your Product.", 
-  "subtitle2": "Control on Your Product.", 
+  "subtitle1": "Update Your Photo And Personal Details and Control on Your Product.",
+  "subtitle2": "Control on Your Product.",
   "firstNamePlaceholder": "First name",
   "lastNamePlaceholder": "Last name",
   "phonePlaceholder": "Phone",
   "emailPlaceholder": "Email",
-  "saveChanges": "Save Changes"
-},
+  "saveChanges": "Save Changes",
+"Welcome To": "Welcome To",
+"Please Create Your Account": "Please Create Your Account",
+"First Name": "First Name",
+"Last Name": "Last Name",
+"Confirm Password": "Confirm Password",
+"Choose Your Role": "Choose Your Role",
+"Customer": "Customer",
+"Seller": "Seller",
+"Register": "Register",
+"Already have an account?": "Already have an account?",
+"Log in": "Log in",
+  "WelcomeBack": "Welcome Back",
+  "PleaseLogin": "Please Log Into Your Account",
+  "Email": "User@Gmail.com",
+  "Password": "Password",
+  "RememberMe": "Remember me",
+  "ForgotPassword": "Forgot Password?",
+  "Login": "Login",
+  "SignUp": "Sign up",
+  "NeedAccount": "Need an account?",
+  "Reset Password": "Reset Password",
+  "Enter the email associated with your account and we'll send an email with instructions to reset your password.": "Enter the email associated with your account and we'll send an email with instructions to reset your password.",
+  "Send Code": "Send Code",
+  "Verify Your Email Number": "Verify Your Email Number",
+  "Verify with the code just Now we have send": "Verify with the code just now we have sent",
+  "Resend?": "Resend?",
+  "Create New Password": "Create New Password",
+  "Please enter a new password. Ensure that your new password is different from the previous one for better security.": "Please enter a new password. Ensure that your new password is different from the previous one for better security.",
+  "At least 6 characters": "At least 6 characters",
+  "At least one number and one symbol": "At least one number and one symbol",
+  "Must not match your old password": "Must not match your old password",
+  "5:00 min": "5:00 min",
+  "Verify": "Verify",
+"message": "message",
+  "navbar": {
+    "title": "My Application",
+    "your profile": "Your Profile",
+    "Sign out": "Sign out"
   
-    
-      "aboutUs": {
-        "title": "About Us",
-        "description": "CarMate is an innovative platform dedicated to providing smart and personalized solutions for car maintenance and repairs. Focusing on convenience, transparency, and quality, our mission is to connect drivers with trusted, skilled mechanics and services, all within an easy-to-use digital environment.Through our AI-powered diagnostic technology, we ensure that car problems are quickly identified and resolved, offering step-by-step instructions for a seamless experience. Our network of qualified and experienced mechanics is available to deliver top-quality service, either remotely or on-site.We provide a unique experience where drivers can manage all their vehicle details, receive maintenance reminders, and stay on top of their car's health with efficiency. CarMate also offers a secure platform for mechanics to expand their businesses and grow their customer base.With CarMate, your car gets the care it deserves, with total trust and agility." 
-      },
-
-      "whyUs": {
-        "title": "Why Us!",
-
-        "card1":{
-          "title": "AI-Powered",
-          "description": "' Our AI quickly identifies car issues and provides step-by-step solutions for easy repairs, saving you time and effort. '"
-        },
-        "card2": {
-          "title": "Car Management",
-          "description": "' Effortlessly track and manage your car’s details, maintenance history, and get timely reminders for important tasks to keep Good. '"
+},
+"Community": {
+    "title": "Community",
+    "description": "Our community connects users, enabling car solutions, trusted advice, and seamless product recommendations efficiently.",
+    "createPost": {
+      "title": "Create post",
+      "placeholder": "What's on your mind",
+      "mediaButton": "Media",
+      "publishButton": "Publish",
+      "postButton": "Post",
+      "yourName": "Your Name",
+      "userName": "User Name"
+    },
+    "post": {
+      "timeAgo": "5 Min Ago",
+      "likes": "Likes",
+      "comments": "Comments",
+      "writeComment": "Write your comment"
+    },
+    "posts": {
+      "post1": {
+        "author": "Muhamed Baher",
+        "timeAgo": "2 hours ago",
+        "mainText": "A lot of us face unexpected car issues, and most of the time, it's due to skipping regular maintenance. Here are some tips to help you keep your car..",
+        "tips": {
+          "1": "1. Change the oil regularly: Staying on top of oil changes can prevent major engine problems.",
+          "2": "2. Check tire pressure: Proper tire pressure improves performance and saves fuel.",
+          "3": "3. Inspect the battery: Regularly check your car battery, especially before winter.",
+          "4": "4. Clean the filters: Replacing the air and fuel filters can boost engine efficiency."
         }
       },
-      "values": {
-        "title": "Values",
-        "list1": "Inspire Users",
-        "list2": "Anticipate Needs",
-        "list3": "Excellence in Every Process",
-        "list4": "Complete Customer Satisfaction",
-        "list5": "Ongoing Social Impact",
-        "list6": "Sustainability Focused"
+      "post2": {
+        "author": "Omar Elrakby",
+        "timeAgo": "3 hours ago",
+        "mainText": "Winter is coming! Here are some essential tips for cold weather car care:",
+        "content": "Remember to check your antifreeze levels, battery condition, and tire pressure regularly during winter months.",
+      "comments": {
+          "comment1": {
+            "author": "Youssef Mohammed",
+            "text": "This Really Amazing it Helps Alot!"
+          },
+          "comment2": {
+            "author": "Omar Elrakby",
+            "text": "Great tips! I'd also suggest checking brake pads and fluid levels regularly. Ignoring these can lead to safety issues and expensive repairs. What do you recommend for maintaining older cars during the winter season? 👌🚗"
+          }
+        }
       },
-
+      "post3": {
+        "author": "Youssef Mohammed",
+        "timeAgo": "5 hours ago",
+        "mainText": "Just got my car serviced at CarMate! Amazing experience and professional service."
+      }
+    },
+    "sidePanel": {
+      "brandName": {
       
-        "marketplaceTitle": "Market Place",
-        "marketplaceDescription": "Shop quality brakes, lights, and essential parts with ease, all from trusted sellers to keep your car running perfectly.",
-        "searchPlaceholder": "Search ...",
-        "categories": "Categories",
-        "carParts":"Car Parts",
-        "liquids":"Liquids",
-        "carCare":"Car Care",
-        "lighting":"Lighting",
-        "accessories":"Accessories",
-        "usedCarBodyTitle": "Used Car Body",
-        "usedCarBodyDescription": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers, and the roof. It may show wear or minor damage but is often sold as-is or refurbished for repairs and replacements. These bodies are vital for restoring damaged cars or customizing vehicles.",
-        "moreDetailsbutton": "More Details",
-        "price": "$1299.00",
-      
-      
-
-        
-          "moreDetails": "More Details",
-          "moredetailsTitle": "More Details About The Product & Info To Contact With the seller that own the product.",
-          "productDescription": "A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers, and the roof. It may show wear or minor damage but is often sold as-is or refurbished for repairs and replacements. These bodies are vital for restoring damaged cars or customizing vehicles . It may show wear or minor damage but is often sold as-is or refurbished These bodies are vital for restoring damaged cars or customizing vehicles damaged cars or customizing vehicles is often sold as-is or refurbished for repairs and replacements. These bodies are vital for .",
-          "usedCarBody": "Used Car Body",
-          "category": "Category: Car Parts",
-          "productPrice": "$1299.00",
-          "productLink": "Product Link",
-          "sellerInfo": "Seller Info",
-          "contactSeller": "Info to contact the seller that owns the product.",
-          "sellerName": "Seller Name",
-          "sellerEmail": "selleremail@gmail.com",
-          "sellerPhone": "01020870445",
-        
-      
-      
-      
+    },
+      "welcome": "Welcome to the CarMate Community! 🚗✨ Here, we connect car owners, enthusiasts, and experts to make car care easier and smarter.",
+      "communityTitle": "Community",
+      "communityDescription": "Our community is a collaborative space where users can seek advice, share solutions, and connect with mechanics, electricians, and sellers. Together, we simplify car maintenance, resolve issues, and provide trusted recommendations.",
+      "rules": {
+        "title": "Community Rules",
+        "rule1": "Respect Everyone: Treat all members with kindness and professionalism. Discrimination or offensive language will not be tolerated.",
+        "rule2": "Stay Relevant: Share content and questions related to car maintenance, repairs, and the automotive field only.",
+        "rule3": "No Spam: Avoid posting irrelevant promotions or repeated messages.",
+        "rule4": "Be Honest: Provide truthful and accurate information when sharing advice or recommendations.",
+        "rule5": "Protect Privacy: Do not share personal or sensitive information about yourself or others.",
+        "rule6": "Seek Expert Help When Needed: If unsure about advice, encourage professional consultation.",
+        "rule7": "Avoid Unsafe Practices: Do not suggest actions that could harm vehicles or individuals.",
+        "rule8": "Support Each Other: Foster a collaborative and positive environment where everyone feels welcome.",
+        "rule9": "Report Issues: Notify moderators of any inappropriate behavior or content.",
+        "rule10": "Follow Platform Terms: Adhere to the community guidelines and terms of the CarMate platform."
+      }
+    }
     
-
-
-
+  },
 
   
-
-    "title": "Profile Page",
-    "subtitle1": "Update Your Photo And Personal Details and Control on Your Product.",
-    "subtitle2": "Control on Your Product.",
-    "firstNamePlaceholder": "First name",
-    "lastNamePlaceholder": "Last name",
-    "phonePlaceholder": "Phone",
-    "emailPlaceholder": "Email",
-    "saveChanges": "Save Changes",
-  "Welcome To": "Welcome To",
-  "Please Create Your Account": "Please Create Your Account",
-  "First Name": "First Name",
-  "Last Name": "Last Name",
-  "Confirm Password": "Confirm Password",
-  "Choose Your Role": "Choose Your Role",
-  "Customer": "Customer",
-  "Seller": "Seller",
-  "Register": "Register",
-  "Already have an account?": "Already have an account?",
-  "Log in": "Log in",
-    "WelcomeBack": "Welcome Back",
-    "PleaseLogin": "Please Log Into Your Account",
-    "Email": "User@Gmail.com",
-    "Password": "Password",
-    "RememberMe": "Remember me",
-    "ForgotPassword": "Forgot Password?",
-    "Login": "Login",
-    "SignUp": "Sign up",
-    "NeedAccount": "Need an account?",
-    "Reset Password": "Reset Password",
-    "Enter the email associated with your account and we'll send an email with instructions to reset your password.": "Enter the email associated with your account and we'll send an email with instructions to reset your password.",
-    "Send Code": "Send Code",
-    "Verify Your Email Number": "Verify Your Email Number",
-    "Verify with the code just Now we have send": "Verify with the code just now we have sent",
-    "Resend?": "Resend?",
-    "Create New Password": "Create New Password",
-    "Please enter a new password. Ensure that your new password is different from the previous one for better security.": "Please enter a new password. Ensure that your new password is different from the previous one for better security.",
-    "At least 6 characters": "At least 6 characters",
-    "At least one number and one symbol": "At least one number and one symbol",
-    "Must not match your old password": "Must not match your old password",
-    "5:00 min": "5:00 min",
-    "Verify": "Verify",
-  "message": "message",
-    "navbar": {
-      "title": "My Application",
-      "your profile": "Your Profile",
-      "Sign out": "Sign out"
-    
+    "notification": "Notification",
+    "comment": "{{name}} commented on your post in the community.",
+    "like": "{{name}} liked your last post in the community.",
+    "time_ago": "{{time}} ago",
+    "delete": "Delete",
+    "change_language": "Switch to Arabic"
   }
-}
+  
+  
+  
+  
+  
+
+
 
