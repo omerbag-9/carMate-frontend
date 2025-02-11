@@ -204,10 +204,12 @@ export default function Home() {
         </div>
         <div className="embla">
           {/* Embla Container */}
+
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container mb-4">
               <div className="embla__slide p-6 relative">
                 <div className="flex">
+                  
                   <div>
                     <p className="text-2xl">Great Work</p>
                   </div>
