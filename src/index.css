@@ -142,7 +142,6 @@ button:focus-visible {
   transform: rotatey(180deg);
 }
 
-
 ::placeholder{
   color: black; 
   font-size: 18px;
