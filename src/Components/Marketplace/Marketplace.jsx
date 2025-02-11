@@ -80,6 +80,8 @@ export default function Marketplace() {
           </h1>
           <p className="mx-5">{t('marketplaceDescription')}</p>
         </div>
+
+        
         <div className="flex mt-28 mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
           
 
