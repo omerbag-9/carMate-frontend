@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
@@ -7,9 +7,11 @@ import { Link } from 'react-router-dom'
 export default function Register() {
   const { t, i18n } = useTranslation()
   const isRtl = i18n.dir() === 'rtl'
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return <>
-    <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20 flex-col lg:flex-row">
+    <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white pb-20 lg:pt-0 pt-10">
       {/* Left Section */}
       <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
         <img src={heroLogo} className='w-[20%] m-auto mb-6' alt="" />
@@ -25,59 +27,75 @@ export default function Register() {
           <form className="space-y-5">
             <div className="flex flex-col lg:flex-row justify-between">
               {/* First Name */}
-              <div className="relative w-full lg:w-[45%] mb-4 lg:mb-0">
-                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+              <div className="relative w-full lg:w-[48%] mb-4 lg:mb-0">
+                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
                 <input
                   type="text"
                   placeholder={t('First Name')}
-                  className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                  className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
                 />
               </div>
+
               {/* Last Name */}
-              <div className="relative w-full lg:w-[45%]">
-                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+              <div className="relative w-full lg:w-[48%]">
+                <i className={`fa-solid fa-user absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
                 <input
                   type="text"
                   placeholder={t('Last Name')}
-                  className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                  className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
                 />
               </div>
             </div>
 
             {/* Email */}
             <div className="relative w-full">
-              <i className={`fa-solid fa-envelope absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
+              <i className={`fa-solid fa-envelope absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
               <input
                 type="email"
                 placeholder={t('Email')}
-                className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
+                className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
               />
             </div>
 
-            {/* Password */}
-            <div className="relative w-full">
-              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
-              <input
-                type="password"
-                placeholder={t('Password')}
-                className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
-              />
-            </div>
+{/* Password */}
+<div className="relative w-full">
+  <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder={t('Password')}
+    className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent focus:ring-0 focus:outline-none ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className={`absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'left-3' : 'right-3'} text-[#5D5D60] focus:outline-none focus:ring-0`}
+  >
+    <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+  </button>
+</div>
 
-            {/* Confirm Password */}
-            <div className="relative w-full">
-              <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
-              <input
-                type="password"
-                placeholder={t('Confirm Password')}
-                className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}
-              />
-            </div>
+{/* Confirm Password */}
+<div className="relative w-full">
+  <i className={`fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-[#5D5D60]`}></i>
+  <input
+    type={showConfirmPassword ? "text" : "password"}
+    placeholder={t('Confirm Password')}
+    className={`peer rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm placeholder:text-[#5D5D60] focus:placeholder-transparent focus:ring-0 focus:outline-none ${isRtl ? 'pr-9' : 'pl-9'} text-indent-8`}
+  />
+  <button
+    type="button"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+    className={`absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'left-3' : 'right-3'} text-[#5D5D60] focus:outline-none focus:ring-0`}
+  >
+    <i className={`fa-solid ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+  </button>
+</div>
+
+
 
             {/* Role Selection */}
             <div className="relative w-full">
-              <i className={`fa-solid fa-user-check absolute top-1/2 transform -translate-y-1/2 ${isRtl ? 'right-3' : 'left-3'} text-gray-500`}></i>
-              <select className={`rounded-xl p-3 ${isRtl ? 'pr-10' : 'pl-10'} text-sm w-full bg-[#232326] border-0 text-white`}>
+              <select className={`rounded-xl p-3 w-full bg-[#232326] border-0 text-white text-sm ${isRtl ? 'pr-3' : 'pl-3'}`}>
                 <option>{t('Choose Your Role')}</option>
                 <option>{t('Customer')}</option>
                 <option>{t('Seller')}</option>
@@ -85,12 +103,13 @@ export default function Register() {
             </div>
 
             {/* Register Button */}
-            <button className="bg-[#8E0606] text-white text-sm py-3 rounded-xl w-full font-bold mt-4">
+            <button className="bg-[#650000] text-white text-sm py-3 rounded-xl w-full font-bold mt-4">
               {t('Register')}
             </button>
           </form>
-          <p className="text-center text-sm mt-4">
-            {t('Already have an account?')} <Link to={'/login'} className="text-[#8E0606]">{t('Log in')}</Link>
+
+          <p className="text-center text-sm mt-4 text-[#5D5D60] font-bold">
+            {t('Already have an account?')} <Link to={'/login'} className="text-[#EBA4A4] underline">{t('Log in')}</Link>
           </p>
         </div>
       </div>

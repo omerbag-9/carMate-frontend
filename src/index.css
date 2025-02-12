@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Cairo", serif;
+  /* font-family: "Cairo", serif; */
+  /* font-family: "Cairo", serif; */
   line-height: 1.5;
   font-weight: 400;
 
@@ -141,7 +142,6 @@ button:focus-visible {
   transform: rotatey(180deg);
 }
 
-
 ::placeholder{
   color: black; 
   font-size: 18px;
@@ -155,6 +155,29 @@ button:focus-visible {
   box-shadow: black;
   color: transparent;
 }
+
+/* about */
+.about-text {
+  font-size: 12px; /* Default size for mobile */
+  line-height: 17px;
+}
+
+/* Increase text size on tablets */
+@media (min-width: 768px) {
+  .about-text {
+    font-size: 16px; /* Equivalent to md:text-md */
+    line-height: 23px;
+  }
+}
+
+/* Increase text size on larger screens */
+@media (min-width: 1024px) {
+  .about-text {
+    font-size: 18px;
+    line-height: 25px;
+  }
+}
+
 
 
 

@@ -3,7 +3,8 @@ import UnderLine from '../UnderLine/UnderLine'
 import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
-  const { t } = useTranslation()
+  const { t , i18n } = useTranslation()
+  const isRtl = i18n.dir() === 'rtl'
   return (
     <div className='bottom-0'>
       <div className=" bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
@@ -38,7 +39,7 @@ export default function Footer() {
 
         <div className="sm:text-start text-center">
           <p className="font-bold">{t('Comment Section')}</p>
-            <div className="w-[150px] rtl:sm:mr-0 sm:ml-0 m-auto bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
+          <div className="w-[150px] rtl:sm:mr-0 sm:ml-0 m-auto bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
           <span>{t('Add Your Opinion Or Any idea')}</span>
           <div className="mt-3">
             <textarea
@@ -48,9 +49,9 @@ export default function Footer() {
               placeholder={t('message')}
             ></textarea>
           </div>
-          <div className="sm:text-end rtl:text-start text-center sm:me-6">
+          <div className={`sm:text-end ${isRtl ? 'fa-arrow-left' : 'fa-arrow-right'} text-center`}>
             <button>
-              <i className="fa-solid fa-arrow-right bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]"></i>
+              <i className={`fa-solid ${isRtl ? 'fa-arrow-left' : 'fa-arrow-right'} bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]`}></i>
             </button>
           </div>
         </div>
@@ -58,7 +59,7 @@ export default function Footer() {
       <div className="w-[50%] m-auto">
         <div className=" bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
       </div>
-      <p className='text-gray-400 font-thin my-4'>Copyright © 2024 CarMate , Inc.</p>
+      <p className='text-gray-400 font-thin my-4 text-center'>Copyright © 2024 CarMate , Inc.</p>
     </div>
   )
 }
