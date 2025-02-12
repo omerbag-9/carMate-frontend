@@ -11,7 +11,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return <>
-    <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white min-h-screen pb-20 flex-col lg:flex-row">
+    <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white pb-20 lg:pt-0 pt-10">
       {/* Left Section */}
       <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
         <img src={heroLogo} className='w-[20%] m-auto mb-6' alt="" />

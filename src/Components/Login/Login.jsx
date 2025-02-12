@@ -8,7 +8,7 @@ export default function Login() {
   const { t } = useTranslation()
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <div className="pb-20 lg:pt-0 pt-20">
+    <div className="pb-20 lg:pt-0 pt-5">
       <div className="flex py-6 w-[91%] m-auto gap-x-7 text-white">
         {/* Left Section */}
         <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
@@ -31,24 +31,24 @@ export default function Login() {
                   className="rounded-xl p-3 pl-10 rtl:pr-10 rtl:pl-0 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60] focus:placeholder-transparent"
                 />
               </div>
-
               {/* Password */}
               <div className="relative w-full">
                 <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 left-3 rtl:right-3 rtl:left-auto text-[#5D5D60]"></i>
+
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder={t('Password')}
                   className="rounded-xl p-3 pl-10 rtl:pr-10 rtl:pl-0 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60] focus:placeholder-transparent focus:ring-0 focus:outline-none"
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 transform -translate-y-1/2 right-3 rtl:left-3 text-[#5D5D60] focus:outline-none focus:ring-0"
+                  className="absolute top-1/2 transform -translate-y-1/2 right-3 rtl:left-3 rtl:right-auto text-[#5D5D60] focus:outline-none focus:ring-0"
                 >
                   <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
                 </button>
               </div>
-
 
               <div className="flex justify-between items-center text-sm">
                 {/* Rounded Checkbox */}
