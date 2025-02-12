@@ -54,10 +54,10 @@ export default function Marketplace() {
         </div>
 
   
-        <div className="flex mt-28 mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
+        <div className="flex  mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
       
 
-        <div className="flex mt-20 mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
+        <div className="flex mt-3 mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
           <div className="w-[80%] relative my-2" dir={isArabic ? 'rtl' : 'ltr'}>
             <p className={`absolute ${isArabic ? 'right-4' : 'left-4'} top-2 text-black`}>
               <i className="fa-solid fa-magnifying-glass"></i>
@@ -131,6 +131,7 @@ export default function Marketplace() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
