@@ -140,7 +140,7 @@
             "description": "يربط مجتمعنا المستخدمين، مما يتيح حلول السيارات والنصائح الموثوقة وتوصيات المنتجات بكفاءة.",
             "createPost": {
               "title": "إنشاء منشور",
-              "placeholder": "بماذا تفكر",
+              "placeholder": "ماذا يحدث معك الان؟",
               "mediaButton": "وسائط",
               "publishButton": "نشر",
               "postButton": "انشر",

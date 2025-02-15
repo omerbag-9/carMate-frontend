@@ -187,4 +187,9 @@ input::placeholder{
   
 }
 
+#post::placeholder{
+  color: white;
+  
+}
+
 
