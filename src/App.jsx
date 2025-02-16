@@ -9,12 +9,12 @@ import AboutUs from './Components/AboutUs/AboutUs'
 import Register from './Components/Register/Register'
 import Login from './Components/Login/Login'
 import NotFound from './Components/NotFound/NotFound'
-import Marketplace from './Components/MarketPlace/Marketplace'
 import Moredetails from './Components/Moredetails/Moredetails'
 import { useTranslation } from 'react-i18next'
 import ResetPassword from './Components/ResetPassword/ResetPassword'
 import Community from './Components/Community/Community'
 import Notification from './Components/Notification/Notification'
+import Marketplace from './Components/Marketplace/Marketplace'
 
 
 let routers = createBrowserRouter([
