@@ -192,12 +192,12 @@
     "description": "Our community connects users, enabling car solutions, trusted advice, and seamless product recommendations efficiently.",
     "createPost": {
       "title": "Create post",
-      "placeholder": "What's on your mind",
+      "placeholder": "What's Happening With You Now ? ",
       "mediaButton": "Media",
       "publishButton": "Publish",
       "postButton": "Post",
       "yourName": "Your Name",
-      "userName": "User Name"
+      "userName": "@UserName"
     },
     "post": {
       "timeAgo": "5 Min Ago",

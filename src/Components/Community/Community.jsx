@@ -10,20 +10,25 @@ import img4 from "../../assets/images/image 62.png";
 const CreatePostPopup = ({ onClose, t }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-      <div className="bg-[#1A1A1A] rounded-2xl w-[90%] max-w-md relative">
+      <div className="bg-[#232326] rounded-2xl w-[90%] max-w-lg relative">
         {/* Header */}
-        <div className="p-4 relative flex justify-between items-center border-b border-gray-800">
+        <div className="p-4 relative flex justify-between items-center">
           <div className="w-full text-center"> 
-            <h2 className="text-white text-xl font-bold">
+            <h3 className="text-[#F8F8F8] text-xl">
               {t('Community.createPost.title')}
-            </h2>
+            </h3>
+        <div className="w-full mx-auto mt-4">
+          <UnderLine />
+        </div>
           </div>
           <span 
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-300 absolute ltr:right-4 rtl:left-4">
-            <i className="fa-solid fa-circle-xmark text-2xl"></i>
+            className="text-gray-400 hover:text-gray-300 absolute ltr:right-4 rtl:left-4 mb-7">
+            <i className="fa-solid fa-circle-xmark text-3xl"></i>
           </span>
         </div>
+
+       
         
         {/* User Info */}
         <div className="p-4">
@@ -36,10 +41,10 @@ const CreatePostPopup = ({ onClose, t }) => {
               />
             </div>
             <div className="ml-3 rtl:mr-3">
-              <div className="text-white font-medium">
+              <div className="text-[#F8F8F8] font-medium">
                 {t('Community.createPost.yourName')}
               </div>
-              <div className="text-gray-400 text-sm">
+              <div className="text-[#F8F8F8] text-sm">
                 {t('Community.createPost.userName')}
               </div>
             </div>
@@ -47,19 +52,22 @@ const CreatePostPopup = ({ onClose, t }) => {
 
           {/* Post Input */}
           <textarea
-            className="w-full mt-1 bg-transparent text-gray-200 resize-none text-lg border-none focus:ring-0 focus:outline-none min-h-[300px]"
+            className="w-full mt-1 bg-transparent text-gray-200 resize-none text-lg border-none focus:ring-0 focus:outline-none min-h-[300px] placeholder-[#C9C9CA]"
             placeholder={t('Community.createPost.placeholder')}
             autoFocus
           />
           
           {/* Media Button */}
           <div className="absolute bottom-20 ltr:right-4 rtl:left-4">
-            <button 
-              className="w-12 h-12 bg-black rounded-full flex items-center justify-center "
-              title={t('Community.createPost.mediaButton')}
-            >
-              <i className="fa-solid fa-images text-white text-2xl"></i>
-            </button>
+            <label className="w-12 h-12 bg-black rounded-full flex items-center justify-center cursor-pointer">
+              <input 
+                type="file"
+                accept="image/*"
+                className="hidden"
+                title={t('Community.createPost.mediaButton')}
+              />
+              <i className="fa-solid fa-images text-[#BFBFBF] text-2xl"></i>
+            </label>
           </div>
         </div>
 
@@ -76,6 +84,24 @@ const CreatePostPopup = ({ onClose, t }) => {
 export default function Community() {
   const { t } = useTranslation();
   const [showPopup, setShowPopup] = useState(false);
+  const [showComments, setShowComments] = useState({});
+  const [likedPosts, setLikedPosts] = useState({});
+
+  // Function to toggle comments visibility
+  const toggleComments = (postId) => {
+    setShowComments(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+  };
+
+  // Function to toggle like state
+  const toggleLike = (postId) => {
+    setLikedPosts(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
+  };
 
   // Function to handle popup visibility
   const handleShowPopup = () => {
@@ -106,24 +132,24 @@ export default function Community() {
           {/* Posts and Side Panel Container */}
           <div className="flex flex-col lg:flex-row justify-center mx-auto">
             {/* Posts Section */}
-            <div className="posts flex-1 lg:max-w-2xl">
+            <div className="posts flex-1 lg:max-w-xl ">
               {/* Create Post Card - Modified to be clickable */}
               <div className="creation-card relative text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl cursor-pointer" onClick={handleShowPopup}>
                 <h3 className="mb-3 text-xl">{t('Community.createPost.title')}</h3>
-                <p className="absolute top-[68px] ltr:left-8 rtl:right-8 text-black">
+                <p className="absolute top-[68px] ltr:left-8 rtl:right-8 text-white">
                   <i className="fa-solid fa-comment-dots text-xl"></i>
                 </p>
                 <input
-                  className="w-full rounded-xl px-8 pb-3 text-black cursor-pointer"
+                  className="w-full rounded-xl px-8 pb-3 text-white cursor-pointer bg-black placeholder:text-[#F8F8F8]"
                   type="text"
                   placeholder={t('Community.createPost.placeholder')}
                   
                 />
                 <div className="buttons flex justify-between mt-5">
-                  <button className="bg-black text-white px-5 py-2 rounded-lg">
+                  <button className="bg-black text-[#F8F8F8] px-5 py-2 rounded-lg">
                     <i className="fa-solid fa-photo-film"></i> {t('Community.createPost.mediaButton')}
                   </button>
-                  <button className="bg-black text-white px-5 py-2 rounded-lg">
+                  <button className="bg-black text-[#F8F8F8] px-5 py-2 rounded-lg">
                     <i className="fa-solid fa-paper-plane"></i> {t('Community.createPost.publishButton')}
                   </button>
                 </div>
@@ -155,13 +181,38 @@ export default function Community() {
                   <UnderLine />
                 </div>
                 <div className="buttons mt-5 flex gap-4">
-                  <button className="like border-1 border-white bg-transparent px-3 py-2 text-lg mr-3">
-                    <i className="fa-regular fa-thumbs-up"></i> 521 {t('Community.post.likes')}
+                  <button 
+                    onClick={() => toggleLike('post1')}
+                    className={`like px-3 py-2 text-lg mr-3 transition-colors ${
+                      likedPosts['post1'] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
+                    }`}
+                  >
+                    <i className={`${likedPosts['post1'] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
+                    521 {t('Community.post.likes')}
                   </button>
-                  <button className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3">
-                    <i className="fa-regular fa-comments"></i> 59 {t('Community.post.comments')}
+                  <button 
+                    onClick={() => toggleComments('post1')}
+                    className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
+                  >
+                    <i className="fa-regular fa-comments px-1"></i> 
+                    59 {t('Community.post.comments')}
                   </button>
                 </div>
+                {showComments['post1'] && (
+                  <div className="comments mt-4">
+                    <div className="add-comment relative">
+                      <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
+                        <img src={img3} alt="" />
+                      </span>
+                      <input
+                        type="text"
+                        placeholder={t('Community.post.writeComment')}
+                        className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
+                        id="comment-post1"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Post 2 */}
@@ -184,49 +235,56 @@ export default function Community() {
                 <div className="w-full mx-auto">
                   <UnderLine />
                 </div>
-                <div className="buttons my-5 flex gap-4">
-                  <button className="like border-1 border-white bg-transparent px-3 py-2 text-lg mr-3">
-                    <i className="fa-regular fa-thumbs-up"></i> 521 {t('Community.post.likes')}
+                <div className="buttons mt-5 flex gap-4">
+                  <button 
+                    onClick={() => toggleLike('post2')}
+                    className={`like border-1 border-white px-3 py-2 text-lg mr-3 transition-colors ${
+                      likedPosts['post2'] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
+                    }`}
+                  >
+                    <i className={`${likedPosts['post2'] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
+                    521 {t('Community.post.likes')}
                   </button>
-                  <button className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3">
-                    <i className="fa-regular fa-comments"></i> 59 {t('Community.post.comments')}
+                  <button 
+                    onClick={() => toggleComments('post2')}
+                    className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
+                  >
+                    <i className="fa-regular fa-comments px-1"></i> 
+                    59 {t('Community.post.comments')}
                   </button>
                 </div>
-                <div className="w-full mx-auto">
-                  <UnderLine />
-                </div>
-                <div className="comments">
-                  {/* Comment 1 */}
-                  <div className="comment flex justify-items-center">
-                    <img className="w-12 h-12 mt-3" src={img1} alt="" />
-                    <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1">
-                      <p className="name font-semibold text-sm">{t('Community.posts.post2.comments.comment1.author')}</p>
-                      <p className="comment-discription text-sm">{t('Community.posts.post2.comments.comment1.text')}</p>
+                {showComments['post2'] && (
+                  <div className="comments mt-4">
+                    {/* Existing comments */}
+                    <div className="comment flex justify-items-center">
+                      <img className="w-12 h-12 mt-3" src={img1} alt="" />
+                      <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1">
+                        <p className="name font-semibold text-sm">{t('Community.posts.post2.comments.comment1.author')}</p>
+                        <p className="comment-discription text-sm">{t('Community.posts.post2.comments.comment1.text')}</p>
+                      </div>
+                    </div>
+                    <div className="comment flex justify-items-center mt-3">
+                      <img className="w-12 h-12 mt-3" src={img2} alt="" />
+                      <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1 w-1/2">
+                        <p className="name font-semibold text-sm">{t('Community.posts.post2.comments.comment2.author')}</p>
+                        <p className="comment-discription text-sm">
+                          {t('Community.posts.post2.comments.comment2.text')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="add-comment relative">
+                      <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
+                        <img src={img3} alt="" />
+                      </span>
+                      <input
+                        type="text"
+                        placeholder={t('Community.post.writeComment')}
+                        className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
+                        id="comment-post2"
+                      />
                     </div>
                   </div>
-                  {/* Comment 2 */}
-                  <div className="comment flex justify-items-center mt-3">
-                    <img className="w-12 h-12 mt-3" src={img2} alt="" />
-                    <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1 w-1/2">
-                      <p className="name font-semibold text-sm">{t('Community.posts.post2.comments.comment2.author')}</p>
-                      <p className="comment-discription text-sm">
-                        {t('Community.posts.post2.comments.comment2.text')}
-                      </p>
-                    </div>
-                  </div>
-                  {/* Add Comment */}
-                  <div className="add-comment relative">
-                    <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
-                      <img src={img3} alt="" />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder={t('Community.post.writeComment')}
-                      className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14"
-                      id="comment"
-                    />
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Post 3 */}
@@ -248,18 +306,43 @@ export default function Community() {
                   <UnderLine />
                 </div>
                 <div className="buttons mt-5 flex gap-4">
-                  <button className="like border-1 border-white bg-transparent px-3 py-2 text-lg">
-                    <i className="fa-regular fa-thumbs-up"></i> 521 {t('Community.post.likes')}
+                  <button 
+                    onClick={() => toggleLike('post3')}
+                    className={`like border-1 border-white px-3 py-2 text-lg mr-3 transition-colors ${
+                      likedPosts['post3'] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
+                    }`}
+                  >
+                    <i className={`${likedPosts['post3'] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
+                    521 {t('Community.post.likes')}
                   </button>
-                  <button className="like border-1 border-white bg-transparent px-3 py-2 text-lg">
-                    <i className="fa-regular fa-comments"></i> 59 {t('Community.post.comments')}
+                  <button 
+                    onClick={() => toggleComments('post3')}
+                    className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
+                  >
+                    <i className="fa-regular fa-comments px-1"></i> 
+                    59 {t('Community.post.comments')}
                   </button>
                 </div>
+                {showComments['post3'] && (
+                  <div className="comments mt-4">
+                    <div className="add-comment relative">
+                      <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
+                        <img src={img3} alt="" />
+                      </span>
+                      <input
+                        type="text"
+                        placeholder={t('Community.post.writeComment')}
+                        className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
+                        id="comment-post3"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Side Panel (Hidden on Mobile) */}
-            <div className="community-info bg-[#232326] p-5 w-full lg:w-[400px]  lg:mx-20 mt-5 text-center rounded-xl text-white lg:h-[1092px]">
+            <div className="community-info bg-[#232326] p-5 w-full lg:w-[400px]  lg:mx-20 mt-5 text-center rounded-xl text-white lg:h-fit">
               <h2 className="text-white text-3xl">
                 <span className="text-red-700">Car</span>Mate
                 <div className="my-2 w-32 mx-auto">
@@ -286,9 +369,9 @@ export default function Community() {
                     <UnderLine />
                   </div>
                 </h3>
-                <ul className="text-start list-disc pl-3">
+                <ul className="text-start list-disc pl-3 pr-2">
                   {[...Array(10)].map((_, index) => (
-                    <li key={index}>{t(`Community.sidePanel.rules.rule${index + 1}`)}</li>
+                    <li key={index} className='my-2'>{t(`Community.sidePanel.rules.rule${index + 1}`)}</li>
                   ))}
                 </ul>
               </div>
