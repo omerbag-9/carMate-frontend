@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import UnderLine from "../UnderLine/UnderLine";
-import img1 from "../../assets/images/profile photo.png";
+import img1 from "../../assets/images/Profilephoto.png";
 import img2 from "../../assets/images/profilephoto2.png";
-import img3 from "../../assets/images/Ellipse 7.png";
+import img3 from "../../assets/images/Ellipse7.png";
 
 export default function Notifications() {
   const { t, i18n } = useTranslation();
