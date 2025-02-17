@@ -1,6 +1,6 @@
 import React from 'react';
 import img1 from '../../assets/images/porsche-model1.png';
-import img2 from '../../assets/images/values.png';
+import img2 from '../../assets/images/Values.png';
 import { useTranslation } from 'react-i18next';
 
 export default function AboutUs() {
