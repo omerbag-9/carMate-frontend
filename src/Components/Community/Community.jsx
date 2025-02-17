@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import UnderLine from '../UnderLine/UnderLine';
-import img1 from "../../assets/images/Profilephoto.png";
-import img2 from "../../assets/images/profilephoto2.png";
+import img1 from "../../assets/images/ProfilePhoto.png";
+import img2 from "../../assets/images/ProfilePhoto2.png";
 import img3 from "../../assets/images/Ellipse7.png";
 import img4 from "../../assets/images/image62.png";
 
