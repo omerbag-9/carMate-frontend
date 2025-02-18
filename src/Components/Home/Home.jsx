@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 import UnderLine from '../UnderLine/UnderLine'
 import { Link } from 'react-router-dom'
 import useEmblaCarousel from "embla-carousel-react";
-import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
 
 // import "./EmblaCarousel.css";
 export default function Home() {
