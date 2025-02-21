@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import UnderLine from '../UnderLine/UnderLine';
 import profileImg1 from '../../assets/images/profileImg1.jpg'
 import Notification from '../Notification/Notification';
+import Cookies from "js-cookie";
+import axios from 'axios';
+
 
 
 export default function Navbar() {
@@ -15,6 +18,8 @@ export default function Navbar() {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const [token, setToken] = useState(Cookies.get("token") || null);
+    const navigate = useNavigate();
 
     const toggleLanguage = () => {
         const newLang = language === 'en' ? 'ar' : 'en';
@@ -41,7 +46,7 @@ export default function Navbar() {
 
     const userNavigation = [
         { name: t('navbar.your profile'), action: () => handleOpen('Profile Details') },
-        { name: t('navbar.Sign out') },
+        { name: t('navbar.Sign out'), action: handleLogout },
     ];
 
     const classNames = (...classes) => classes.filter(Boolean).join(' ');
@@ -65,6 +70,83 @@ export default function Navbar() {
     };
 
     const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        function handleTokenUpdate() {
+            setToken(Cookies.get("token") || null);
+        }
+
+        window.addEventListener("tokenUpdated", handleTokenUpdate);
+
+        return () => {
+            window.removeEventListener("tokenUpdated", handleTokenUpdate);
+        };
+    }, []);
+
+    function handleLogout() {
+        Cookies.remove("token");
+        setToken(null);
+        window.dispatchEvent(new Event("tokenUpdated"));
+        navigate("/login");
+    }
+
+    const [userData, setUserData] = useState(null); // تخزين بيانات المستخدم
+    const actions = [
+        {
+            name: t('navbar.your profile'),
+            action: () => handleOpen('Profile Details')
+        }
+    ];
+    const fetchUserData = async () => {
+        try {
+            const token = Cookies.get("token");
+
+            if (!token) return;
+
+            const response = await axios.get("https://fb-m90x.onrender.com/user/myprofile", {
+                headers: { token: `${token}` }
+            });
+            // console.log(response.data.data);
+            setUserData(response.data.data);
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const [updateUser, setUpdateUser] = useState("")
+    const handleUpdateProfile = async (e) => {
+        e.preventDefault(); // منع إعادة تحميل الصفحة
+
+        try {
+            const token = Cookies.get("token"); // جلب التوكن
+
+            // إنشاء FormData
+            const formData = new FormData();
+            formData.append("firstName", userData.firstName);
+            formData.append("lastName", userData.lastName);
+            formData.append("phone", userData.phone || "0000000000"); // تعيين الهاتف إذا لم يكن موجودًا
+
+            const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    token: `${token}`
+                }
+            });
+
+            // console.log("Profile updated successfully:", response.data.data.user);
+            setUserData(response.data.data.user);
+            setUpdateUser("Profile updated successfully!")
+            setTimeout(() => {
+                setUpdateUser(""); // إخفاء الرسالة بعد 3 ثوانٍ
+            }, 3000);
+        } catch (error) {
+            // console.error("Error updating profile:", error);
+            setUpdateUser("Failed to update profile!")
+        }
+    };
 
     return (
         <>
@@ -109,36 +191,47 @@ export default function Navbar() {
                                             <button onClick={toggleLanguage} className='px-2 py-1 bg-zinc-900 my-3 text-gray-400 hover:text-white' aria-label='Toggle Language'>
                                                 {language === 'en' ? 'AR' : 'EN'}
                                             </button>
-                                            <Link to="/notification"
-                                                
-                                                className="relative rounded-lg px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
-                                                
-                                            >
-                                                <span className="sr-only">View notifications</span>
-                                                <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                            </Link>
 
-                                            {/* Profile dropdown */}
-                                            <Menu as="div" className="relative">
-                                                <div>
-                                                    <MenuButton className="relative flex max-w-xs items-center p text-sm mx-auto focus:outline-none">
-                                                        <img
-                                                            className="h-8 w-8 rounded-full"
-                                                            src={user.imageUrl}
-                                                            alt="Profile"
-                                                        />
-                                                    </MenuButton>
-                                                </div>
-                                                <MenuItems className="absolute ltr:right-0 rtl:left-0  z-10 mt-2 w-48  rounded-md bg-white py-1 shadow-lg focus:outline-none">
-                                                    {userNavigation.map((item) => (
-                                                        <MenuItem key={item.name}>
-                                                            <Button onClick={item.action} className="block  w-full px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100">
-                                                                <p className='text-black'>{item.name}</p>
-                                                            </Button>
-                                                        </MenuItem>
-                                                    ))}
-                                                </MenuItems>
-                                            </Menu>
+                                            {token ? (
+                                                <>
+                                                    <Link to="/notification"
+                                                        className="relative rounded-lg px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
+                                                    >
+                                                        <span className="sr-only">View notifications</span>
+                                                        <BellIcon className="h-6 w-6" aria-hidden="true" />
+                                                    </Link>
+
+                                                    <Menu as="div" className="relative">
+                                                        <div>
+                                                            <MenuButton className="relative flex max-w-xs items-center text-sm mx-auto focus:outline-none">
+                                                                <img
+                                                                    className="h-8 w-8 rounded-full"
+                                                                    src={user.imageUrl}
+                                                                    alt="Profile"
+                                                                />
+                                                            </MenuButton>
+                                                        </div>
+                                                        <MenuItems className="absolute ltr:right-0 rtl:left-0 z-10 mt-2 w-48 rounded-md bg-white py-1 shadow-lg focus:outline-none">
+                                                            {userNavigation.map((item) => (
+                                                                <MenuItem key={item.name}>
+                                                                    <Button onClick={item.action} className="block w-full px-4 py-2 text-start text-sm text-gray-700 hover:bg-gray-100">
+                                                                        <p className='text-black'>{item.name}</p>
+                                                                    </Button>
+                                                                </MenuItem>
+                                                            ))}
+                                                        </MenuItems>
+                                                    </Menu>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Link to="/login" className="px-2 py-1 text-sm text-black bg-white rounded-lg mx-2">
+                                                        Login
+                                                    </Link>
+                                                    <Link to="/register" className="px-2 py-1 text-sm text-black bg-white rounded-lg">
+                                                        Register
+                                                    </Link>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
 
@@ -217,57 +310,72 @@ export default function Navbar() {
                     )}
                 </Disclosure>
                 {/* Modal */}
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
+                <Modal open={open} onClose={handleClose}>
                     <Box sx={{ ...style, width: { xs: '80%', sm: '50%' } }}>
-                        <IconButton
-                            onClick={handleClose}
-                            sx={{
-                                position: 'absolute',
-                                top: 10,
-                                right: 10,
-                            }}
-                        >
+                        <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10 }}>
                             <i className="fa-solid fa-xmark text-white"></i>
                         </IconButton>
 
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                        <Typography variant="h6" component="h2">
                             <p className='font-bold text-center'>{t('profilePage.title')}</p>
                             <div className="w-[35%] m-auto">
                                 <UnderLine />
                             </div>
                             <p className='text-center text-sm'>{t('profilePage.subtitle1')}<br />{t('profilePage.subtitle2')}</p>
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+
+                        {userData ? (
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center">
-                                    <img src={profileImg1} className='w-[60%] rounded-full m-auto' alt="" />
-                                    <p className='pt-3'>Dina Mohsen</p>
-                                    <p className='text-[12px]'>@dinamohsen</p>
+                                    <img src={userData.profileImage || profileImg1} className='w-[60%] rounded-full m-auto' alt="" />
+                                    <p className='pt-3'>{userData.firstName} {userData.lastName}</p>
+                                    <p className='text-[12px]'>{userData.email}</p>
                                 </div>
                                 <div className="w-full flex flex-col items-center">
-                                    <form action="" className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
+                                    {updateUser != "" ? <div className="text-green-600 text-md mb-4">{updateUser}</div> : ""}
+                                    <form onSubmit={handleUpdateProfile} className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
-                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 ltr:sm:mr-3 rtl:sm:ml-3 border-gray-500 placeholder:text-white" placeholder={t('profilePage.firstNamePlaceholder')} />
-                                            <input type="text" className="bg-black w-[80%] rounded-2xl border-2 placeholder:text-white border-gray-500" placeholder={t('profilePage.lastNamePlaceholder')} />
+                                            <input
+                                                type="text"
+                                                value={userData.firstName}
+                                                onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
+                                                className="bg-black w-[80%] rounded-2xl mx-2 border-2 text-white border-gray-500"
+                                            />
+                                            <input
+                                                type="text"
+                                                value={userData.lastName}
+                                                onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
+                                                className="bg-black w-[80%] rounded-2xl border-2 text-white border-gray-500"
+                                            />
                                         </div>
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
-                                            <input type="tel" className="bg-black w-[80%] rounded-2xl border-2 placeholder:text-white ltr:sm:mr-3 rtl:sm:ml-3 rtl:text-right border-gray-500" placeholder={t('profilePage.phonePlaceholder')} />
-                                            <input type="email" className="bg-black w-[80%] rounded-2xl border-2 placeholder:text-white border-gray-500" placeholder={t('profilePage.emailPlaceholder')} />
+                                            <input
+                                                type="tel"
+                                                value={userData.phone || "0000000000"}
+                                                onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+                                                className="bg-black w-[80%] mx-2 rounded-2xl border-2 text-white border-gray-500"
+                                            />
+                                            <input
+                                                type="email"
+                                                value={userData.email}
+                                                disabled
+                                                className="bg-black w-[80%] rounded-2xl border-2 text-gray-500 border-gray-500 cursor-not-allowed"
+                                            />
                                         </div>
                                         <div className="m-auto">
-                                            <button className='bg-[#650000] px-14 py-2 rounded-xl'>{t('profilePage.saveChanges')}</button>
+                                            <button type="submit" className='bg-[#650000] px-14 py-2 rounded-xl'>
+                                                {t('profilePage.saveChanges')}
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                        </Typography>
+                        ) : (
+                            <p className="text-center">Loading...</p>
+                        )}
                     </Box>
                 </Modal>
+
             </div>
         </>
     );

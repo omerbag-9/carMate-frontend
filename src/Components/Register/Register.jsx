@@ -24,9 +24,13 @@ export default function Register() {
     lastName: Yup.string().min(3, 'Last name minlength is 3').max(10, 'Last name maxlength is 10').required('Last name is required'),
     email: Yup.string().email('Email is invalid').required('Email is required'),
     password: Yup.string()
-      .min(6, 'Password minlength is 6')
-      .max(20, 'Password maxlength is 20')
-      .required('Password is required'),
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%?&#]{6,100}$/,
+      'Must include uppercase, lowercase, number & special (@$!%?&#)'
+    )
+    .min(6, 'Password minlength is 6')
+    .max(100, 'Password maxlength is 100')
+    .required('Password is required'),  
     role: Yup.string().oneOf(['customer', 'seller'], 'Role must be either customer or seller').required('Role is required')
   });
 
@@ -48,12 +52,11 @@ export default function Register() {
 
     try {
       let req = await axios.post('https://fb-m90x.onrender.com/auth/signup', val);
-
       if (req.data.success) {
         navg('/login');
       }
     } catch (err) {
-      console.log(err.response?.data?.message);
+      // console.log(err.response?.data?.message);
       setErrMsg(err.response?.data?.message || "An error occurred");
     } finally {
       setLoading(false);

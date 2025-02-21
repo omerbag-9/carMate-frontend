@@ -1,11 +1,26 @@
 import React from 'react'
 import UnderLine from '../UnderLine/UnderLine'
 import { useTranslation } from 'react-i18next'
+import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 export default function Footer() {
-  const { t , i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const isRtl = i18n.dir() === 'rtl'
-  return (
+  const handleSendComment = async () => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      toast.error("You must be logged in to send a comment!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      return;
+    }
+    console.log("Comment sent successfully!");
+  };
+  return <>
+    <ToastContainer />
     <div className='bottom-0'>
       <div className=" bg-gradient-to-r from-[#454545] via-[#FFFFFF] to-[#454545] h-[1px] my-2"></div>
       <div className="p-12 flex flex-col sm:flex-row gap-y-16">
@@ -43,14 +58,12 @@ export default function Footer() {
           <span>{t('Add Your Opinion Or Any idea')}</span>
           <div className="mt-3">
             <textarea
-              name=""
-              id=""
               className="bg-black rounded-xl w-56 h-24"
               placeholder={t('message')}
             ></textarea>
           </div>
-          <div className={`sm:text-end ${isRtl ? 'fa-arrow-left' : 'fa-arrow-right'} text-center`}>
-            <button>
+          <div className={`sm:text-end text-center`}>
+            <button onClick={handleSendComment}>
               <i className={`fa-solid ${isRtl ? 'fa-arrow-left' : 'fa-arrow-right'} bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]`}></i>
             </button>
           </div>
@@ -61,5 +74,5 @@ export default function Footer() {
       </div>
       <p className='text-gray-400 font-thin my-4 text-center'>Copyright © 2024 CarMate , Inc.</p>
     </div>
-  )
+  </>
 }
