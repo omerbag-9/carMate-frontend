@@ -15,6 +15,7 @@ import ResetPassword from './Components/ResetPassword/ResetPassword'
 import Community from './Components/Community/Community'
 import Notification from './Components/Notification/Notification'
 import Marketplace from './Components/Marketplace/Marketplace'
+import "react-toastify/dist/ReactToastify.css";
 
 
 let routers = createBrowserRouter([

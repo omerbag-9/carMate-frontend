@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
 import emailImage from '../../assets/images/emailImage.png'
 import { useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default function ResetPassword() {
     const { t } = useTranslation();
     const [step, setStep] = useState('reset');
-    const [code, setCode] = useState(['', '', '', '']);
+    const [code, setCode] = useState(['', '', '', '', '', '']);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -21,10 +25,114 @@ export default function ResetPassword() {
         newCode[index] = value;
         setCode(newCode);
 
-        if (index < 3 && value !== '') {
+        if (index < 5 && value !== '') { // تحديث التركيز تلقائيًا للخانة التالية
             document.getElementById(`code-input-${index + 1}`).focus();
         }
     };
+    const [message, setMessage] = useState("");
+
+    const formik = useFormik({
+        initialValues: {
+            email: "",
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .email("Invalid email format")
+                .required("Email is required"),
+        }),
+        onSubmit: async (values, { setSubmitting }) => {
+            setMessage(""); // Reset message
+            try {
+                const response = await axios.post(
+                    "https://fb-m90x.onrender.com/auth/forget-password",
+                    values
+                );
+
+                Cookies.set("resetEmail", values.email, { expires: 10 / 1440 }); // ✅ تخزين الإيميل في الكوكي
+                setMessage(response.data.message || "Check your email for reset instructions.");
+                setStep("verify"); // ✅ الانتقال لخطوة التحقق من OTP
+            } catch (error) {
+                setMessage(error.response?.data?.message || "Something went wrong.");
+            }
+            setSubmitting(false);
+        },
+    });
+
+    const [timer, setTimer] = useState(30);
+    const [canResend, setCanResend] = useState(false);
+    useEffect(() => {
+        if (step === "verify") {
+            setCanResend(false); // ممنوع إعادة الإرسال في البداية
+            const countdown = setInterval(() => {
+                setTimer((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(countdown);
+                        setCanResend(true); // بعد انتهاء العداد يمكن إعادة الإرسال
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(countdown); // تنظيف عند تغيير الصفحة
+        }
+    }, [step]);
+
+    const handleResend = async () => {
+        if (!canResend) return;
+
+        let email = Cookies.get("resetEmail"); // ✅ محاولة جلب البريد من الكوكي
+
+        // ✅ لو الكوكي غير موجود، جلب البريد من الفورميك
+        if (!email) {
+            email = formik.values.email;
+            if (!email) {
+                setMessage("Email expired, please try again.");
+                setStep("reset"); // يرجع المستخدم لخطوة إدخال البريد
+                return;
+            }
+            Cookies.set("resetEmail", email, { expires: 10 / 1440 }); // ✅ تخزين الإيميل مرة أخرى
+        }
+
+        try {
+            await axios.post("https://fb-m90x.onrender.com/auth/forget-password", { email });
+            setTimer(30);
+            setCanResend(false);
+            setMessage("OTP resent successfully.");
+        } catch (error) {
+            setMessage("Failed to resend OTP. Try again.");
+        }
+    };
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+    };
+
+    const handleVerifyOTP = async () => {
+        const email = Cookies.get("resetEmail");
+
+        if (!email) {
+            setMessage("Email expired, please request a new code.");
+            setStep("reset"); // فقط عند انتهاء صلاحية البريد
+            return;
+        }
+
+        const otpCode = code.join(""); // تجميع أرقام OTP
+
+        try {
+            const response = await axios.post("https://fb-m90x.onrender.com/auth/verify", {
+                email,
+                otp: otpCode,
+            });
+            
+            setMessage("OTP verified successfully.");
+            setStep("create"); // ✅ إذا كان صحيحًا، ينتقل المستخدم لخطوة إنشاء كلمة مرور جديدة
+        } catch (error) {
+            setMessage("Invalid OTP. Please try again."); // ❌ يبقى في صفحة التحقق بدون إعادة توجيه
+        }
+    };
+
 
     return (
         <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white pb-20 lg:pt-0 pt-10">
@@ -35,26 +143,42 @@ export default function ResetPassword() {
                         <>
                             <img src={heroLogo} className="w-[20%] m-auto mb-6" alt="Logo" />
                             <div className="mt-0">
-                                <p className="text-2xl mb-2">{t('Reset Password')}</p>
+                                <p className="text-2xl mb-2">Reset Password</p>
                                 <p className="text-base mb-6">
-                                    {t('Enter the email associated with your account and we\'ll send an email with instructions to reset your password.')}
+                                    Enter the email associated with your account and we'll send an email
+                                    with instructions to reset your password.
                                 </p>
-                                <form className="space-y-5">
+
+                                <form onSubmit={formik.handleSubmit} className="space-y-5">
+                                    {/* Email Input */}
                                     <div className="relative w-full">
                                         <i className="fa-solid fa-envelope absolute top-1/2 transform -translate-y-1/2 rtl:right-3 ltr:left-3 text-[#5D5D60]"></i>
                                         <input
                                             type="email"
+                                            name="email"
                                             placeholder="User@Gmail.com"
                                             className="rounded-xl p-3 rtl:pr-10 ltr:pl-10 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60] focus:placeholder-transparent"
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            value={formik.values.email}
                                         />
                                     </div>
+                                    {formik.touched.email && formik.errors.email && (
+                                        <p className="text-red-500 text-sm text-center">{formik.errors.email}</p>
+                                    )}
+
+                                    {/* Submit Button */}
                                     <button
-                                        onClick={() => setStep('verify')}
+                                        type="submit"
                                         className="bg-[#650000] text-white text-md py-[8px] rounded-xl w-full mt-4"
+                                        disabled={formik.isSubmitting}
                                     >
-                                        {t('Send Code')}
+                                        {formik.isSubmitting ? "Sending..." : "Send Code"}
                                     </button>
                                 </form>
+
+                                {/* Response Message */}
+                                {message && <p className="text-center text-red-500 mt-3">{message}</p>}
                             </div>
                         </>
                     )}
@@ -82,17 +206,22 @@ export default function ResetPassword() {
                                             />
                                         ))}
                                     </div>
-
+                                    {message && <p className="text-center text-red-500 mt-3">{message}</p>}
                                     {/* رابط إعادة الإرسال */}
                                     <p className="text-sm text-center text-[#EBA4A4]">
-                                        <span className="underline">{t('Resend?')} </span>
-                                        <span className="text-white no-underline">{t('5:00 min')}</span>
+                                        <span
+                                            className={`underline ${canResend ? "cursor-pointer text-[#EBA4A4]" : "text-gray-500 cursor-not-allowed"}`}
+                                            onClick={handleResend}
+                                        >
+                                            {t('Resend?')}
+                                        </span>
+                                        <span className="text-white no-underline"> {formatTime(timer)} min</span>
                                     </p>
 
                                     {/* زر التحقق */}
                                     <div className="flex justify-center items-center w-full">
                                         <button
-                                            onClick={() => setStep('create')}
+                                            onClick={handleVerifyOTP}
                                             className="bg-[#650000] text-white text-md py-[8px] rounded-xl w-[85%] mt-4"
                                         >
                                             {t('Verify')}
