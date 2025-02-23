@@ -10,6 +10,8 @@ import profileImg1 from '../../assets/images/profileImg1.jpg'
 import Notification from '../Notification/Notification';
 import Cookies from "js-cookie";
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -117,8 +119,10 @@ export default function Navbar() {
     }, []);
 
     const [updateUser, setUpdateUser] = useState("")
+    const [loading, setLoading] = useState(false);
     const handleUpdateProfile = async (e) => {
         e.preventDefault(); // منع إعادة تحميل الصفحة
+        setLoading(true);
 
         try {
             const token = Cookies.get("token"); // جلب التوكن
@@ -127,7 +131,7 @@ export default function Navbar() {
             const formData = new FormData();
             formData.append("firstName", userData.firstName);
             formData.append("lastName", userData.lastName);
-            formData.append("phone", userData.phone || "0000000000"); // تعيين الهاتف إذا لم يكن موجودًا
+            formData.append("phone", userData.phone || "phone"); // تعيين الهاتف إذا لم يكن موجودًا
 
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
@@ -145,8 +149,33 @@ export default function Navbar() {
         } catch (error) {
             // console.error("Error updating profile:", error);
             setUpdateUser("Failed to update profile!")
+        } finally {
+            setLoading(false); // إيقاف التحميل سواء نجحت العملية أم فشلت
         }
     };
+
+    // const handleImageUpload = async (e) => {
+    //     const file = e.target.files[0];
+    //     if (!file) return;
+
+    //     const formData = new FormData();
+    //     formData.append("profileImage", file);
+
+    //     try {
+    //         const token = Cookies.get("token");
+    //         const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data",
+    //                 token: `${token}`,
+    //             },
+    //         });
+
+    //         setUserData(response.data.data.user);
+    //         toast.success("Profile picture updated!");
+    //     } catch (error) {
+    //         toast.error("Failed to upload image.");
+    //     }
+    // };
 
     return (
         <>
@@ -339,11 +368,30 @@ export default function Navbar() {
 
                         {userData ? (
                             <div className="flex p-2 sm:flex-row flex-col">
-                                <div className="text-center">
-                                    <img src={userData.profileImage || profileImg1} className='w-[60%] rounded-full m-auto' alt="" />
-                                    <p className='pt-3'>{userData.firstName} {userData.lastName}</p>
-                                    <p className='text-[12px]'>{userData.email}</p>
+                                <div className="text-center relative">
+                                    <img
+                                        src={userData.profileImage || profileImg1}
+                                        className="w-[50%] rounded-full mx-auto"
+                                        alt="User Profile"
+                                    />
+                                    <input
+                                        type="file"
+                                        accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
+                                        className="hidden"
+                                        id="profileUpload"
+                                        // onChange={(e) => handleImageUpload(e)}
+                                    />
+                                    <label
+                                        htmlFor="profileUpload"
+                                        className="cursor-pointer absolute top-[34%] left-10 bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md">
+                                        <i className="fas fa-camera text-white text-[10px]"></i>
+                                    </label>
+
+                                    <p className="pt-2 font-medium">{userData.firstName} {userData.lastName}</p>
+                                    <p className="text-xs text-gray-600">{userData.email}</p>
                                 </div>
+
+
                                 <div className="w-full flex flex-col items-center">
                                     {updateUser != "" ? <div className="text-green-600 text-md mb-4">{updateUser}</div> : ""}
                                     <form onSubmit={handleUpdateProfile} className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
@@ -364,7 +412,7 @@ export default function Navbar() {
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
                                             <input
                                                 type="tel"
-                                                value={userData.phone || "0000000000"}
+                                                value={userData.phone || "phone"}
                                                 onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                                                 className="bg-black w-[80%] mx-2 rounded-2xl border-2 text-white border-gray-500"
                                             />
@@ -376,8 +424,8 @@ export default function Navbar() {
                                             />
                                         </div>
                                         <div className="m-auto">
-                                            <button type="submit" className='bg-[#650000] px-14 py-2 rounded-xl'>
-                                                {t('profilePage.saveChanges')}
+                                            <button type="submit" className='bg-[#650000] px-14 py-2 rounded-xl' disabled={loading}>
+                                                {loading ? t('profilePage.saving') : t('profilePage.saveChanges')}
                                             </button>
                                         </div>
                                     </form>

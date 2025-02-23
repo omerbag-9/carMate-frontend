@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import axios from 'axios'
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const { t, i18n } = useTranslation()
@@ -53,8 +55,11 @@ export default function Register() {
     try {
       let req = await axios.post('https://fb-m90x.onrender.com/auth/signup', val);
       if (req.data.success) {
-        navg('/login');
-      }
+        toast.success(t("auth.checkEmail"), { position: "top-center", autoClose: 3000 });
+        setTimeout(() => {
+            navg('/login');
+        }, 2000); // Delay of 2 seconds to allow toast to show
+    }
     } catch (err) {
       // console.log(err.response?.data?.message);
       setErrMsg(err.response?.data?.message || "An error occurred");
@@ -65,6 +70,7 @@ export default function Register() {
 
 
   return <>
+  <ToastContainer />
     <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white pb-20 lg:pt-0 pt-10">
       {/* Left Section */}
       <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
