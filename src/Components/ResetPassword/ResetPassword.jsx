@@ -8,13 +8,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useNavigate } from 'react-router-dom';
 
 export default function ResetPassword() {
     const { t } = useTranslation();
+    const nvg = useNavigate()
     const [step, setStep] = useState('reset');
     const [code, setCode] = useState(['', '', '', '', '', '']);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [isResending, setIsResending] = useState(false);
 
     const handleChange = (e, index) => {
         const value = e.target.value;
@@ -30,6 +34,7 @@ export default function ResetPassword() {
         }
     };
     const [message, setMessage] = useState("");
+    const [messageType, setMessageType] = useState("");
 
     const formik = useFormik({
         initialValues: {
@@ -79,59 +84,141 @@ export default function ResetPassword() {
     }, [step]);
 
     const handleResend = async () => {
-        if (!canResend) return;
+        if (!canResend || isResending) return;
+        setIsResending(true);
+        const email = Cookies.get("resetEmail");
 
-        let email = Cookies.get("resetEmail"); // ✅ محاولة جلب البريد من الكوكي
-
-        // ✅ لو الكوكي غير موجود، جلب البريد من الفورميك
         if (!email) {
-            email = formik.values.email;
-            if (!email) {
-                setMessage("Email expired, please try again.");
-                setStep("reset"); // يرجع المستخدم لخطوة إدخال البريد
-                return;
-            }
-            Cookies.set("resetEmail", email, { expires: 10 / 1440 }); // ✅ تخزين الإيميل مرة أخرى
+            setMessage("Session expired, please enter your email again.");
+            setMessageType("error"); // ❌ لون الرسالة أحمر للأخطاء
+            setStep("reset");
+            return;
         }
 
         try {
             await axios.post("https://fb-m90x.onrender.com/auth/forget-password", { email });
-            setTimer(30);
-            setCanResend(false);
+
             setMessage("OTP resent successfully.");
+            setMessageType("success"); // ✅ لون الرسالة أخضر للنجاح
+            setCanResend(false);
+            clearInterval(window.resendTimer);
+
+            setTimer(30);
+            window.resendTimer = setInterval(() => {
+                setTimer((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(window.resendTimer);
+                        setCanResend(true);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
         } catch (error) {
             setMessage("Failed to resend OTP. Try again.");
+            setMessageType("error"); // ❌ لون الرسالة أحمر للأخطاء
+        } finally {
+            setIsResending(false);
         }
     };
+
+
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
     };
 
-    const handleVerifyOTP = async () => {
-        const email = Cookies.get("resetEmail");
+    const handleVerifyOTP = async (event) => {
+        event.preventDefault();
+        setIsVerifying(true);
 
+        const email = Cookies.get("resetEmail");
         if (!email) {
-            setMessage("Email expired, please request a new code.");
-            setStep("reset"); // فقط عند انتهاء صلاحية البريد
+            setMessage("Session expired, please request a new code.");
+            setMessageType("error"); // ❌ تحديد اللون الأحمر
+            setStep("reset");
             return;
         }
 
-        const otpCode = code.join(""); // تجميع أرقام OTP
+        const otpCode = code.join("");
+        if (otpCode.length < 6) {
+            setMessage("Please enter the complete OTP.");
+            setMessageType("error"); // ❌ تحديد اللون الأحمر
+            setIsVerifying(false);
+            return;
+        }
 
         try {
             const response = await axios.post("https://fb-m90x.onrender.com/auth/verify", {
                 email,
                 otp: otpCode,
             });
-            
-            setMessage("OTP verified successfully.");
-            setStep("create"); // ✅ إذا كان صحيحًا، ينتقل المستخدم لخطوة إنشاء كلمة مرور جديدة
+
+            if (response.data.success) {
+                setMessage("✅ OTP verified successfully.");
+                setMessageType("success"); // ✅ تحديد اللون الأخضر
+                setStep("create");
+            } else {
+                setMessage("Invalid OTP. Please try again.");
+                setMessageType("error"); // ❌ تحديد اللون الأحمر
+            }
         } catch (error) {
-            setMessage("Invalid OTP. Please try again."); // ❌ يبقى في صفحة التحقق بدون إعادة توجيه
+            setMessage(error.response?.data.message || "Invalid OTP. Please try again.");
+            if (error.response?.data.message == 'Maximum OTP attempts exceeded. Please request a new OTP after 30 seconds.') {
+                setStep("reset");
+            }
+            setMessageType("error"); // ❌ تحديد اللون الأحمر
+        } finally {
+            setIsVerifying(false);
         }
     };
+
+
+    const createPasswordFormik = useFormik({
+        initialValues: {
+            password: "",
+            confirmPassword: "",
+        },
+        validationSchema: Yup.object({
+            password: Yup.string()
+                .matches(
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%?&#]{6,100}$/,
+                    "Password must be at least 6 characters, contain an uppercase letter, a lowercase letter, a number, and a special character (@$!%?&#)."
+                )
+                .required("Password is required"),
+            confirmPassword: Yup.string()
+                .oneOf([Yup.ref("password"), null], "Passwords must match")
+                .required("Confirm Password is required"),
+        }),
+
+        onSubmit: async (values, { setSubmitting }) => {
+            const email = Cookies.get("resetEmail"); // جلب الإيميل من الكوكي
+
+            if (!email) {
+                setMessage("Session expired, please start over.");
+                setStep("reset");
+                return;
+            }
+
+            try {
+                const response = await axios.put("https://fb-m90x.onrender.com/auth/change-password", {
+                    email,
+                    password: values.password,
+                });
+
+                setMessage(response.data.message || "Password reset successful.");
+                Cookies.remove("resetEmail"); // حذف الإيميل من الكوكي بعد النجاح
+                setTimeout(() => {
+                    nvg('/login') // توجيه المستخدم لصفحة تسجيل الدخول
+                }, 2000);
+            } catch (error) {
+                setMessage(error.response?.data?.message || "Something went wrong.");
+            }
+
+            setSubmitting(false);
+        },
+    });
 
 
     return (
@@ -192,7 +279,7 @@ export default function ResetPassword() {
                                 </p>
 
                                 {/* إدخال الكود */}
-                                <form className="space-y-5">
+                                <form className="space-y-5" onSubmit={handleVerifyOTP}>
                                     <div className="flex gap-2 justify-center rtl:flex-row-reverse">
                                         {code.map((digit, i) => (
                                             <input
@@ -206,14 +293,18 @@ export default function ResetPassword() {
                                             />
                                         ))}
                                     </div>
-                                    {message && <p className="text-center text-red-500 mt-3">{message}</p>}
+                                    {message && (
+                                        <p className={`text-center mt-3 ${messageType === "success" ? "text-green-500" : "text-red-500"}`}>
+                                            {message}
+                                        </p>
+                                    )}
                                     {/* رابط إعادة الإرسال */}
                                     <p className="text-sm text-center text-[#EBA4A4]">
                                         <span
                                             className={`underline ${canResend ? "cursor-pointer text-[#EBA4A4]" : "text-gray-500 cursor-not-allowed"}`}
-                                            onClick={handleResend}
+                                            onClick={!isResending ? handleResend : null}
                                         >
-                                            {t('Resend?')}
+                                            {isResending ? "Sending..." : t('Resend?')}
                                         </span>
                                         <span className="text-white no-underline"> {formatTime(timer)} min</span>
                                     </p>
@@ -221,11 +312,14 @@ export default function ResetPassword() {
                                     {/* زر التحقق */}
                                     <div className="flex justify-center items-center w-full">
                                         <button
-                                            onClick={handleVerifyOTP}
+                                            type="submit"
                                             className="bg-[#650000] text-white text-md py-[8px] rounded-xl w-[85%] mt-4"
+                                            disabled={isVerifying}
                                         >
-                                            {t('Verify')}
+                                            {isVerifying ? "Verifying..." : t('Verify')}
                                         </button>
+
+
                                     </div>
                                 </form>
                             </div>
@@ -240,68 +334,57 @@ export default function ResetPassword() {
                             <p className="text-base mb-6">
                                 {t('Please enter a new password. Ensure that your new password is different from the previous one for better security.')}
                             </p>
-                            <form className="space-y-5">
+                            <form onSubmit={createPasswordFormik.handleSubmit} className="space-y-5">
                                 {/* Password Field */}
                                 <div className="relative w-full">
                                     <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 rtl:right-3 ltr:left-3 text-[#5D5D60]"></i>
                                     <input
                                         type={showPassword ? "text" : "password"}
+                                        name="password"
                                         placeholder={t("Password")}
-                                        className="rounded-xl p-3 rtl:pr-10 ltr:pl-10 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60] focus:placeholder-transparent"
+                                        className="rounded-xl p-3 rtl:pr-10 ltr:pl-10 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60]"
+                                        onChange={createPasswordFormik.handleChange}
+                                        onBlur={createPasswordFormik.handleBlur}
+                                        value={createPasswordFormik.values.password}
                                     />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute top-1/2 transform -translate-y-1/2 rtl:left-3 ltr:right-3 text-[#5D5D60] focus:outline-none focus:ring-0"
-                                    >
+                                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute top-1/2 transform -translate-y-1/2 rtl:left-3 ltr:right-3 text-[#5D5D60]">
                                         <i className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
                                     </button>
                                 </div>
+                                {createPasswordFormik.touched.password && createPasswordFormik.errors.password && (
+                                    <p className="text-red-500 text-sm text-center">{createPasswordFormik.errors.password}</p>
+                                )}
 
                                 {/* Confirm Password Field */}
                                 <div className="relative w-full">
                                     <i className="fa-solid fa-lock absolute top-1/2 transform -translate-y-1/2 rtl:right-3 ltr:left-3 text-[#5D5D60]"></i>
                                     <input
                                         type={showConfirmPassword ? "text" : "password"}
+                                        name="confirmPassword"
                                         placeholder={t("Confirm Password")}
-                                        className="rounded-xl p-3 rtl:pr-10 ltr:pl-10 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60] focus:placeholder-transparent"
+                                        className="rounded-xl p-3 rtl:pr-10 ltr:pl-10 text-sm w-full bg-[#232326] border-0 text-white placeholder:text-[#5D5D60]"
+                                        onChange={createPasswordFormik.handleChange}
+                                        onBlur={createPasswordFormik.handleBlur}
+                                        value={createPasswordFormik.values.confirmPassword}
                                     />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute top-1/2 transform -translate-y-1/2 rtl:left-3 ltr:right-3 text-[#5D5D60] focus:outline-none focus:ring-0"
-                                    >
+                                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute top-1/2 transform -translate-y-1/2 rtl:left-3 ltr:right-3 text-[#5D5D60]">
                                         <i className={`fa-solid ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
                                     </button>
                                 </div>
-
-                                {/* Password Requirements List */}
-                                <ul className="text-sm text-gray-400 space-y-1 rtl:text-right ltr:text-left">
-                                    <li className="flex items-center gap-1 rtl:flex-row">
-                                        <div className="w-4 h-4 flex items-center justify-center rounded-full border border-white bg-[#232326]">
-                                            <i className="fa-solid fa-check pt-[1px] text-white text-[8px]"></i>
-                                        </div>
-                                        {t("At least 6 characters")}
-                                    </li>
-                                    <li className="flex items-center gap-1 rtl:flex-row">
-                                        <div className="w-4 h-4 flex items-center justify-center rounded-full border border-white bg-[#232326]">
-                                            <i className="fa-solid fa-check pt-[1px] text-white text-[8px]"></i>
-                                        </div>
-                                        {t("At least one number and one symbol")}
-                                    </li>
-                                    <li className="flex items-center gap-1 rtl:flex-row">
-                                        <div className="w-4 h-4 flex items-center justify-center rounded-full border border-white bg-[#232326]">
-                                            <i className="fa-solid fa-check pt-[1px] text-white text-[8px]"></i>
-                                        </div>
-                                        {t("Must not match your old password")}
-                                    </li>
-                                </ul>
+                                {createPasswordFormik.touched.confirmPassword && createPasswordFormik.errors.confirmPassword && (
+                                    <p className="text-red-500 text-sm text-center">{createPasswordFormik.errors.confirmPassword}</p>
+                                )}
 
                                 {/* Reset Password Button */}
-                                <button className="bg-[#650000] text-white text-md py-[8px] rounded-xl w-full mt-4 focus:outline-none focus:ring-0">
-                                    {t("Reset Password")}
+                                <button
+                                    type="submit"
+                                    className="bg-[#650000] text-white text-md py-[8px] rounded-xl w-full mt-4"
+                                    disabled={createPasswordFormik.isSubmitting}
+                                >
+                                    {createPasswordFormik.isSubmitting ? "Resetting..." : t("Reset Password")}
                                 </button>
                             </form>
+
                         </>
                     )}
                 </div>
