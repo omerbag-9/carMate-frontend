@@ -68,7 +68,11 @@
     "lastNamePlaceholder": "اسم العائلة",
     "phonePlaceholder": "الهاتف",
     "emailPlaceholder": "البريد الإلكتروني",
-    "saveChanges": "حفظ التغييرات"
+    "saveChanges": "حفظ التغييرات",
+    "saving": "جاري الحفظ..."
+  },
+  "auth": {
+    "checkEmail": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني لتفعيله."
   },
   "Welcome To": "مرحبًا بك في",
   "Please Create Your Account": "يرجى إنشاء حسابك",

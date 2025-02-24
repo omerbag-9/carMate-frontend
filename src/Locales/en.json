@@ -67,10 +67,12 @@
 "lastNamePlaceholder": "Last name",
 "phonePlaceholder": "Phone",
 "emailPlaceholder": "Email",
-"saveChanges": "Save Changes"
+"saveChanges": "Save Changes",
+"saving": "Saving..."
 },
-
-  
+"auth": {
+    "checkEmail": "Account created successfully! Please check your email."
+  },  
     "aboutUs": {
       "title": "About Us",
       "description": "CarMate is an innovative platform dedicated to providing smart and personalized solutions for car maintenance and repairs. Focusing on convenience, transparency, and quality, our mission is to connect drivers with trusted, skilled mechanics and services, all within an easy-to-use digital environment.Through our AI-powered diagnostic technology, we ensure that car problems are quickly identified and resolved, offering step-by-step instructions for a seamless experience. Our network of qualified and experienced mechanics is available to deliver top-quality service, either remotely or on-site.We provide a unique experience where drivers can manage all their vehicle details, receive maintenance reminders, and stay on top of their car's health with efficiency. CarMate also offers a secure platform for mechanics to expand their businesses and grow their customer base.With CarMate, your car gets the care it deserves, with total trust and agility." 
