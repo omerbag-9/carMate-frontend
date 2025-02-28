@@ -1,24 +1,94 @@
-import React from 'react'
+import React, { useState } from 'react'
 import UnderLine from '../UnderLine/UnderLine'
 import { useTranslation } from 'react-i18next'
 import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
+import axios from 'axios';
 
 export default function Footer() {
   const { t, i18n } = useTranslation()
   const isRtl = i18n.dir() === 'rtl'
+  const currentLang = i18n.language;
+  const toastMessages = {
+    loginRequired: {
+      en: "You must be logged in to send a comment!",
+      ar: "يجب تسجيل الدخول لإرسال تعليق!",
+    },
+    emptyComment: {
+      en: "Comment cannot be empty!",
+      ar: "لا يمكن ترك التعليق فارغًا!",
+    },
+    success: {
+      en: "Comment sent successfully!",
+      ar: "تم إرسال التعليق بنجاح!",
+    },
+    error: {
+      en: "Failed to send comment!",
+      ar: "فشل في إرسال التعليق!",
+    },
+  };
+  // const handleSendComment = async () => {
+  //   const token = Cookies.get("token");
+
+  //   if (!token) {
+  //     toast.error("You must be logged in to send a comment!", {
+  //       position: "top-center",
+  //       autoClose: 3000,
+  //     });
+  //     return;
+  //   }
+  //   console.log("Comment sent successfully!");
+  // };
+
+  const [reviewContent, setReviewContent] = useState("")
+  const [loading, setLoading] = useState(false);
   const handleSendComment = async () => {
     const token = Cookies.get("token");
 
     if (!token) {
-      toast.error("You must be logged in to send a comment!", {
+      toast.error(toastMessages.loginRequired[currentLang], {
         position: "top-center",
         autoClose: 3000,
       });
       return;
     }
-    console.log("Comment sent successfully!");
+
+    if (!reviewContent.trim()) {
+      toast.error(toastMessages.emptyComment[currentLang], {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await axios.post(
+        "https://fb-m90x.onrender.com/user/reviews",
+        { reviewContent },
+        {
+          headers: { token: `${token}` },
+        }
+      );
+
+      toast.success(toastMessages.success[currentLang], {
+        position: "top-center",
+        autoClose: 3000,
+      });
+
+      setReviewContent("");
+    } catch (error) {
+      toast.error(toastMessages.error[currentLang], {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+
   return <>
     <ToastContainer />
     <div className='bottom-0'>
@@ -58,13 +128,19 @@ export default function Footer() {
           <span>{t('Add Your Opinion Or Any idea')}</span>
           <div className="mt-3">
             <textarea
-              className="bg-black rounded-xl w-56 h-24"
+              className="bg-black rounded-xl w-56 h-24 text-white p-2"
               placeholder={t('message')}
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
             ></textarea>
           </div>
           <div className={`sm:text-end text-center`}>
-            <button onClick={handleSendComment}>
-              <i className={`fa-solid ${isRtl ? 'fa-arrow-left' : 'fa-arrow-right'} bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]`}></i>
+            <button onClick={handleSendComment} disabled={loading} className="relative">
+              {loading ? (
+                <i className="fa-solid fa-ellipsis-h bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]"></i>
+              ) : (
+                <i className={`fa-solid ${isRtl ? 'fa-arrow-left' : 'fa-arrow-right'} bg-[#5d5d60] text-black py-1 px-3 rounded-md border-[1px]`}></i>
+              )}
             </button>
           </div>
         </div>
