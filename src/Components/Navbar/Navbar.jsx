@@ -131,8 +131,7 @@ export default function Navbar() {
             const formData = new FormData();
             formData.append("firstName", userData.firstName);
             formData.append("lastName", userData.lastName);
-            formData.append("phone", userData.phone || "phone"); // تعيين الهاتف إذا لم يكن موجودًا
-
+            formData.append("phone", userData.phone ? userData.phone : "");
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -379,7 +378,7 @@ export default function Navbar() {
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
                                         className="hidden"
                                         id="profileUpload"
-                                        // onChange={(e) => handleImageUpload(e)}
+                                    // onChange={(e) => handleImageUpload(e)}
                                     />
                                     <label
                                         htmlFor="profileUpload"
@@ -410,12 +409,25 @@ export default function Navbar() {
                                             />
                                         </div>
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
-                                            <input
+                                            {/* <input
                                                 type="tel"
                                                 value={userData.phone || "phone"}
                                                 onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                                                 className="bg-black w-[80%] mx-2 rounded-2xl border-2 text-white border-gray-500"
+                                            /> */}
+                                            <input
+                                                type="tel"
+                                                value={userData.phone || ""}
+                                                onChange={(e) => {
+                                                    const onlyNumbers = e.target.value.replace(/\D/g, ""); // السماح بالأرقام فقط
+                                                    setUserData({ ...userData, phone: onlyNumbers });
+                                                }}
+                                                placeholder="Phone"
+                                                className="bg-black w-[80%] mx-2 rounded-2xl border-2 text-white border-gray-500"
+                                                pattern="[0-9]*"
+                                                onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ""))}
                                             />
+
                                             <input
                                                 type="email"
                                                 value={userData.email}

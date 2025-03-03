@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import homeImage from '../../assets/images/homeImg.png'
 import icon1 from '../../assets/images/icon1.png'
 import icon2 from '../../assets/images/icon2.png'
@@ -19,28 +19,44 @@ import { useTranslation } from 'react-i18next'
 import UnderLine from '../UnderLine/UnderLine'
 import { Link } from 'react-router-dom'
 import useEmblaCarousel from "embla-carousel-react";
+import axios from 'axios'
 
 // import "./EmblaCarousel.css";
 export default function Home() {
   const { t } = useTranslation()
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
-    slidesToScroll: 1, // Scroll 1 slide at a time
-    align: "start", // Align to start to fit 3 slides
+    slidesToScroll: 1,
+    align: "start",
   });
+
+  const [reviews, setReviews] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const slides = [1, 2, 3];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
-  const scrollNext = () => emblaApi && emblaApi.scrollNext();
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get("https://fb-m90x.onrender.com/user/reviews");
+        setReviews(response.data.data.reviews);
+      } catch (err) {
+        console.error("Error fetching reviews:", err);
+        setError("Failed to load reviews");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const onSelect = () => {
-    if (emblaApi) setSelectedIndex(emblaApi.selectedScrollSnap());
-  };
+    fetchReviews();
+  }, []);
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   useEffect(() => {
     if (emblaApi) {
-      emblaApi.on("select", onSelect);
+      emblaApi.on("select", () => setSelectedIndex(emblaApi.selectedScrollSnap()));
     }
   }, [emblaApi]);
 
@@ -202,161 +218,55 @@ export default function Home() {
           <p className="font-bold text-xl">{t('What our Users say About us')}</p>
         </div>
         <div className="embla">
-          {/* Embla Container */}
-
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container mb-4">
-              <div className="embla__slide p-6 relative">
-                <div className="flex">
-                  
-                  <div>
-                    <p className="text-2xl">Great Work</p>
+              {reviews.map((review, index) => (
+                <div key={review.id} className="embla__slide p-6 relative">
+                  <div className="flex">
+                    <div>
+                      <p className="text-2xl">{index % 2 === 0 ? "Great Work" : "Good Job"}</p>
+                    </div>
+                    <div className="ltr:ml-auto rtl:mr-auto">
+                      <img src={comma} className="w-10 h-10" alt="Comma Icon" />
+                    </div>
                   </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
+                  <div className="relative px-2">
+                    <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
+                      {review.reviewContent}
+                    </p>
                   </div>
-                </div>
-                <div className="relative px-2">
-                  <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
-                    CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
-                    CarMate ha s completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center relative bottom-0">
-                  <img src={profileImg1} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Leslie Alexander</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="embla__slide p-6 relative">
-                <div className="flex">
-                  <div>
-                    <p className="text-2xl">Good Job</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
+                  <div className="mt-4 flex items-center relative bottom-0">
+                    <img
+                      src={index % 2 === 0 ? profileImg2 : profileImg1}
+                      className="w-12 rounded-full"
+                      alt="User"
+                    />
+                    <div className="ms-5">
+                      <p className="text-[16px]">
+                        {review.author.firstName} {review.author.lastName}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="relative px-4">
-                  <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
-                    CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center relative bottom-0">
-                  <img src={profileImg2} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Dianne Russell</p>
-                  </div>
-                </div>
-              </div>
-              <div className="embla__slide p-6 relative">
-                <div className="flex">
-                  <div>
-                    <p className="text-2xl">Great Work</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
-                  </div>
-                </div>
-                <div className="relative px-2">
-                  <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
-                    CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center relative bottom-0">
-                  <img src={profileImg1} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Leslie Alexander</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="embla__slide p-6 relative">
-                <div className="flex">
-                  <div>
-                    <p className="text-2xl">Good Job</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
-                  </div>
-                </div>
-                <div className="relative px-4">
-                  <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
-                    CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center relative bottom-0">
-                  <img src={profileImg2} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Dianne Russell</p>
-                  </div>
-                </div>
-              </div>
-              <div className="embla__slide p-6 relative">
-                <div className="flex">
-                  <div>
-                    <p className="text-2xl">Great Work</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
-                  </div>
-                </div>
-                <div className="relative px-2">
-                  <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
-                    CarMate has completely changed the way I care for my car. The reminders for oil changes and maintenance have saved me time and money. I feel more confident on the road knowing my car is in great shape.
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center relative bottom-0">
-                  <img src={profileImg1} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Leslie Alexander</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="embla__slide p-6 relative">
-                <div className="flex">
-                  <div>
-                    <p className="text-2xl">Good Job</p>
-                  </div>
-                  <div className="ltr:ml-auto rtl:mr-auto">
-                    <img src={comma} className="w-10 h-10" alt="" />
-                  </div>
-                </div>
-                <div className="relative px-4">
-                  <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
-                    CarMate is a lifesaver! The dashboard warning guide helped me understand an issue with my engine, and I was able to fix it quickly. Highly recommend this app to every car owner!
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center relative bottom-0">
-                  <img src={profileImg2} className="w-12 rounded-full" alt="" />
-                  <div className="ms-5">
-                    <p className="text-[16px]">Dianne Russell</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-
-          {/* Dots and Arrows */}
           <div className="embla__controls">
             <button className="embla__button embla__button--prev" onClick={scrollPrev}>
-              <i class="fa-solid fa-arrow-left ltr:rotate-0 rtl:rotate-180"></i>
+              <i className="fa-solid fa-arrow-left ltr:rotate-0 rtl:rotate-180"></i>
             </button>
             <div className="embla__dots">
-              {slides.map((_, index) => (
+              {reviews.map((_, index) => (
                 <button
                   key={index}
-                  className={`embla__dot ${index === selectedIndex ? 'is-selected' : ''}`}
+                  className={`embla__dot ${index === selectedIndex ? "is-selected" : ""}`}
                   onClick={() => emblaApi && emblaApi.scrollTo(index)}
                 ></button>
               ))}
             </div>
             <button className="embla__button embla__button--next" onClick={scrollNext}>
-              <i class="fa-solid fa-arrow-right ltr:rotate-0 rtl:rotate-180"></i>
+              <i className="fa-solid fa-arrow-right ltr:rotate-0 rtl:rotate-180"></i>
             </button>
           </div>
         </div>
