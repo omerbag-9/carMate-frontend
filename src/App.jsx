@@ -29,7 +29,7 @@ let routers = createBrowserRouter([
       { path: "resetpassword", element: <ResetPassword /> },
       { path: "login", element: <Login /> },
       {path: "marketplace", element: <Marketplace/>},
-      {path: "moredetails", element: <Moredetails/>},
+      {path: "moredetails/:id", element: <Moredetails/>},
       {path: "community", element: <Community/>},
       {path: "notification", element: <Notification/>},
     ]
