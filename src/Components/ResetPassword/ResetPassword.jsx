@@ -204,7 +204,7 @@ export default function ResetPassword() {
             try {
                 const response = await axios.put("https://fb-m90x.onrender.com/auth/change-password", {
                     email,
-                    password: values.password,
+                    newPassword: values.password,
                 });
 
                 setMessage(response.data.message || "Password reset successful.");
