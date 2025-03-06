@@ -60,6 +60,23 @@ export default function Home() {
     }
   }, [emblaApi]);
 
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("https://fb-m90x.onrender.com/seller/getProducts");
+
+        if (response?.data?.status === "success") {
+          setProducts(response.data.data.slice(0, 3)); // عرض أول 3 منتجات فقط
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <div className='mt-3'>
       {/* first part of home */}
@@ -178,40 +195,34 @@ export default function Home() {
       </div>
       {/* sixth part of home */}
       <div className="pt-10 mb-20">
-        <div className="flex mb-4 px-4">
-          <p className='font-bold text-xl'>{t('Some of Product Market Place')}</p>
-          <p className='ltr:ml-auto rtl:mr-auto text-start text-xl'>{t('View All')}<i className="fa-solid fa-angle-right ms-2"></i></p>
-        </div>
-        <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
-          <div className="relative group overflow-hidden w-[100%]">
-            <img src={img1} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
-                <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
-              </div>
-            </div>
-          </div>
-          <div className="relative group overflow-hidden w-[100%]">
-            <img src={img2} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
-                <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
-              </div>
-            </div>
-          </div>
-          <div className="relative group overflow-hidden w-[100%]">
-            <img src={img3} className="w-[90%] h-auto rounded-2xl mx-auto" alt="" />
-            <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                <p className="font-bold text-2xl text-start">{t('Used Car Body')}</p>
-                <p className="text-start">{t('A used car body refers to the exterior frame and panels of a pre-owned vehicle, including components like doors, fenders, bumpers,...')}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex mb-4 px-4">
+        <p className="font-bold text-xl">{t("Some of Product Market Place")}</p>
+        <Link to="/marketplace" className="ltr:ml-auto rtl:mr-auto text-start text-xl">
+          {t("View All")} <i className="fa-solid fa-angle-right ms-2"></i>
+        </Link>
       </div>
+
+      <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
+        {products.length > 0 ? (
+          products.map((product, index) => (
+            <div key={product.id} className="relative group overflow-hidden w-[100%]">
+              {/* الصورة بنفس الحجم المحدد */}
+              <img src={product.mainImage} className="w-[90%] h-auto rounded-2xl mx-auto" alt={product.title} />
+
+              {/* Gradient Overlay */}
+              <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
+                  <p className="font-bold text-2xl text-start">{product.title}</p> {/* عرض العنوان بدون ترجمة */}
+                  <p className="text-start">{product.description}</p> {/* عرض الوصف بدون ترجمة */}
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No products available</p>
+        )}
+      </div>
+    </div>
       {/* seventh part of home */}
       <div className="pt-10 mb-20">
         <div className="flex mb-4">
