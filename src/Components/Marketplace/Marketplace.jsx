@@ -3,13 +3,14 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UnderLine from '../UnderLine/UnderLine';
-
 import img1 from '../../assets/images/image60.png';
 import img2 from '../../assets/images/image58.png';
 import img3 from '../../assets/images/image55.png';
 import img4 from '../../assets/images/img22.png';
 import img5 from '../../assets/images/Image.png';
 import img6 from '../../assets/images/img44.png';
+import MarketplaceProducts from '../MarketplaceProducts/MarketplaceProducts';
+
 
 const images = [img1, img2, img3, img4, img5, img6];
 
@@ -57,7 +58,7 @@ export default function Marketplace() {
         <div className="flex  mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
       
 
-        <div className="flex mt-3 mb-7 flex-wrap sm:w-full justify-center justify-items-center">
+        <div className="search flex mt-3 mb-7 flex-wrap sm:w-full justify-center justify-items-center">
           <div className="w-[80%] relative my-2" dir={isArabic ? 'rtl' : 'ltr'}>
             <p className={`absolute ${isArabic ? 'right-4' : 'left-4'} top-2 text-black`}>
               <i className="fa-solid fa-magnifying-glass"></i>
@@ -87,34 +88,9 @@ export default function Marketplace() {
         </div>
 
         <div className="embla overflow-hidden mb-20" ref={emblaRef}>
-          <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
-            {Array.from({ length: 9 }).map((_, index) => {
-              const image = slides[index % slides.length]; // تكرار الصور عند الحاجة
-              return (
-                <div key={index} className="card embla__slide overflow-hidden relative">
-                  <img className="w-full" src={image} alt="Product" />
-                  <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 lg:pt-[100px]">
-                    <h3>{t('usedCarBodyTitle')}</h3>
-                    <p className="text-sm font-normal line-clamp-3">{t('usedCarBodyDescription')}</p>
-                    <div className="flex justify-around">
-                      <div className="">
-                      <span className="bg-slate-100 rounded-lg text-[#086302] text-[17px] w-28 h-10 px-6 lg:px-3 text-center py-[6px] mt-2">
-                        {t('price')}
-                      </span>
-                      </div>
-                      <div className="">
-                      <Link to="/Moredetails">
-                        <button className="bg-slate-100 rounded-lg text-black text-[17px] ltr:px-11 rtl:px-5 py-1">
-                          {t('moreDetailsbutton')}
-                        </button>
-                      </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          
+
+          <MarketplaceProducts />
 
           <div className="embla__controls py-10">
             <button className="embla__button embla__button--prev" onClick={scrollPrev}>

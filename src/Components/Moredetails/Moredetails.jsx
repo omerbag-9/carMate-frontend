@@ -5,10 +5,41 @@ import img1 from '../../assets/images/image5.png';
 import img2 from '../../assets/images/image56.png';
 import img3 from '../../assets/images/image55.png';
 import person from '../../assets/images/Ellipse25.png';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import  { useEffect, useState } from 'react'
+
+
+
 
 export default function Moredetails() {
+
+let {  id } = useParams();
+
+
   const { t } = useTranslation()
+
+  const [SpecificProduct, setSpecificProduct] = useState([]);
+  const [seller, setseller] = useState([]);
+
+
+  function getSpecificProducts(id) {
+  
+      axios.get(`https://fb-m90x.onrender.com/seller/getSpecificProduct/${id}`)
+      .then((res)=>{
+        setSpecificProduct(res.data.data.product)
+        setseller(res.data.data.seller)
+
+      })
+      .catch((res)=>{})
+  
+  
+  }
+  
+  useEffect(() => {
+    getSpecificProducts(id)
+
+  }, [])
 
   return (
     <div className="container mx-auto px-4">
@@ -25,7 +56,7 @@ export default function Moredetails() {
       <div className="moredetails flex flex-col lg:flex-row my-14 lg:justify-between" dir='ltr'>
         <div className="images mb-6 lg:mb-0 lg:w-[50%] w-full flex flex-col md:items-center md:justify-center justify-center items-center">
           <img
-            src={img3}
+            src={SpecificProduct.mainImage}
             alt="Main product"
             className="w-[72%] object-cover rounded-md 
                lg:ltr:ml-[75px] lg:rtl:mr-[75px] md:mx-auto"
@@ -34,25 +65,25 @@ export default function Moredetails() {
           <div className="flex mt-3 justify-center w-full">
             <img
               className="w-[35%] rounded-md ltr:mr-3"
-              src={img2}
+              src={SpecificProduct.subImages}
               alt="Product side view"
             />
             <img
               className="w-[35%] rounded-md"
-              src={img1}
+              src={SpecificProduct.subImages}
               alt="Product close-up"
             />
           </div>
         </div>
         <div className="info text-center ltr:lg:text-left rtl:lg:text-right lg:w-[50%] w-full" dir='ltr'>
-          <h2 className="text-3xl font-bold mb-3">{t('usedCarBody')}</h2>
+          <h2 className="text-3xl font-bold mb-3">{SpecificProduct.title}</h2>
           <span className="font-bold block lg:inline-block mb-2">{t('category')}</span>
-          <p className="mt-3 lg:text-[19px] sm:text-[15px] lg:font-semibold sm:font-normal">{t('productDescription')}</p>
+          <p className="mt-3 lg:text-[19px] sm:text-[15px] lg:font-semibold sm:font-normal">{SpecificProduct.description}</p>
           <div className="buttons mt-16 flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:mx-20 sm:mx-0 mb-3">
             <span className="bg-slate-50 border-2 border-black rounded-lg text-[#086302] text-[16px] font-bold w-32 py-2 flex items-center justify-center mb-4 lg:mb-0 lg:mr-4">
-              {t('productPrice')}
+             $ {SpecificProduct.price}
             </span>
-            <Link to="/productLink">
+            <Link to={SpecificProduct.productLink}>
               <button className="bg-slate-50 border-2 border-black rounded-lg text-black text-[16px] font-bold px-12 py-2 mx-3">
                 <i className="fa-solid fa-link"></i> {t('productLink')}
               </button>
@@ -76,26 +107,27 @@ export default function Moredetails() {
 
         <div className="sellerContact flex flex-col lg:flex-row items-center lg:items-start mt-20 lg:mt-0">
           <div className="sellerImg ltr:lg:ml-14 rtl:lg:mr-14 mb-5 lg:mb-0 mt-3">
-            <img src={person} alt="seller" className="w-36 h-32 lg:w-40 lg:h-40 object-cover rounded-full mx-auto" />
+            <img src={seller.profilePhoto} alt="seller" className="w-36 h-32 lg:w-40 lg:h-40 object-cover rounded-full mx-auto" />
           </div>
           <div className="socialmedia text-center ltr:lg:text-left rtl:lg:text-start lg:mx-5">
             <p className="pt-5 text-lg lg:text-xl">
               <i className="px-3 fa-regular fa-user"></i>
-              <span className="text-zinc-500 px-3">|</span> {t('sellerName')}
+              <span className="text-zinc-500 px-3">|</span> {seller.firstName} {seller.lastName}
             </p>
             <p className="pt-5 text-lg lg:text-xl flex items-center">
               <i className="px-3 fa-solid fa-m"></i>
               <span className="text-zinc-500 px-3">|</span>
-              {t('sellerEmail')}
+              {seller.email}
             </p>
 
             <p className="pt-5 text-lg lg:text-xl">
               <i className="px-[10px] fa-solid fa-phone text-green-800"></i>
-              <span className="text-zinc-500 px-3">|</span> {t('sellerPhone')}
+              <span className="text-zinc-500 px-3">|</span> {seller.phone}
             </p>
           </div>
         </div>
       </div>
+
     </div>
   );
 }
