@@ -1,13 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import UnderLine from '../UnderLine/UnderLine';
 import img1 from "../../assets/images/ProfilePhoto.png";
 import img2 from "../../assets/images/ProfilePhoto2.png";
 import img3 from "../../assets/images/Ellipse7.png";
-import img4 from "../../assets/images/image62.png";
+import axios from 'axios'; // Make sure axios is installed
+
+// Add headers configuration
+const headers = {
+  token: localStorage.getItem("userToken"),
+  'Content-Type': 'application/json'
+};
 
 // Create Post Popup Component
-const CreatePostPopup = ({ onClose, t }) => {
+const CreatePostPopup = ({ onClose, t, onPostCreated }) => {
+  const [postContent, setPostContent] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleSubmit = async () => {
+    if (!postContent.trim()) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('content', postContent);
+      
+      if (selectedImage) {
+        formData.append('image', selectedImage);
+      }
+      
+      const response = await axios.post('https://fb-m90x.onrender.com/community/createPost', 
+        formData,
+        { 
+          headers: {
+            ...headers,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then((res) => res)
+      .catch((err) => err);
+      
+      if (response.data) {
+        onPostCreated();
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error creating post:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
       <div className="bg-[#232326] rounded-2xl w-[90%] max-w-lg relative">
@@ -17,9 +68,9 @@ const CreatePostPopup = ({ onClose, t }) => {
             <h3 className="text-[#F8F8F8] text-xl">
               {t('Community.createPost.title')}
             </h3>
-        <div className="w-full mx-auto mt-4">
-          <UnderLine />
-        </div>
+            <div className="w-full mx-auto mt-4">
+              <UnderLine />
+            </div>
           </div>
           <span 
             onClick={onClose}
@@ -27,8 +78,6 @@ const CreatePostPopup = ({ onClose, t }) => {
             <i className="fa-solid fa-circle-xmark text-3xl"></i>
           </span>
         </div>
-
-       
         
         {/* User Info */}
         <div className="p-4">
@@ -55,6 +104,8 @@ const CreatePostPopup = ({ onClose, t }) => {
             className="w-full mt-1 bg-transparent text-gray-200 resize-none text-lg border-none focus:ring-0 focus:outline-none min-h-[300px] placeholder-[#C9C9CA]"
             placeholder={t('Community.createPost.placeholder')}
             autoFocus
+            value={postContent}
+            onChange={(e) => setPostContent(e.target.value)}
           />
           
           {/* Media Button */}
@@ -65,15 +116,25 @@ const CreatePostPopup = ({ onClose, t }) => {
                 accept="image/*"
                 className="hidden"
                 title={t('Community.createPost.mediaButton')}
+                onChange={handleFileChange}
               />
               <i className="fa-solid fa-images text-[#BFBFBF] text-2xl"></i>
             </label>
+            {selectedImage && (
+              <div className="text-green-400 text-xs mt-1">
+                Image selected
+              </div>
+            )}
           </div>
         </div>
 
         <div className="p-4">
-          <button className="w-full bg-gray-300  text-black  py-1  rounded-xl font-bold text-xl transition-colors">
-            {t('Community.createPost.postButton')}
+          <button 
+            className={`w-full ${postContent.trim() ? 'bg-gray-300 text-black' : 'bg-gray-500 text-gray-200'} py-1 rounded-xl font-bold text-xl transition-colors`}
+            onClick={handleSubmit}
+            disabled={isSubmitting || !postContent.trim()}
+          >
+            {isSubmitting ? 'Posting...' : t('Community.createPost.postButton')}
           </button>
         </div>
       </div>
@@ -82,36 +143,155 @@ const CreatePostPopup = ({ onClose, t }) => {
 };
 
 export default function Community() {
+  
   const { t } = useTranslation();
   const [showPopup, setShowPopup] = useState(false);
   const [showComments, setShowComments] = useState({});
   const [likedPosts, setLikedPosts] = useState({});
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState({});
+  const [newComments, setNewComments] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch all posts
+  const fetchPosts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('https://fb-m90x.onrender.com/community/getAllPosts', { headers })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (response.data) {
+        setPosts(response.data);
+        const initialLikedState = {};
+        response.data.forEach(post => {
+          initialLikedState[post.id] = post.userHasLiked || false;
+        });
+        setLikedPosts(initialLikedState);
+      }
+    } catch (err) {
+      console.error('Error fetching posts:', err);
+      setError('Failed to load posts. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch comments for a specific post
+  const fetchComments = async (postId) => {
+    try {
+      const response = await axios.get(`https://fb-m90x.onrender.com/comment/comments/${postId}`, { headers })
+        .then((res) => res)
+        .catch((err) => err);
+
+      if (response.data) {
+        setComments(prev => ({
+          ...prev,
+          [postId]: response.data
+        }));
+      }
+    } catch (err) {
+      console.error(`Error fetching comments for post ${postId}:`, err);
+    }
+  };
+
+  // Toggle like status for a post
+  const toggleLike = async (postId) => {
+    try {
+      setLikedPosts(prev => ({
+        ...prev,
+        [postId]: !prev[postId]
+      }));
+
+      const response = await axios.post(`https://fb-m90x.onrender.com/user/LikePost/${postId}`, 
+        { postId: postId },
+        { headers }
+      ).then((res) => res)
+      .catch((err) => err);
+
+      if (response.data) {
+        fetchPosts();
+      }
+    } catch (err) {
+      console.error('Error toggling like:', err);
+      setLikedPosts(prev => ({
+        ...prev,
+        [postId]: !prev[postId]
+      }));
+    }
+  };
+
+  // Submit a new comment
+  const submitComment = async (postId) => {
+    const commentText = newComments[postId];
+    if (!commentText || !commentText.trim()) return;
+
+    try {
+      const response = await axios.post(`https://fb-m90x.onrender.com/comment/comments/${postId}`,
+        { content: commentText },
+        { headers }
+      ).then((res) => res)
+      .catch((err) => err);
+
+      if (response.data) {
+        setNewComments(prev => ({
+          ...prev,
+          [postId]: ''
+        }));
+        fetchComments(postId);
+      }
+    } catch (err) {
+      console.error('Error submitting comment:', err);
+    }
+  };
 
   // Function to toggle comments visibility
   const toggleComments = (postId) => {
+    if (!showComments[postId] && !comments[postId]) {
+      fetchComments(postId);
+    }
+    
     setShowComments(prev => ({
       ...prev,
       [postId]: !prev[postId]
     }));
   };
 
-  // Function to toggle like state
-  const toggleLike = (postId) => {
-    setLikedPosts(prev => ({
+  // Handle comment input change
+  const handleCommentChange = (postId, value) => {
+    setNewComments(prev => ({
       ...prev,
-      [postId]: !prev[postId]
+      [postId]: value
     }));
   };
 
   // Function to handle popup visibility
   const handleShowPopup = () => {
     setShowPopup(true);
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = 'hidden'; 
   };
 
   const handleClosePopup = () => {
     setShowPopup(false);
-    document.body.style.overflow = 'auto'; // Restore scrolling
+    document.body.style.overflow = 'auto'; 
+  };
+
+  // Load posts on component mount
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    return `${Math.floor(diffInSeconds / 86400)} days ago`;
   };
 
   return (
@@ -143,7 +323,7 @@ export default function Community() {
                   className="w-full rounded-xl px-8 pb-3 text-white cursor-pointer bg-black placeholder:text-[#F8F8F8]"
                   type="text"
                   placeholder={t('Community.createPost.placeholder')}
-                  
+                  readOnly
                 />
                 <div className="buttons flex justify-between mt-5">
                   <button className="bg-black text-[#F8F8F8] px-5 py-2 rounded-lg">
@@ -155,190 +335,116 @@ export default function Community() {
                 </div>
               </div>
 
-              {/* Post 1 */}
-              <div className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
-                <div className="profile flex">
-                  <div className="profile-pic w-16">
-                    <img src={img1} alt="" />
-                  </div>
-                  <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
-                    <h3 className="text-lg">{t('Community.posts.post1.author')}</h3>
-                    <span className="text-gray-500">{t('Community.posts.post1.timeAgo')}</span>
-                  </div>
+              {/* Loading and Error States */}
+              {loading && (
+                <div className="text-center py-10 text-white">
+                  <i className="fa-solid fa-spinner fa-spin text-3xl"></i>
+                  <p className="mt-2">Loading posts...</p>
                 </div>
-                <p className="text-lg px-2 pt-5 pb-1">
-                  {t('Community.posts.post1.mainText')} <br />
-                  <p className="px-1">
-                    {t('Community.posts.post1.tips.1')} <br />
-                    {t('Community.posts.post1.tips.2')} <br />
-                    <p className="truncate">
-                      {t('Community.posts.post1.tips.3')} <br />
-                      {t('Community.posts.post1.tips.4')}
-                    </p>
-                  </p>
-                </p>
-                <div className="w-full mx-auto">
-                  <UnderLine />
+              )}
+              
+              {error && (
+                <div className="text-center py-10 text-red-500 bg-[#232326] p-5 rounded-xl">
+                  <i className="fa-solid fa-triangle-exclamation text-2xl"></i>
+                  <p className="mt-2">{error}</p>
                 </div>
-                <div className="buttons mt-5 flex gap-4">
-                  <button 
-                    onClick={() => toggleLike('post1')}
-                    className={`like px-3 py-2 text-lg mr-3 transition-colors ${
-                      likedPosts['post1'] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
-                    }`}
-                  >
-                    <i className={`${likedPosts['post1'] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
-                    521 {t('Community.post.likes')}
-                  </button>
-                  <button 
-                    onClick={() => toggleComments('post1')}
-                    className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
-                  >
-                    <i className="fa-regular fa-comments px-1"></i> 
-                    59 {t('Community.post.comments')}
-                  </button>
-                </div>
-                {showComments['post1'] && (
-                  <div className="comments mt-4">
-                    <div className="add-comment relative">
-                      <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
-                        <img src={img3} alt="" />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder={t('Community.post.writeComment')}
-                        className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
-                        id="comment-post1"
-                      />
+              )}
+
+              {/* Dynamic Posts */}
+              {!loading && !error && posts.map(post => (
+                <div key={post.id} className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
+                  <div className="profile flex">
+                    <div className="profile-pic w-16">
+                      <img src={post.user?.profileImage || img1} alt="" />
+                    </div>
+                    <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
+                      <h3 className="text-lg">{post.user?.name || t('Community.posts.post1.author')}</h3>
+                      <span className="text-gray-500">{formatDate(post.createdAt)}</span>
                     </div>
                   </div>
-                )}
-              </div>
-
-              {/* Post 2 */}
-              <div className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
-                <div className="profile flex">
-                  <div className="profile-pic w-16">
-                    <img src={img1} alt="" />
-                  </div>
-                  <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
-                    <h3 className="text-lg">{t('Community.posts.post2.author')}</h3>
-                    <span className="text-gray-500">{t('Community.posts.post2.timeAgo')}</span>
-                  </div>
-                </div>
-                <p className="text-lg px-2 pt-5 pb-1">
-                  {t('Community.posts.post2.mainText')} <br />
-                  <p className="px-1">
-                    {t('Community.posts.post2.content')}
+                  <p className="text-lg px-2 pt-5 pb-1">
+                    {post.content}
                   </p>
-                </p>
-                <div className="w-full mx-auto">
-                  <UnderLine />
-                </div>
-                <div className="buttons mt-5 flex gap-4">
-                  <button 
-                    onClick={() => toggleLike('post2')}
-                    className={`like border-1 border-white px-3 py-2 text-lg mr-3 transition-colors ${
-                      likedPosts['post2'] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
-                    }`}
-                  >
-                    <i className={`${likedPosts['post2'] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
-                    521 {t('Community.post.likes')}
-                  </button>
-                  <button 
-                    onClick={() => toggleComments('post2')}
-                    className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
-                  >
-                    <i className="fa-regular fa-comments px-1"></i> 
-                    59 {t('Community.post.comments')}
-                  </button>
-                </div>
-                {showComments['post2'] && (
-                  <div className="comments mt-4">
-                    {/* Existing comments */}
-                    <div className="comment flex justify-items-center">
-                      <img className="w-12 h-12 mt-3" src={img1} alt="" />
-                      <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1">
-                        <p className="name font-semibold text-sm">{t('Community.posts.post2.comments.comment1.author')}</p>
-                        <p className="comment-discription text-sm">{t('Community.posts.post2.comments.comment1.text')}</p>
+                  {post.imageUrl && (
+                    <img className="mt-2 mb-4 w-full rounded-lg" src={post.imageUrl} alt="Post image" />
+                  )}
+                  <div className="w-full mx-auto">
+                    <UnderLine />
+                  </div>
+                  <div className="buttons mt-5 flex gap-4">
+                    <button 
+                      onClick={() => toggleLike(post.id)}
+                      className={`like px-3 py-2 text-lg mr-3 transition-colors ${
+                        likedPosts[post.id] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
+                      }`}
+                    >
+                      <i className={`${likedPosts[post.id] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
+                      {post.likeCount || 0} {t('Community.post.likes')}
+                    </button>
+                    <button 
+                      onClick={() => toggleComments(post.id)}
+                      className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
+                    >
+                      <i className="fa-regular fa-comments px-1"></i> 
+                      {post.commentCount || 0} {t('Community.post.comments')}
+                    </button>
+                  </div>
+                  {showComments[post.id] && (
+                    <div className="comments mt-4">
+                      {/* Display existing comments */}
+                      {comments[post.id] && comments[post.id].length > 0 ? (
+                        comments[post.id].map(comment => (
+                          <div key={comment.id} className="comment flex justify-items-center mt-3">
+                            <img className="w-12 h-12 mt-3" src={comment.user?.profileImage || img1} alt="" />
+                            <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1">
+                              <p className="name font-semibold text-sm">{comment.user?.name || 'User'}</p>
+                              <p className="comment-discription text-sm">{comment.content}</p>
+                              <p className="text-xs text-gray-500">{formatDate(comment.createdAt)}</p>
+                            </div>
+                          </div>
+                        ))
+                      ) : comments[post.id] && comments[post.id].length === 0 ? (
+                        <p className="text-gray-400 text-center my-3">No comments yet. Be the first to comment!</p>
+                      ) : (
+                        <div className="text-center py-3">
+                          <i className="fa-solid fa-spinner fa-spin"></i>
+                          <p className="text-sm mt-1">Loading comments...</p>
+                        </div>
+                      )}
+                      
+                      {/* Add comment form */}
+                      <div className="add-comment relative mt-3">
+                        <span className={`absolute top-1/2 transform -translate-y-1/2 ltr:left-3 rtl:right-3 text-black`}>
+                          <img src={img3} alt="" className="w-8 h-8" />
+                        </span>
+                        <div className="flex">
+                          <input
+                            type="text"
+                            placeholder={t('Community.post.writeComment')}
+                            className="w-full border-2 rounded-l-full bg-transparent py-2 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
+                            value={newComments[post.id] || ''}
+                            onChange={(e) => handleCommentChange(post.id, e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && submitComment(post.id)}
+                          />
+                          <button 
+                            className="bg-blue-600 text-white px-4 rounded-r-full"
+                            onClick={() => submitComment(post.id)}
+                          >
+                            <i className="fa-solid fa-paper-plane"></i>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <div className="comment flex justify-items-center mt-3">
-                      <img className="w-12 h-12 mt-3" src={img2} alt="" />
-                      <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1 w-1/2">
-                        <p className="name font-semibold text-sm">{t('Community.posts.post2.comments.comment2.author')}</p>
-                        <p className="comment-discription text-sm">
-                          {t('Community.posts.post2.comments.comment2.text')}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="add-comment relative">
-                      <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
-                        <img src={img3} alt="" />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder={t('Community.post.writeComment')}
-                        className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
-                        id="comment-post2"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              ))}
 
-              {/* Post 3 */}
-              <div className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
-                <div className="profile flex">
-                  <div className="profile-pic w-16">
-                    <img src={img1} alt="" />
-                  </div>
-                  <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
-                    <h3 className="text-lg">{t('Community.posts.post3.author')}</h3>
-                    <span className="text-gray-500">{t('Community.posts.post3.timeAgo')}</span>
-                  </div>
+              {/* Show message if no posts */}
+              {!loading && !error && posts.length === 0 && (
+                <div className="text-center py-10 text-white bg-[#232326] p-5 rounded-xl">
+                  <p>No posts yet. Be the first to create a post!</p>
                 </div>
-                <p className="text-lg px-2 pt-5 pb-1">
-                  {t('Community.posts.post3.mainText')}
-                </p>
-                <img className="mt-2 mb-4 w-full" src={img4} alt="" />
-                <div className="w-full mx-auto">
-                  <UnderLine />
-                </div>
-                <div className="buttons mt-5 flex gap-4">
-                  <button 
-                    onClick={() => toggleLike('post3')}
-                    className={`like border-1 border-white px-3 py-2 text-lg mr-3 transition-colors ${
-                      likedPosts['post3'] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
-                    }`}
-                  >
-                    <i className={`${likedPosts['post3'] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
-                    521 {t('Community.post.likes')}
-                  </button>
-                  <button 
-                    onClick={() => toggleComments('post3')}
-                    className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
-                  >
-                    <i className="fa-regular fa-comments px-1"></i> 
-                    59 {t('Community.post.comments')}
-                  </button>
-                </div>
-                {showComments['post3'] && (
-                  <div className="comments mt-4">
-                    <div className="add-comment relative">
-                      <span className={`absolute top-[85px] ltr:left-3 rtl:right-3 text-black`}>
-                        <img src={img3} alt="" />
-                      </span>
-                      <input
-                        type="text"
-                        placeholder={t('Community.post.writeComment')}
-                        className="w-full border-2 rounded-full mt-20 bg-transparent py-3 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
-                        id="comment-post3"
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
 
             {/* Side Panel (Hidden on Mobile) */}
@@ -351,7 +457,6 @@ export default function Community() {
               </h2>
               <p className="my-5">{t('Community.sidePanel.welcome')}</p>
 
-              
               <div className="community">
                 <h3 className="text-2xl mt-12">
                   {t('Community.sidePanel.communityTitle')}
@@ -362,7 +467,7 @@ export default function Community() {
                 <p className="text-center">{t('Community.sidePanel.communityDescription')}</p>
               </div>
 
-              <div className="community-rules mt-12  hidden md:block">
+              <div className="community-rules mt-12 hidden md:block">
                 <h3 className="text-2xl mt-20">
                   {t('Community.sidePanel.rules.title')}
                   <div className="w-1/2 mx-auto">
@@ -376,15 +481,15 @@ export default function Community() {
                 </ul>
               </div>
             </div>
-
-
-
           </div>
         </div>
       </div>
 
       {/* Popup */}
-      {showPopup && <CreatePostPopup onClose={handleClosePopup} t={t} />}
+      {showPopup && <CreatePostPopup onClose={handleClosePopup} t={t} onPostCreated={fetchPosts} />}
     </>
   );
 }
+
+
+
