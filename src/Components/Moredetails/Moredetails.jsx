@@ -19,7 +19,14 @@ let {  id } = useParams();
 
   const { t } = useTranslation()
 
-  const [SpecificProduct, setSpecificProduct] = useState([]);
+  const [SpecificProduct, setSpecificProduct] = useState({
+    mainImage: '',
+    subImages: [],  // Initialize subImages as an empty array
+    title: '',
+    description: '',
+    price: '',
+    productLink: ''
+  });
   const [seller, setseller] = useState([]);
 
 
@@ -55,24 +62,25 @@ let {  id } = useParams();
 
       <div className="moredetails flex flex-col lg:flex-row my-14 lg:justify-between" dir='ltr'>
         <div className="images mb-6 lg:mb-0 lg:w-[50%] w-full flex flex-col md:items-center md:justify-center justify-center items-center">
-          <img
-            src={SpecificProduct.mainImage}
-            alt="Main product"
-            className="w-[72%] object-cover rounded-md 
-               lg:ltr:ml-[75px] lg:rtl:mr-[75px] md:mx-auto"
-          />
+          <div className="relative w-[72%] lg:ml-[75px]">
+            <img
+              src={SpecificProduct.mainImage}
+              alt="Main product"
+              className="w-full object-cover rounded-md"
+            />
 
-          <div className="flex mt-3 justify-center w-full">
-            <img
-              className="w-[35%] rounded-md ltr:mr-3"
-              src={SpecificProduct.subImages}
-              alt="Product side view"
-            />
-            <img
-              className="w-[35%] rounded-md"
-              src={SpecificProduct.subImages}
-              alt="Product close-up"
-            />
+            <div className="flex mt-3 justify-center gap-2">
+              {SpecificProduct.subImages && 
+                SpecificProduct.subImages.slice(0, 2).map((image, index) => (
+                  <img
+                    key={index}
+                    className="w-[48%] rounded-md"
+                    src={image}
+                    alt={`Product view ${index + 1}`}
+                  />
+                ))
+              }
+            </div>
           </div>
         </div>
         <div className="info text-center ltr:lg:text-left rtl:lg:text-right lg:w-[50%] w-full" dir='ltr'>
