@@ -105,6 +105,8 @@
       "marketplaceDescription": "Shop quality brakes, lights, and essential parts with ease, all from trusted sellers to keep your car running perfectly.",
       "searchPlaceholder": "Search ...",
       "categories": "Categories",
+      "noproductsfound": "No Products Found",
+      "noproductsavailable": "No Products Available",
       "carParts":"Car Parts",
       "liquids":"Liquids",
       "carCare":"Car Care",

@@ -5,11 +5,17 @@ import img1 from "../../assets/images/ProfilePhoto.png";
 import img2 from "../../assets/images/ProfilePhoto2.png";
 import img3 from "../../assets/images/Ellipse7.png";
 import axios from 'axios'; // Make sure axios is installed
+import Cookies from "js-cookie";
 
 // Add headers configuration
+const getCookie = (name) => {
+  const cookies = document.cookie.split("; ");
+  const cookie = cookies.find(row => row.startsWith(name + "="));
+  return cookie ? cookie.split("=")[1] : null;
+};
 const headers = {
-  token: localStorage.getItem("userToken"),
-  'Content-Type': 'application/json'
+  token: getCookie("token"),
+  "Content-Type": "application/json"
 };
 
 // Create Post Popup Component
@@ -17,41 +23,57 @@ const CreatePostPopup = ({ onClose, t, onPostCreated }) => {
   const [postContent, setPostContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+// Create Post
+const handleSubmit = async () => {
+  if (!postContent || !postContent.trim()) {
+    console.warn("Content is empty!");
+    return;
+  }
 
-  const handleSubmit = async () => {
-    if (!postContent.trim()) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-      const formData = new FormData();
-      formData.append('content', postContent);
-      
-      if (selectedImage) {
-        formData.append('image', selectedImage);
+  setIsSubmitting(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("postContent", postContent.trim()); 
+
+    //  Image Upload
+    if (selectedImage) {
+      if (selectedImage instanceof File) {
+        formData.append("images", selectedImage); 
+      } else {
+        console.warn("selectedImage is not a valid File object");
       }
-      
-      const response = await axios.post('https://fb-m90x.onrender.com/community/createPost', 
-        formData,
-        { 
-          headers: {
-            ...headers,
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      ).then((res) => res)
-      .catch((err) => err);
-      
-      if (response.data) {
-        onPostCreated();
-        onClose();
-      }
-    } catch (error) {
-      console.error('Error creating post:', error);
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    const response = await axios.post(
+      "https://fb-m90x.onrender.com/community/createPost",
+      formData,
+      {
+        headers: {
+          ...headers,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(" Response:", response.data);
+
+    if (response.data) {
+      onPostCreated();
+      onClose();
+    }
+  } catch (error) {
+    console.error("Error creating post:", error.response?.data || error.message);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -149,53 +171,69 @@ export default function Community() {
   const [showComments, setShowComments] = useState({});
   const [likedPosts, setLikedPosts] = useState({});
   const [posts, setPosts] = useState([]);
+  const [users, setUsers] = useState([]);
   const [comments, setComments] = useState({});
-  const [newComments, setNewComments] = useState({});
+  const [commentContent, setcommentContent] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Fetch all posts
-  const fetchPosts = async () => {
+  const fetchPosts = async (page = 1) => {
     try {
-      setLoading(true);
-      const response = await axios.get('https://fb-m90x.onrender.com/community/getAllPosts', { headers })
-        .then((res) => res)
-        .catch((err) => err);
+        setLoading(page === 1);
+        setIsLoadingMore(page > 1);
+        
+        const response = await axios.get(
+            `https://fb-m90x.onrender.com/community/getAllPosts?page=${page}&size=10`, 
+            { headers }
+        );
 
-      if (response.data) {
-        setPosts(response.data);
-        const initialLikedState = {};
-        response.data.forEach(post => {
-          initialLikedState[post.id] = post.userHasLiked || false;
-        });
-        setLikedPosts(initialLikedState);
-      }
+        console.log('Fetched API Response:', response.data);
+
+        if (Array.isArray(response.data.data)) {
+            setPosts(prev => 
+                page === 1 
+                ? [...response.data.data] 
+                : [...prev, ...response.data.data]
+            );
+            setHasMore(response.data.data.length > 0);
+        } else {
+            console.error("Unexpected response format:", response.data);
+            setError("Invalid data format received from the server.");
+        }
     } catch (err) {
-      console.error('Error fetching posts:', err);
-      setError('Failed to load posts. Please try again later.');
+        console.error('Error fetching posts:', err);
+        setError('Failed to load posts. Please try again later.');
     } finally {
-      setLoading(false);
+        setLoading(false);
+        setIsLoadingMore(false);
     }
-  };
+};
 
   // Fetch comments for a specific post
   const fetchComments = async (postId) => {
     try {
-      const response = await axios.get(`https://fb-m90x.onrender.com/comment/comments/${postId}`, { headers })
-        .then((res) => res)
-        .catch((err) => err);
-
-      if (response.data) {
+      const response = await axios.get(
+        `https://fb-m90x.onrender.com/comment/comments/${postId}`,
+        { headers }
+      );
+  
+      if (response.data.status === "success") {
         setComments(prev => ({
           ...prev,
-          [postId]: response.data
+          [postId]: response.data.data.comments // ✅ Fix here
         }));
+        
+        console.log(`Comments for Post ${postId}:`, response.data.data.comments); // Debugging
       }
     } catch (err) {
-      console.error(`Error fetching comments for post ${postId}:`, err);
+      console.error("Error fetching comments:", err.response?.data || err);
     }
   };
-
+  
   // Toggle like status for a post
   const toggleLike = async (postId) => {
     try {
@@ -224,27 +262,27 @@ export default function Community() {
 
   // Submit a new comment
   const submitComment = async (postId) => {
-    const commentText = newComments[postId];
-    if (!commentText || !commentText.trim()) return;
-
+    const commentText = commentContent[postId]?.trim();
+    if (!commentText) return;
+  
     try {
-      const response = await axios.post(`https://fb-m90x.onrender.com/comment/comments/${postId}`,
-        { content: commentText },
+      await axios.post(
+        `https://fb-m90x.onrender.com/comment/comments/${postId}`,
+        { commentContent: commentText },
         { headers }
-      ).then((res) => res)
-      .catch((err) => err);
-
-      if (response.data) {
-        setNewComments(prev => ({
-          ...prev,
-          [postId]: ''
-        }));
-        fetchComments(postId);
-      }
+      );
+  
+      setcommentContent(prev => ({
+        ...prev,
+        [postId]: '' // Clear input field
+      }));
+  
+      fetchComments(postId); // ✅ Fetch updated comments list
     } catch (err) {
-      console.error('Error submitting comment:', err);
+      console.error("Error submitting comment:", err.response?.data || err);
     }
   };
+
 
   // Function to toggle comments visibility
   const toggleComments = (postId) => {
@@ -260,7 +298,7 @@ export default function Community() {
 
   // Handle comment input change
   const handleCommentChange = (postId, value) => {
-    setNewComments(prev => ({
+    setcommentContent(prev => ({
       ...prev,
       [postId]: value
     }));
@@ -282,6 +320,13 @@ export default function Community() {
     fetchPosts();
   }, []);
 
+  // Load comments on component mount
+  useEffect(() => {
+    if (posts.length > 0) {
+      posts.forEach((post) => fetchComments(post.id));
+    }
+  }, [posts]);
+
   // Format date for display
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -293,6 +338,33 @@ export default function Community() {
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
     return `${Math.floor(diffInSeconds / 86400)} days ago`;
   };
+
+  // Add load more function
+  const loadMore = () => {
+    if (!isLoadingMore && hasMore) {
+        setCurrentPage(prev => prev + 1);
+        fetchPosts(currentPage + 1);
+    }
+};
+
+// Add intersection observer for infinite scroll
+useEffect(() => {
+    const observer = new IntersectionObserver(
+        entries => {
+            if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+                loadMore();
+            }
+        },
+        { threshold: 1.0 }
+    );
+
+    const target = document.getElementById('load-more-trigger');
+    if (target) observer.observe(target);
+
+    return () => {
+        if (target) observer.unobserve(target);
+    };
+}, [hasMore, isLoadingMore]);
 
   return (
     <>
@@ -350,94 +422,98 @@ export default function Community() {
                 </div>
               )}
 
-              {/* Dynamic Posts */}
-              {!loading && !error && posts.map(post => (
-                <div key={post.id} className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
-                  <div className="profile flex">
-                    <div className="profile-pic w-16">
-                      <img src={post.user?.profileImage || img1} alt="" />
-                    </div>
-                    <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
-                      <h3 className="text-lg">{post.user?.name || t('Community.posts.post1.author')}</h3>
-                      <span className="text-gray-500">{formatDate(post.createdAt)}</span>
-                    </div>
-                  </div>
-                  <p className="text-lg px-2 pt-5 pb-1">
-                    {post.content}
-                  </p>
-                  {post.imageUrl && (
-                    <img className="mt-2 mb-4 w-full rounded-lg" src={post.imageUrl} alt="Post image" />
-                  )}
-                  <div className="w-full mx-auto">
-                    <UnderLine />
-                  </div>
-                  <div className="buttons mt-5 flex gap-4">
-                    <button 
-                      onClick={() => toggleLike(post.id)}
-                      className={`like px-3 py-2 text-lg mr-3 transition-colors ${
-                        likedPosts[post.id] ? 'bg-blue-500 text-white' : 'bg-transparent border-1 border-white text-white'
-                      }`}
-                    >
-                      <i className={`${likedPosts[post.id] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
-                      {post.likeCount || 0} {t('Community.post.likes')}
-                    </button>
-                    <button 
-                      onClick={() => toggleComments(post.id)}
-                      className="like border-1 border-white bg-transparent px-3 py-2 text-lg ml-3"
-                    >
-                      <i className="fa-regular fa-comments px-1"></i> 
-                      {post.commentCount || 0} {t('Community.post.comments')}
-                    </button>
-                  </div>
-                  {showComments[post.id] && (
-                    <div className="comments mt-4">
-                      {/* Display existing comments */}
-                      {comments[post.id] && comments[post.id].length > 0 ? (
-                        comments[post.id].map(comment => (
-                          <div key={comment.id} className="comment flex justify-items-center mt-3">
-                            <img className="w-12 h-12 mt-3" src={comment.user?.profileImage || img1} alt="" />
-                            <div className="comment-info mt-2 ml-2 border-2 rounded-lg px-2 py-1">
-                              <p className="name font-semibold text-sm">{comment.user?.name || 'User'}</p>
-                              <p className="comment-discription text-sm">{comment.content}</p>
-                              <p className="text-xs text-gray-500">{formatDate(comment.createdAt)}</p>
-                            </div>
-                          </div>
-                        ))
-                      ) : comments[post.id] && comments[post.id].length === 0 ? (
-                        <p className="text-gray-400 text-center my-3">No comments yet. Be the first to comment!</p>
-                      ) : (
-                        <div className="text-center py-3">
-                          <i className="fa-solid fa-spinner fa-spin"></i>
-                          <p className="text-sm mt-1">Loading comments...</p>
-                        </div>
-                      )}
-                      
-                      {/* Add comment form */}
-                      <div className="add-comment relative mt-3">
-                        <span className={`absolute top-1/2 transform -translate-y-1/2 ltr:left-3 rtl:right-3 text-black`}>
-                          <img src={img3} alt="" className="w-8 h-8" />
-                        </span>
-                        <div className="flex">
-                          <input
-                            type="text"
-                            placeholder={t('Community.post.writeComment')}
-                            className="w-full border-2 rounded-l-full bg-transparent py-2 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
-                            value={newComments[post.id] || ''}
-                            onChange={(e) => handleCommentChange(post.id, e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && submitComment(post.id)}
-                          />
-                          <button 
-                            className="bg-blue-600 text-white px-4 rounded-r-full"
-                            onClick={() => submitComment(post.id)}
-                          >
-                            <i className="fa-solid fa-paper-plane"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+   
+      {/* Dynamic Posts */}
+      {!loading && !error && posts.map(post => {
+  // Fetch user data based on userId (assumes you have a users state)
+  const user = posts?.find(u => u.id === post.userId) || {}; 
+
+  return (
+    <div key={post.id} className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
+      <div className="profile flex">
+        <div className="profile-pic w-16">
+          <img src={user.profileImage || img1} alt="Profile" />
+        </div>
+        <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
+          <h3 className="text-lg">{user.firstName || 'Unknown User'}</h3>
+          <span className="text-gray-500">{formatDate(post.createdAt)}</span>
+        </div>
+      </div>
+      
+      <p className="mt-3">{post.postContent}</p>
+
+      {post.images?.length > 0 && (
+        <div className="mt-3">
+          {post.images.map((image, index) => (
+            <img key={index} src={image} alt="Post" className="rounded-lg w-full" />
+          ))}
+        </div>
+      )}
+
+      <div className="buttons mt-5 flex gap-4">
+        <button 
+          onClick={() => toggleLike(post.id)}
+          className={`like px-3 py-2 text-lg transition-colors ${
+            likedPosts[post.id] ? 'bg-blue-500 text-white' : 'bg-transparent border border-white text-white'
+          }`}
+        >
+          <i className={`${likedPosts[post.id] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
+          {(post.likes || []).length} {t('Community.post.likes')}
+        </button>
+        
+        <button 
+          onClick={() => toggleComments(post.id)}
+          className="like border border-white bg-transparent px-3 py-2 text-lg"
+        >
+          <i className="fa-regular fa-comments px-1"></i> 
+          {Number(post.comment) || 0} {t('Community.post.comments')}
+        </button>
+      </div>
+
+      {showComments[post.id] && (
+  <div className="comments mt-4">
+    {comments[post.id]?.length > 0 ? (
+      comments[post.id].map(comment => (
+        <div key={comment.id} className="comment flex mt-3 border-b border-gray-700 pb-2">
+          <img className="w-10 h-10 rounded-full mr-3" src={comment.user?.profileImage || img1} alt="User" />
+          <div>
+            <p className="text-sm font-semibold">{comment.user?.name || 'User'}</p>
+            <p className="text-gray-400">{comment.commentContent}</p>  {/* ✅ Fix: Ensure correct field */}
+            <p className="text-xs text-gray-500">{formatDate(comment.createdAt)}</p>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-400 text-center my-3">No comments yet. Be the first to comment!</p>
+    )}
+  
+
+          <div className="add-comment relative mt-3">
+            <span className="absolute top-1/2 transform -translate-y-1/2 ltr:left-3 rtl:right-3 text-black">
+              <img src={img3} alt="User" className="w-8 h-8" />
+            </span>
+            <div className="flex">
+              <input
+                type="text"
+                placeholder={t('Community.post.writeComment')}
+                className="w-full border-2 rounded-l-full bg-transparent py-2 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
+                value={commentContent[post.id] || ''}
+                onChange={(e) => handleCommentChange(post.id, e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && submitComment(post.id)}
+              />
+              <button 
+                className="bg-blue-600 text-white px-4 rounded-r-full"
+                onClick={() => submitComment(post.id)}
+              >
+                <i className="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+})}
 
               {/* Show message if no posts */}
               {!loading && !error && posts.length === 0 && (
@@ -487,6 +563,7 @@ export default function Community() {
 
       {/* Popup */}
       {showPopup && <CreatePostPopup onClose={handleClosePopup} t={t} onPostCreated={fetchPosts} />}
+      <div id="load-more-trigger" className="h-1"></div>
     </>
   );
 }
