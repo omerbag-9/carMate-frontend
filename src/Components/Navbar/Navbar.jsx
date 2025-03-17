@@ -92,7 +92,12 @@ export default function Navbar() {
         navigate("/login");
     }
 
-    const [userData, setUserData] = useState(null); // تخزين بيانات المستخدم
+    const [userData, setUserData] = useState({
+        profilePhoto: "/default-avatar.png",
+        firstName: "",
+        lastName: "",
+        email: "",
+    }); // تخزين بيانات المستخدم
     const actions = [
         {
             name: t('navbar.your profile'),
@@ -153,28 +158,37 @@ export default function Navbar() {
         }
     };
 
-    // const handleImageUpload = async (e) => {
-    //     const file = e.target.files[0];
-    //     if (!file) return;
-
-    //     const formData = new FormData();
-    //     formData.append("profileImage", file);
-
-    //     try {
-    //         const token = Cookies.get("token");
-    //         const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
-    //             headers: {
-    //                 "Content-Type": "multipart/form-data",
-    //                 token: `${token}`,
-    //             },
-    //         });
-
-    //         setUserData(response.data.data.user);
-    //         toast.success("Profile picture updated!");
-    //     } catch (error) {
-    //         toast.error("Failed to upload image.");
-    //     }
-    // };
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0]; 
+        if (!file) return; 
+    
+        setLoading(true); 
+    
+        try {
+            const token = Cookies.get("token");
+            const formData = new FormData();
+            formData.append("profilePhoto", file);
+    
+            const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    token: `${token}`
+                }
+            });
+    
+            setUserData((prev) => ({
+                ...prev,
+                profilePhoto: response.data.data.user.profilePhoto
+            }));
+    
+            setUpdateUser("Profile picture updated successfully!");
+            setTimeout(() => setUpdateUser(""), 3000);
+        } catch (error) {
+            setUpdateUser("Failed to update profile picture!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
@@ -234,7 +248,7 @@ export default function Navbar() {
                                                             <MenuButton className="relative flex max-w-xs items-center text-sm mx-auto focus:outline-none">
                                                                 <img
                                                                     className="h-8 w-8 rounded-full"
-                                                                    src={user.imageUrl}
+                                                                    src={userData.profilePhoto}
                                                                     alt="Profile"
                                                                 />
                                                             </MenuButton>
@@ -316,7 +330,7 @@ export default function Navbar() {
                                                 <div className="shrink-0">
                                                     <img
                                                         className="h-10 w-10 rounded-full"
-                                                        src={user.imageUrl}
+                                                        src={userData.profilePhoto}
                                                         alt="User Profile"
                                                     />
                                                 </div>
@@ -369,8 +383,8 @@ export default function Navbar() {
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center relative">
                                     <img
-                                        src={userData.profileImage || profileImg1}
-                                        className="w-[50%] rounded-full mx-auto"
+                                        src={userData.profilePhoto || "/default-avatar.png"}
+                                        className="w-[75px] h-[75px] rounded-full mx-auto"
                                         alt="User Profile"
                                     />
                                     <input
@@ -378,7 +392,7 @@ export default function Navbar() {
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
                                         className="hidden"
                                         id="profileUpload"
-                                    // onChange={(e) => handleImageUpload(e)}
+                                    onChange={(e) => handleImageUpload(e)}
                                     />
                                     <label
                                         htmlFor="profileUpload"
