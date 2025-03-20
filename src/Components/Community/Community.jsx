@@ -179,6 +179,7 @@ export default function Community() {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Fetch all posts
   const fetchPosts = async (page = 1) => {
@@ -224,10 +225,20 @@ export default function Community() {
       if (response.data.status === "success") {
         setComments(prev => ({
           ...prev,
-          [postId]: response.data.data.comments // ✅ Fix here
+          [postId]: {
+            comments: response.data.data.comments,
+            totalComments: response.data.data.totalComments
+          }
         }));
         
-        console.log(`Comments for Post ${postId}:`, response.data.data.comments); // Debugging
+        // Update posts with new comment count
+        setPosts(prevPosts => 
+          prevPosts.map(post => 
+            post.id === postId 
+              ? { ...post, comment: response.data.data.totalComments }
+              : post
+          )
+        );
       }
     } catch (err) {
       console.error("Error fetching comments:", err.response?.data || err);
@@ -237,22 +248,46 @@ export default function Community() {
   // Toggle like status for a post
   const toggleLike = async (postId) => {
     try {
+      // Optimistically update UI
       setLikedPosts(prev => ({
         ...prev,
         [postId]: !prev[postId]
       }));
 
-      const response = await axios.post(`https://fb-m90x.onrender.com/user/LikePost/${postId}`, 
-        { postId: postId },
-        { headers }
-      ).then((res) => res)
-      .catch((err) => err);
+      const response = await axios.patch(
+        `https://fb-m90x.onrender.com/user/LikePost/${postId}`,
+        {},  // Empty body since postId is in URL
+        { 
+          headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
-      if (response.data) {
-        fetchPosts();
+      if (response.data.status === "success") {
+        // Update posts with new likes count
+        setPosts(prevPosts => 
+          prevPosts.map(post => {
+            if (post.id === postId) {
+              return {
+                ...post,
+                likes: response.data.data.likes // Update with new likes array from response
+              };
+            }
+            return post;
+          })
+        );
+      } else {
+        // Revert like state if request wasn't successful
+        setLikedPosts(prev => ({
+          ...prev,
+          [postId]: !prev[postId]
+        }));
       }
     } catch (err) {
       console.error('Error toggling like:', err);
+      // Revert like state on error
       setLikedPosts(prev => ({
         ...prev,
         [postId]: !prev[postId]
@@ -326,6 +361,40 @@ export default function Community() {
       posts.forEach((post) => fetchComments(post.id));
     }
   }, [posts]);
+
+  // Add this useEffect to initialize likes state
+  useEffect(() => {
+    if (posts.length > 0) {
+      const initialLikedState = {};
+      posts.forEach(post => {
+        initialLikedState[post.id] = post.likes?.includes(getCookie("token")) || false;
+      });
+      setLikedPosts(initialLikedState);
+    }
+  }, [posts]);
+
+  // Add this function to fetch current user data
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await axios.get('https://fb-m90x.onrender.com/user/myprofile', { headers });
+      
+      if (response.data.status === "success" && response.data.data.user) {
+        // Only get the profilePhoto from the response
+        const userProfilePhoto = response.data.data.user.profilePhoto[0] || null;
+        setCurrentUser({
+          profilePhoto: userProfilePhoto // Keep it as an array to maintain consistency
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching user profile:', err);
+      setCurrentUser(null);
+    }
+  };
+
+  // Add this useEffect after your other useEffects
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
 
   // Format date for display
   const formatDate = (dateString) => {
@@ -424,96 +493,127 @@ useEffect(() => {
 
    
       {/* Dynamic Posts */}
-      {!loading && !error && posts.map(post => {
-  // Fetch user data based on userId (assumes you have a users state)
-  const user = posts?.find(u => u.id === post.userId) || {}; 
-
-  return (
-    <div key={post.id} className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
-      <div className="profile flex">
-        <div className="profile-pic w-16">
-          <img src={user.profileImage || img1} alt="Profile" />
-        </div>
-        <div className="info mt-2 ml-2 ltr:ml-3 rtl:mr-3">
-          <h3 className="text-lg">{user.firstName || 'Unknown User'}</h3>
-          <span className="text-gray-500">{formatDate(post.createdAt)}</span>
-        </div>
+      {!loading && !error && posts.map(post => (
+  <div key={post.id} className="post text-white bg-[#232326] p-5 w-full mx-auto my-5 rounded-xl">
+    {/* User Profile Section */}
+    <div className="profile flex items-center">
+      <div className="profile-pic w-16 h-16 rounded-full overflow-hidden">
+        <img 
+          src={post.user?.profilePhoto?.[0] || img1} 
+          alt="Profile" 
+          className="w-full h-full object-cover"
+        />
       </div>
-      
-      <p className="mt-3">{post.postContent}</p>
-
-      {post.images?.length > 0 && (
-        <div className="mt-3">
-          {post.images.map((image, index) => (
-            <img key={index} src={image} alt="Post" className="rounded-lg w-full" />
-          ))}
-        </div>
-      )}
-
-      <div className="buttons mt-5 flex gap-4">
-        <button 
-          onClick={() => toggleLike(post.id)}
-          className={`like px-3 py-2 text-lg transition-colors ${
-            likedPosts[post.id] ? 'bg-blue-500 text-white' : 'bg-transparent border border-white text-white'
-          }`}
-        >
-          <i className={`${likedPosts[post.id] ? 'fas' : 'far'} fa-thumbs-up px-1`}></i> 
-          {(post.likes || []).length} {t('Community.post.likes')}
-        </button>
-        
-        <button 
-          onClick={() => toggleComments(post.id)}
-          className="like border border-white bg-transparent px-3 py-2 text-lg"
-        >
-          <i className="fa-regular fa-comments px-1"></i> 
-          {Number(post.comment) || 0} {t('Community.post.comments')}
-        </button>
+      <div className="info ml-4">
+        <h3 className="text-lg font-semibold">
+          {`${post.user?.firstName || ''} ${post.user?.lastName || ''}`}
+        </h3>
+        <span className="text-gray-500 text-sm">{formatDate(post.createdAt)}</span>
       </div>
-
-      {showComments[post.id] && (
-  <div className="comments mt-4">
-    {comments[post.id]?.length > 0 ? (
-      comments[post.id].map(comment => (
-        <div key={comment.id} className="comment flex mt-3 border-b border-gray-700 pb-2">
-          <img className="w-10 h-10 rounded-full mr-3" src={comment.user?.profileImage || img1} alt="User" />
-          <div>
-            <p className="text-sm font-semibold">{comment.user?.name || 'User'}</p>
-            <p className="text-gray-400">{comment.commentContent}</p>  {/* ✅ Fix: Ensure correct field */}
-            <p className="text-xs text-gray-500">{formatDate(comment.createdAt)}</p>
-          </div>
-        </div>
-      ))
-    ) : (
-      <p className="text-gray-400 text-center my-3">No comments yet. Be the first to comment!</p>
-    )}
-  
-
-          <div className="add-comment relative mt-3">
-            <span className="absolute top-1/2 transform -translate-y-1/2 ltr:left-3 rtl:right-3 text-black">
-              <img src={img3} alt="User" className="w-8 h-8" />
-            </span>
-            <div className="flex">
-              <input
-                type="text"
-                placeholder={t('Community.post.writeComment')}
-                className="w-full border-2 rounded-l-full bg-transparent py-2 ltr:pl-14 rtl:pr-14 placeholder:text-[#C9C9CA] focus:placeholder-transparent"
-                value={commentContent[post.id] || ''}
-                onChange={(e) => handleCommentChange(post.id, e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && submitComment(post.id)}
-              />
-              <button 
-                className="bg-blue-600 text-white px-4 rounded-r-full"
-                onClick={() => submitComment(post.id)}
-              >
-                <i className="fa-solid fa-paper-plane"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
-  );
-})}
+    
+    {/* Post Content */}
+    <p className="mt-4">{post.postContent}</p>
+
+    {/* Post Images */}
+    {post.images?.length > 0 && (
+      <div className="mt-4">
+        {post.images.map((image, index) => (
+          <img 
+            key={index} 
+            src={image} 
+            alt="Post" 
+            className="rounded-lg w-full object-cover max-h-96"
+          />
+        ))}
+      </div>
+    )}
+
+    {/* Like and Comment Buttons */}
+    <div className="mt-4 flex gap-4">
+      <button 
+        onClick={() => toggleLike(post.id)}
+        className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+          likedPosts[post.id] 
+            ? 'bg-blue-500 text-white' 
+            : 'bg-transparent border border-white text-white hover:bg-red-500/10'
+        }`}
+      >
+        <i className={`${likedPosts[post.id] ? 'fas' : 'far'} fa-thumbs-up mx-1`}></i>
+        <span>{(post.likes || []).length} {t('Community.post.likes')}</span>
+      </button>
+      
+      <button 
+        onClick={() => toggleComments(post.id)}
+        className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-transparent border border-white text-white hover:bg-blue-500/10 transition-colors"
+      >
+        <i className="fa-regular fa-comments mx-1"></i>
+        <span>{comments[post.id]?.totalComments || 0} {t('Community.post.comments')}</span>
+      </button>
+    </div>
+
+    {/* Comments Section */}
+    {showComments[post.id] && (
+      <div className="mt-4 space-y-4">
+        <div className="text-sm text-gray-400 mb-2">
+          {comments[post.id]?.totalComments || 0} {t('Community.post.comments')}
+        </div>
+        {comments[post.id]?.comments?.length > 0 ? (
+          comments[post.id].comments.map(comment => (
+            <div key={comment.id} className="flex space-x-3 bg-black/20 p-3 rounded-lg">
+              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                <img 
+                  src={comment.user?.profilePhoto?.[0] || img1} 
+                  alt={`${comment.user?.firstName} ${comment.user?.lastName}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-sm">
+                  {`${comment.user?.firstName || ''} ${comment.user?.lastName || ''}`}
+                </p>
+                <p className="text-gray-300 mt-1">{comment.commentContent}</p>
+                <p className="text-gray-500 text-xs mt-1">{formatDate(comment.createdAt)}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-gray-400 py-4">
+            No comments yet. Be the first to comment!
+          </p>
+        )}
+        
+        {/* Comment Input */}
+        <div className="flex items-center space-x-2 bg-black/20 rounded-full p-2">
+          <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+            <img 
+              src={currentUser?.profilePhoto?.[0] || post.user?.profilePhoto?.[0] || img1} 
+              alt={`${currentUser?.firstName || 'User'}`}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.src = img1;
+              }}
+            />
+          </div>
+          <input
+            type="text"
+            placeholder={t('Community.post.writeComment')}
+            className="flex-1 bg-transparent border-none text-white placeholder-gray-400 focus:ring-0"
+            value={commentContent[post.id] || ''}
+            onChange={(e) => handleCommentChange(post.id, e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && submitComment(post.id)}
+          />
+          <button 
+            onClick={() => submitComment(post.id)}
+            className="w-8 h-8 flex items-center justify-center bg-blue-500 hover:bg-blue-600 rounded-full transition-colors"
+          >
+            <i className="fa-solid fa-paper-plane text-sm"></i>
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+))}
 
               {/* Show message if no posts */}
               {!loading && !error && posts.length === 0 && (
@@ -567,6 +667,3 @@ useEffect(() => {
     </>
   );
 }
-
-
-

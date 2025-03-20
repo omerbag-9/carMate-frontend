@@ -197,72 +197,81 @@ export default function Marketplace() {
             </div>
 
             {/* Product Grid */}
-            <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
-              {filteredProducts.map((product) => (
-                <div key={product._id || product.id} className="product embla__slide overflow-hidden relative">
-                  <div className="card w-full lg:w-[85%] mx-auto">
-                    <img className="w-full h-[300px] object-cover" src={product.mainImage} alt={product.title} />
-                    <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 lg:pt-[100px]">
-                      <h3>{product.title}</h3>
-                      <p className="text-sm font-normal line-clamp-3">{product.description}</p>
-                      <div className="flex justify-around">
-                        <div>
-                          <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-32 h-10 px-6 lg:px-3 text-center py-[6px] mt-2">
-                            ${product.price}
-                          </span>
-                        </div>
-                        <div>
-                          <Link to={`/moredetails/${product._id || product.id}`}>
-                            <button className="bg-slate-100 rounded-lg text-black text-[20px] ltr:px-11 rtl:px-5 py-1">
-                              {t("moreDetailsbutton")}
-                            </button>
-                          </Link>
+            {isLoading ? (
+              <div className="text-center py-10  w-full">
+                <i className="fa-solid fa-spinner fa-spin text-3xl"></i>
+                <p className="mt-2">Loading products...</p>
+              </div>
+            ) : (
+              <>
+                <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
+                  {filteredProducts.map((product) => (
+                    <div key={product._id || product.id} className="product embla__slide overflow-hidden relative">
+                      <div className="card w-full lg:w-[85%] mx-auto">
+                        <img className="w-full h-[300px] object-cover" src={product.mainImage} alt={product.title} />
+                        <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 lg:pt-[100px]">
+                          <h3>{product.title}</h3>
+                          <p className="text-sm font-normal line-clamp-3">{product.description}</p>
+                          <div className="flex justify-around">
+                            <div>
+                              <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-32 h-10 px-6 lg:px-3 text-center py-[6px] mt-2">
+                                ${product.price}
+                              </span>
+                            </div>
+                            <div>
+                              <Link to={`/moredetails/${product._id || product.id}`}>
+                                <button className="bg-slate-100 rounded-lg text-black text-[20px] ltr:px-11 rtl:px-5 py-1">
+                                  {t("moreDetailsbutton")}
+                                </button>
+                              </Link>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {filteredProducts.length === 0 && (
-  <div className="flex items-center justify-center h-full mx-auto ml-7 ltr:ml-7 rtl:mx-[32rem] text-center">
-    <p className="text-xl">
-      {searchTerm ? t('noproductsfound') : t('noproductsavailable')}
-    </p>
-  </div>
-)}
-
-            {filteredProducts.length > 0 && (
-              <div className="flex justify-center my-5">
-                <button
-                  onClick={goToPreviousPage}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 mx-2 embla__button embla__button--prev"
-                >
-                  <i className="fa-solid fa-chevron-left ltr:rotate-0 rtl:rotate-180"></i>
-                </button>
-
-                <div className="embla__controls flex justify-center mt-4 mx-auto">
-                  {Array.from({ length: totalPages }).map((_, index) => (
-                    <button
-                      key={index}
-                      className={`embla__dot mx-1 w-3 h-3 rounded-full ${
-                        index + 1 === currentPage ? "is-selected" : ""
-                      }`}
-                      onClick={() => goToPage(index + 1)}
-                    ></button>
                   ))}
                 </div>
 
-                <button
-                  onClick={goToNextPage}
-                  disabled={currentPage === totalPages}
-                  className="px-4 py-2 mx-2 embla__button embla__button--next"
-                >
-                  <i className="fa-solid fa-chevron-right ltr:rotate-0 rtl:rotate-180"></i>
-                </button>
-              </div>
+                {filteredProducts.length === 0 && (
+                  <div className="flex items-center justify-center h-full mx-auto ml-7 ltr:ml-7 rtl:mx-[32rem] text-center">
+                    <p className="text-xl">
+                      {searchTerm ? t('noproductsavailable') : t('loading') }
+                    </p>
+                  </div>
+                )}
+
+                {filteredProducts.length > 0 && (
+                  <div className="flex justify-center my-5">
+                    <button
+                      onClick={goToPreviousPage}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 mx-2 embla__button embla__button--prev"
+                    >
+                      <i className="fa-solid fa-chevron-left ltr:rotate-0 rtl:rotate-180"></i>
+                    </button>
+
+                    <div className="embla__controls flex justify-center mt-4 mx-auto">
+                      {Array.from({ length: totalPages }).map((_, index) => (
+                        <button
+                          key={index}
+                          className={`embla__dot mx-1 w-3 h-3 rounded-full ${
+                            index + 1 === currentPage ? "is-selected" : ""
+                          }`}
+                          onClick={() => goToPage(index + 1)}
+                        ></button>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={goToNextPage}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 mx-2 embla__button embla__button--next"
+                    >
+                      <i className="fa-solid fa-chevron-right ltr:rotate-0 rtl:rotate-180"></i>
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
