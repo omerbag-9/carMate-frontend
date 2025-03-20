@@ -125,6 +125,7 @@ export default function Navbar() {
 
     const [updateUser, setUpdateUser] = useState("")
     const [loading, setLoading] = useState(false);
+    const [updateUserColor, setUpdateUserColor] = useState("");
     const handleUpdateProfile = async (e) => {
         e.preventDefault(); // منع إعادة تحميل الصفحة
         setLoading(true);
@@ -180,10 +181,11 @@ export default function Navbar() {
                 ...prev,
                 profilePhoto: response.data.data.user.profilePhoto
             }));
-    
+            setUpdateUserColor("text-green-600");
             setUpdateUser("Profile picture updated successfully!");
             setTimeout(() => setUpdateUser(""), 3000);
         } catch (error) {
+            setUpdateUserColor("text-red-600");
             setUpdateUser("Failed to update profile picture!");
         } finally {
             setLoading(false);
@@ -336,10 +338,10 @@ export default function Navbar() {
                                                 </div>
                                                 <div className="ml-3">
                                                     <div className="text-base font-medium text-white">
-                                                        {user.name}
+                                                        {userData.firstName}  {userData.lastName}
                                                     </div>
                                                     <div className="text-sm font-medium text-gray-400">
-                                                        {user.email}
+                                                        {userData.email}
                                                     </div>
                                                 </div>
                                             </>
@@ -396,7 +398,7 @@ export default function Navbar() {
                                     />
                                     <label
                                         htmlFor="profileUpload"
-                                        className="cursor-pointer absolute top-[34%] left-10 bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md">
+                                        className="cursor-pointer absolute md:top-[34%] md:left-10 left-[35%] top-[40%] bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md">
                                         <i className="fas fa-camera text-white text-[10px]"></i>
                                     </label>
 
@@ -406,7 +408,7 @@ export default function Navbar() {
 
 
                                 <div className="w-full flex flex-col items-center">
-                                    {updateUser != "" ? <div className="text-green-600 text-md mb-4">{updateUser}</div> : ""}
+                                {updateUser !== "" && <div className={`${updateUserColor} text-md pb-4`}>{updateUser}</div>}
                                     <form onSubmit={handleUpdateProfile} className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
                                             <input
