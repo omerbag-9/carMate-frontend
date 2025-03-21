@@ -19,7 +19,7 @@ const headers = {
 };
 
 // Create Post Popup Component
-const CreatePostPopup = ({ onClose, t, onPostCreated }) => {
+const CreatePostPopup = ({ onClose, t, onPostCreated, currentUser }) => {
   const [postContent, setPostContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -106,17 +106,17 @@ const handleSubmit = async () => {
           <div className="flex items-center">
             <div className="w-10 h-10 rounded-full overflow-hidden">
               <img 
-                src={img1}
+                src={currentUser?.profilePhoto || img1} 
                 alt="Profile" 
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="ml-3 rtl:mr-3">
               <div className="text-[#F8F8F8] font-medium">
-                {t('Community.createPost.yourName')}
+              {`${currentUser?.firstName || ''} ${currentUser?.lastName || ''}`}
               </div>
               <div className="text-[#F8F8F8] text-sm">
-                {t('Community.createPost.userName')}
+               {`${currentUser?.firstName || ''}`}
               </div>
             </div>
           </div>
@@ -181,6 +181,14 @@ export default function Community() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+
+
+
+
+
+
+
+  
   // Fetch all posts
   const fetchPosts = async (page = 1) => {
     try {
@@ -230,15 +238,6 @@ export default function Community() {
             totalComments: response.data.data.totalComments
           }
         }));
-        
-        // Update posts with new comment count
-        setPosts(prevPosts => 
-          prevPosts.map(post => 
-            post.id === postId 
-              ? { ...post, comment: response.data.data.totalComments }
-              : post
-          )
-        );
       }
     } catch (err) {
       console.error("Error fetching comments:", err.response?.data || err);
@@ -249,48 +248,47 @@ export default function Community() {
   const toggleLike = async (postId) => {
     try {
       // Optimistically update UI
-      setLikedPosts(prev => ({
+      setLikedPosts((prev) => ({
         ...prev,
-        [postId]: !prev[postId]
+        [postId]: !prev[postId],
       }));
-
+  
       const response = await axios.patch(
         `https://fb-m90x.onrender.com/user/LikePost/${postId}`,
-        {},  // Empty body since postId is in URL
-        { 
+        {},
+        {
           headers: {
             ...headers,
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
-
+  
       if (response.data.status === "success") {
         // Update posts with new likes count
-        setPosts(prevPosts => 
-          prevPosts.map(post => {
-            if (post.id === postId) {
-              return {
-                ...post,
-                likes: response.data.data.likes // Update with new likes array from response
-              };
-            }
-            return post;
-          })
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  likes: response.data.data.likes,
+                }
+              : post
+          )
         );
       } else {
         // Revert like state if request wasn't successful
-        setLikedPosts(prev => ({
+        setLikedPosts((prev) => ({
           ...prev,
-          [postId]: !prev[postId]
+          [postId]: !prev[postId],
         }));
       }
     } catch (err) {
-      console.error('Error toggling like:', err);
+      console.error("Error toggling like:", err);
       // Revert like state on error
-      setLikedPosts(prev => ({
+      setLikedPosts((prev) => ({
         ...prev,
-        [postId]: !prev[postId]
+        [postId]: !prev[postId],
       }));
     }
   };
@@ -324,10 +322,9 @@ export default function Community() {
     if (!showComments[postId] && !comments[postId]) {
       fetchComments(postId);
     }
-    
-    setShowComments(prev => ({
+    setShowComments((prev) => ({
       ...prev,
-      [postId]: !prev[postId]
+      [postId]: !prev[postId],
     }));
   };
 
@@ -364,32 +361,35 @@ export default function Community() {
 
   // Add this useEffect to initialize likes state
   useEffect(() => {
-    if (posts.length > 0) {
-      const initialLikedState = {};
-      posts.forEach(post => {
-        initialLikedState[post.id] = post.likes?.includes(getCookie("token")) || false;
+  if (posts.length > 0) {
+    setLikedPosts((prev) => {
+      const updatedLikedPosts = { ...prev };
+      posts.forEach((post) => {
+        if (!(post.id in updatedLikedPosts)) {
+          updatedLikedPosts[post.id] = post.likes?.includes(getCookie("token"));
+        }
       });
-      setLikedPosts(initialLikedState);
-    }
-  }, [posts]);
+      return updatedLikedPosts;
+    });
+  }
+}, [posts]);
 
   // Add this function to fetch current user data
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('https://fb-m90x.onrender.com/user/myprofile', { headers });
-      
-      if (response.data.status === "success" && response.data.data.user) {
-        // Only get the profilePhoto from the response
-        const userProfilePhoto = response.data.data.user.profilePhoto[0] || null;
-        setCurrentUser({
-          profilePhoto: userProfilePhoto // Keep it as an array to maintain consistency
+        const token = Cookies.get("token");
+
+        if (!token) return;
+
+        const response = await axios.get("https://fb-m90x.onrender.com/user/myprofile", {
+            headers: { token: `${token}` }
         });
-      }
-    } catch (err) {
-      console.error('Error fetching user profile:', err);
-      setCurrentUser(null);
+        // console.log(response.data.data);
+        setCurrentUser(response.data.data);
+    } catch (error) {
+        console.error("Error fetching user data:", error);
     }
-  };
+};
 
   // Add this useEffect after your other useEffects
   useEffect(() => {
@@ -409,31 +409,57 @@ export default function Community() {
   };
 
   // Add load more function
-  const loadMore = () => {
-    if (!isLoadingMore && hasMore) {
-        setCurrentPage(prev => prev + 1);
-        fetchPosts(currentPage + 1);
+  const loadMore = React.useCallback(async () => {
+    if (!isLoadingMore && hasMore && !loading) {
+        try {
+            setIsLoadingMore(true);
+            const nextPage = currentPage + 1;
+            
+            const response = await axios.get(
+                `https://fb-m90x.onrender.com/community/getAllPosts?page=${nextPage}&size=10`,
+                { headers }
+            );
+
+            if (response.data.status === "success" && Array.isArray(response.data.data)) {
+                setPosts(prev => [...prev, ...response.data.data]);
+                setCurrentPage(nextPage);
+                setHasMore(response.data.data.length === 10); // If we got less than 10 items, there are no more pages
+            }
+        } catch (err) {
+            console.error('Error loading more posts:', err);
+        } finally {
+            setIsLoadingMore(false);
+        }
     }
-};
+}, [currentPage, hasMore, isLoadingMore, loading]);
 
 // Add intersection observer for infinite scroll
 useEffect(() => {
     const observer = new IntersectionObserver(
-        entries => {
-            if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+        (entries) => {
+            const firstEntry = entries[0];
+            if (firstEntry.isIntersecting && hasMore && !isLoadingMore && !loading) {
                 loadMore();
             }
         },
-        { threshold: 1.0 }
+        { 
+            root: null,
+            rootMargin: '100px', // Load before reaching the end
+            threshold: 0.1 // Trigger when even 10% of the element is visible
+        }
     );
 
-    const target = document.getElementById('load-more-trigger');
-    if (target) observer.observe(target);
+    const loadMoreTrigger = document.getElementById('load-more-trigger');
+    if (loadMoreTrigger) {
+        observer.observe(loadMoreTrigger);
+    }
 
     return () => {
-        if (target) observer.unobserve(target);
+        if (loadMoreTrigger) {
+            observer.unobserve(loadMoreTrigger);
+        }
     };
-}, [hasMore, isLoadingMore]);
+}, [hasMore, isLoadingMore, loading, loadMore]);
 
   return (
     <>
@@ -531,17 +557,17 @@ useEffect(() => {
 
     {/* Like and Comment Buttons */}
     <div className="mt-4 flex gap-4">
-      <button 
-        onClick={() => toggleLike(post.id)}
-        className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-          likedPosts[post.id] 
-            ? 'bg-blue-500 text-white' 
-            : 'bg-transparent border border-white text-white hover:bg-red-500/10'
-        }`}
-      >
-        <i className={`${likedPosts[post.id] ? 'fas' : 'far'} fa-thumbs-up mx-1`}></i>
-        <span>{(post.likes || []).length} {t('Community.post.likes')}</span>
-      </button>
+    <button
+  onClick={() => toggleLike(post.id)}
+  className={`px-3 py-2 text-lg transition-colors ${
+    likedPosts[post.id] || (post.likes || []).length > (posts.find(p => p.id === post.id)?.likes.length || 0)
+      ? "bg-blue-500 text-white"
+      : "bg-transparent border border-white text-white"
+  }`}
+>
+  <i className={`${likedPosts[post.id] ? "fas" : "far"} fa-thumbs-up px-1`}></i>
+  {(post.likes || []).length} {t("Community.post.likes")}
+</button>
       
       <button 
         onClick={() => toggleComments(post.id)}
@@ -590,9 +616,7 @@ useEffect(() => {
               src={currentUser?.profilePhoto?.[0] || post.user?.profilePhoto?.[0] || img1} 
               alt={`${currentUser?.firstName || 'User'}`}
               className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = img1;
-              }}
+             
             />
           </div>
           <input
@@ -662,8 +686,14 @@ useEffect(() => {
       </div>
 
       {/* Popup */}
-      {showPopup && <CreatePostPopup onClose={handleClosePopup} t={t} onPostCreated={fetchPosts} />}
-      <div id="load-more-trigger" className="h-1"></div>
+      {showPopup && <CreatePostPopup onClose={handleClosePopup} t={t} onPostCreated={fetchPosts} currentUser={currentUser} />}
+      <div id="load-more-trigger" className="h-10 w-full" style={{ visibility: hasMore ? 'visible' : 'hidden' }} />
+      {isLoadingMore && (
+        <div className="text-center py-5 text-white">
+            <i className="fa-solid fa-spinner fa-spin text-2xl"></i>
+            <p className="mt-2">Loading more posts...</p>
+        </div>
+      )}
     </>
   );
 }
