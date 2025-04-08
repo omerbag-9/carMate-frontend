@@ -136,7 +136,7 @@ export default function Home() {
           </div>
           <p className='text-center sm:text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br /> {t('updates for every ride.')}</p>
           <div className="ms-0 text-center sm:text-start">
-            <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button>
+           <a href="#download-section"> <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button></a>
           </div>
 
         </div>
@@ -185,7 +185,7 @@ export default function Home() {
             {t('Alerts!')}
           </p>
           <div className="ms-0 text-center sm:text-start">
-            <button className="bg-[#5D5D60] mt-5 p-1">{t('Download App Now')}</button>
+            <a href="#download-section"><button className="bg-[#5D5D60] mt-5 p-1">{t('Download App Now')}</button></a>
           </div>
         </div>
 
@@ -283,7 +283,7 @@ export default function Home() {
         </div>
       </div>
       {/* 8th part of home */}
-      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 py-8 relative rounded-xl overflow-hidden">
+      <div id="download-section" className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 py-8 relative rounded-xl overflow-hidden">
         <div className="flex-1 text-start">
           <p className='font-bold text-2xl'>
             {t('Take care of your Own car, anywhere, anytime.')}

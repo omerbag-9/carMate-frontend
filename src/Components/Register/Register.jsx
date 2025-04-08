@@ -26,13 +26,13 @@ export default function Register() {
     lastName: Yup.string().min(3, 'Last name minlength is 3').max(10, 'Last name maxlength is 10').required('Last name is required'),
     email: Yup.string().email('Email is invalid').required('Email is required'),
     password: Yup.string()
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%?&#]{6,100}$/,
-      'Must include uppercase, lowercase, number & special (@$!%?&#)'
-    )
-    .min(6, 'Password minlength is 6')
-    .max(100, 'Password maxlength is 100')
-    .required('Password is required'),  
+      .min(6, '6 characters, contain an uppercase letter, a lowercase letter, a number, and a special character (@$!%?&#)')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%?&#]{6,100}$/,
+        'Must include uppercase, lowercase, number & special (@$!%?&#)'
+      )
+      .max(100, 'Password maxlength is 100')
+      .required('Password is required'),
     role: Yup.string().oneOf(['customer', 'seller'], 'Role must be either customer or seller').required('Role is required')
   });
 
@@ -57,9 +57,9 @@ export default function Register() {
       if (req.data.success) {
         toast.success(t("auth.checkEmail"), { position: "top-center", autoClose: 3000 });
         setTimeout(() => {
-            navg('/login');
+          navg('/login');
         }, 2000); // Delay of 2 seconds to allow toast to show
-    }
+      }
     } catch (err) {
       // console.log(err.response?.data?.message);
       setErrMsg(err.response?.data?.message || "An error occurred");
@@ -70,7 +70,7 @@ export default function Register() {
 
 
   return <>
-  <ToastContainer />
+    <ToastContainer />
     <div className="flex py-6 w-[90%] m-auto gap-x-7 text-white pb-20 lg:pt-0 pt-10">
       {/* Left Section */}
       <div className="w-full lg:w-1/2 lg:ml-4 flex flex-col justify-center">
@@ -185,8 +185,10 @@ export default function Register() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     onBlur={() => {
-                      if (confirmPassword && confirmPassword !== formik.values.password) {
-                        setPasswordError('Passwords do not match');
+                      if (!confirmPassword) {
+                        setPasswordError(t('Confirm password is required')); // Show if empty
+                      } else if (confirmPassword !== formik.values.password) {
+                        setPasswordError(t('Passwords do not match'));  // Show if passwords don't match
                       } else {
                         setPasswordError('');
                       }
@@ -202,6 +204,7 @@ export default function Register() {
                 </div>
                 {passwordError && <div className="text-red-500 text-sm">{passwordError}</div>}
               </div>
+
 
               {/* Role Selection */}
               <div className="relative w-full flex flex-col gap-1">

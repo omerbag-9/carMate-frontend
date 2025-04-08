@@ -273,7 +273,9 @@
     "like": "{{name}} liked your last post in the community.",
     "time_ago": "{{time}} ago",
     "delete": "Delete",
-    "change_language": "Switch to Arabic"
+    "change_language": "Switch to Arabic",
+    "login": "Login",
+    "register": "Register"
   }
   
   

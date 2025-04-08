@@ -160,23 +160,23 @@ export default function Navbar() {
     };
 
     const handleImageUpload = async (e) => {
-        const file = e.target.files[0]; 
-        if (!file) return; 
-    
-        setLoading(true); 
-    
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setLoading(true);
+
         try {
             const token = Cookies.get("token");
             const formData = new FormData();
             formData.append("profilePhoto", file);
-    
+
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     token: `${token}`
                 }
             });
-    
+
             setUserData((prev) => ({
                 ...prev,
                 profilePhoto: response.data.data.user.profilePhoto
@@ -269,10 +269,10 @@ export default function Navbar() {
                                             ) : (
                                                 <>
                                                     <Link to="/login" className="px-2 py-1 text-sm text-black bg-white rounded-lg mx-2">
-                                                        Login
+                                                        {t('login')}
                                                     </Link>
                                                     <Link to="/register" className="px-2 py-1 text-sm text-black bg-white rounded-lg">
-                                                        Register
+                                                        {t('register')}
                                                     </Link>
                                                 </>
                                             )}
@@ -317,10 +317,10 @@ export default function Navbar() {
                                 {!token && (
                                     <div className="px-4 py-2 flex flex-col space-y-2">
                                         <Link to="/login" className="block text-center px-2 py-1 text-sm text-white bg-red-600 rounded-lg">
-                                            Login
+                                            {t('login')}
                                         </Link>
                                         <Link to="/register" className="block text-center px-2 py-1 text-sm text-white bg-gray-700 rounded-lg">
-                                            Register
+                                            {t('register')}
                                         </Link>
                                     </div>
                                 )}
@@ -360,7 +360,16 @@ export default function Navbar() {
                                             ))}
                                         </div>
                                     )}
+                                    <div className="text-center">
+                                        <button
+                                            onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')}
+                                            className="text-sm text-gray-300 hover:text-white px-2 py-1 rounded border border-gray-500"
+                                        >
+                                            {i18n.language === 'en' ? 'AR' : 'EN'}
+                                        </button>
+                                    </div>
                                 </div>
+
                             </DisclosurePanel>
 
                         </>
@@ -394,7 +403,7 @@ export default function Navbar() {
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
                                         className="hidden"
                                         id="profileUpload"
-                                    onChange={(e) => handleImageUpload(e)}
+                                        onChange={(e) => handleImageUpload(e)}
                                     />
                                     <label
                                         htmlFor="profileUpload"
@@ -408,7 +417,7 @@ export default function Navbar() {
 
 
                                 <div className="w-full flex flex-col items-center">
-                                {updateUser !== "" && <div className={`${updateUserColor} text-md pb-4`}>{updateUser}</div>}
+                                    {updateUser !== "" && <div className={`${updateUserColor} text-md pb-4`}>{updateUser}</div>}
                                     <form onSubmit={handleUpdateProfile} className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
                                             <input
