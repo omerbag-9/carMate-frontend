@@ -89,7 +89,7 @@ export default function Navbar() {
         Cookies.remove("token");
         setToken(null);
         window.dispatchEvent(new Event("tokenUpdated"));
-        navigate("/login");
+        window.location.href = "/login"; // This refreshes and navigates to /login
     }
 
     const [userData, setUserData] = useState({
