@@ -205,6 +205,7 @@ export default function Home() {
       <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
         {products.length > 0 ? (
           products.map((product, index) => (
+            <Link to={`/moredetails/${product.id}`}>
             <div key={product.id} className="relative group overflow-hidden w-[100%]">
               {/* الصورة بنفس الحجم المحدد */}
               <img src={product.mainImage} className="w-[90%] h-auto rounded-2xl mx-auto" alt={product.title} />
@@ -217,6 +218,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            </Link>
           ))
         ) : (
           <p className="text-center text-gray-500">No products available</p>
@@ -248,8 +250,8 @@ export default function Home() {
                   </div>
                   <div className="mt-4 flex items-center relative bottom-0">
                     <img
-                      src={index % 2 === 0 ? profileImg2 : profileImg1}
-                      className="w-12 rounded-full"
+                      src={review.author.profilePhoto[0]}
+                      className="w-14 h-14 rounded-full"
                       alt="User"
                     />
                     <div className="ms-5">

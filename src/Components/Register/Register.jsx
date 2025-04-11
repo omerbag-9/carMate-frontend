@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import registerImage from '../../assets/images/registerImage.jpg'
 import heroLogo from '../../assets/images/heroLogo.png'
@@ -67,6 +67,10 @@ export default function Register() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    formik.setFieldValue('role', '');
+  }, []);
 
 
   return <>
@@ -215,7 +219,7 @@ export default function Register() {
                   value={formik.values.role}
                   name="role"
                 >
-                  <option value="">{t('Choose Your Role')}</option>
+                  <option value="" hidden>{t('Choose Your Role')}</option>
                   <option value="customer">{t('Customer')}</option>
                   <option value="seller">{t('Seller')}</option>
                 </select>

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import UnderLine from '../UnderLine/UnderLine';
-import profileImg1 from '../../assets/images/profileImg1.jpg'
-import Notification from '../Notification/Notification';
+import dfaultimg from '../../assets/images/defualtIMG.jpg'
+// import Notification from '../Notification/Notification';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -147,12 +147,14 @@ export default function Navbar() {
 
             // console.log("Profile updated successfully:", response.data.data.user);
             setUserData(response.data.data.user);
+            setUpdateUserColor("text-green-600");
             setUpdateUser("Profile updated successfully!")
             setTimeout(() => {
                 setUpdateUser(""); // إخفاء الرسالة بعد 3 ثوانٍ
             }, 3000);
         } catch (error) {
             // console.error("Error updating profile:", error);
+            setUpdateUserColor("text-red-600");
             setUpdateUser("Failed to update profile!")
         } finally {
             setLoading(false); // إيقاف التحميل سواء نجحت العملية أم فشلت
@@ -249,9 +251,13 @@ export default function Navbar() {
                                                         <div>
                                                             <MenuButton className="relative flex max-w-xs items-center text-sm mx-auto focus:outline-none">
                                                                 <img
-                                                                    className="h-8 w-8 rounded-full"
-                                                                    src={userData.profilePhoto}
+                                                                    className="h-8 w-8 rounded-full object-cover"
+                                                                    src={userData.profilePhoto || dfaultimg}
                                                                     alt="Profile"
+                                                                    onError={(e) => {
+                                                                        e.target.onerror = null;
+                                                                        e.target.src = dfaultimg;
+                                                                    }}
                                                                 />
                                                             </MenuButton>
                                                         </div>
@@ -332,8 +338,12 @@ export default function Navbar() {
                                                 <div className="shrink-0">
                                                     <img
                                                         className="h-10 w-10 rounded-full"
-                                                        src={userData.profilePhoto}
-                                                        alt="User Profile"
+                                                        src={userData.profilePhoto || dfaultimg}
+                                                        alt="Profile"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = dfaultimg;
+                                                        }}
                                                     />
                                                 </div>
                                                 <div className="ml-3">
@@ -394,9 +404,13 @@ export default function Navbar() {
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center relative">
                                     <img
-                                        src={userData.profilePhoto || "/default-avatar.png"}
                                         className="w-[75px] h-[75px] rounded-full mx-auto"
-                                        alt="User Profile"
+                                        src={userData.profilePhoto || dfaultimg}
+                                        alt="Profile"
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = dfaultimg;
+                                        }}
                                     />
                                     <input
                                         type="file"

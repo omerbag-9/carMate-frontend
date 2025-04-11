@@ -44,7 +44,7 @@ let {  id } = useParams();
   useEffect(() => {
     getSpecificProducts(id)
 
-  }, [])
+  }, [id])
 
   return (
     <div className="container mx-auto px-4">
