@@ -37,7 +37,8 @@ export default function Login() {
       
       if (req.data.success == true) {
         Cookies.set("token", req.data.data.token, { expires: 10 });
-        navg('/');
+        // navg('/');
+        window.location.href = "/";
         window.dispatchEvent(new Event("tokenUpdated"));
       }
     } catch (err) {
