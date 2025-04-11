@@ -136,7 +136,7 @@ export default function Home() {
           </div>
           <p className='text-center sm:text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br /> {t('updates for every ride.')}</p>
           <div className="ms-0 text-center sm:text-start">
-            <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button>
+           <a href="#download-section"> <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button></a>
           </div>
 
         </div>
@@ -185,7 +185,7 @@ export default function Home() {
             {t('Alerts!')}
           </p>
           <div className="ms-0 text-center sm:text-start">
-            <button className="bg-[#5D5D60] mt-5 p-1">{t('Download App Now')}</button>
+            <a href="#download-section"><button className="bg-[#5D5D60] mt-5 p-1">{t('Download App Now')}</button></a>
           </div>
         </div>
 
@@ -205,6 +205,7 @@ export default function Home() {
       <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
         {products.length > 0 ? (
           products.map((product, index) => (
+            <Link to={`/moredetails/${product.id}`}>
             <div key={product.id} className="relative group overflow-hidden w-[100%]">
               {/* الصورة بنفس الحجم المحدد */}
               <img src={product.mainImage} className="w-[90%] h-auto rounded-2xl mx-auto" alt={product.title} />
@@ -217,6 +218,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            </Link>
           ))
         ) : (
           <p className="text-center text-gray-500">No products available</p>
@@ -248,8 +250,8 @@ export default function Home() {
                   </div>
                   <div className="mt-4 flex items-center relative bottom-0">
                     <img
-                      src={index % 2 === 0 ? profileImg2 : profileImg1}
-                      className="w-12 rounded-full"
+                      src={review.author.profilePhoto[0]}
+                      className="w-14 h-14 rounded-full"
                       alt="User"
                     />
                     <div className="ms-5">
@@ -283,7 +285,7 @@ export default function Home() {
         </div>
       </div>
       {/* 8th part of home */}
-      <div className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 py-8 relative rounded-xl overflow-hidden">
+      <div id="download-section" className="mb-32 bg-[#d5d5d7] text-black sm:flex px-6 py-8 relative rounded-xl overflow-hidden">
         <div className="flex-1 text-start">
           <p className='font-bold text-2xl'>
             {t('Take care of your Own car, anywhere, anytime.')}

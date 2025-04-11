@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import UnderLine from '../UnderLine/UnderLine';
-import profileImg1 from '../../assets/images/profileImg1.jpg'
-import Notification from '../Notification/Notification';
+import dfaultimg from '../../assets/images/defualtIMG.jpg'
+// import Notification from '../Notification/Notification';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -147,12 +147,14 @@ export default function Navbar() {
 
             // console.log("Profile updated successfully:", response.data.data.user);
             setUserData(response.data.data.user);
+            setUpdateUserColor("text-green-600");
             setUpdateUser("Profile updated successfully!")
             setTimeout(() => {
                 setUpdateUser(""); // إخفاء الرسالة بعد 3 ثوانٍ
             }, 3000);
         } catch (error) {
             // console.error("Error updating profile:", error);
+            setUpdateUserColor("text-red-600");
             setUpdateUser("Failed to update profile!")
         } finally {
             setLoading(false); // إيقاف التحميل سواء نجحت العملية أم فشلت
@@ -160,23 +162,23 @@ export default function Navbar() {
     };
 
     const handleImageUpload = async (e) => {
-        const file = e.target.files[0]; 
-        if (!file) return; 
-    
-        setLoading(true); 
-    
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setLoading(true);
+
         try {
             const token = Cookies.get("token");
             const formData = new FormData();
             formData.append("profilePhoto", file);
-    
+
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     token: `${token}`
                 }
             });
-    
+
             setUserData((prev) => ({
                 ...prev,
                 profilePhoto: response.data.data.user.profilePhoto
@@ -249,9 +251,13 @@ export default function Navbar() {
                                                         <div>
                                                             <MenuButton className="relative flex max-w-xs items-center text-sm mx-auto focus:outline-none">
                                                                 <img
-                                                                    className="h-8 w-8 rounded-full"
-                                                                    src={userData.profilePhoto}
+                                                                    className="h-8 w-8 rounded-full object-cover"
+                                                                    src={userData.profilePhoto || dfaultimg}
                                                                     alt="Profile"
+                                                                    onError={(e) => {
+                                                                        e.target.onerror = null;
+                                                                        e.target.src = dfaultimg;
+                                                                    }}
                                                                 />
                                                             </MenuButton>
                                                         </div>
@@ -269,10 +275,10 @@ export default function Navbar() {
                                             ) : (
                                                 <>
                                                     <Link to="/login" className="px-2 py-1 text-sm text-black bg-white rounded-lg mx-2">
-                                                        Login
+                                                        {t('login')}
                                                     </Link>
                                                     <Link to="/register" className="px-2 py-1 text-sm text-black bg-white rounded-lg">
-                                                        Register
+                                                        {t('register')}
                                                     </Link>
                                                 </>
                                             )}
@@ -317,10 +323,10 @@ export default function Navbar() {
                                 {!token && (
                                     <div className="px-4 py-2 flex flex-col space-y-2">
                                         <Link to="/login" className="block text-center px-2 py-1 text-sm text-white bg-red-600 rounded-lg">
-                                            Login
+                                            {t('login')}
                                         </Link>
                                         <Link to="/register" className="block text-center px-2 py-1 text-sm text-white bg-gray-700 rounded-lg">
-                                            Register
+                                            {t('register')}
                                         </Link>
                                     </div>
                                 )}
@@ -332,8 +338,12 @@ export default function Navbar() {
                                                 <div className="shrink-0">
                                                     <img
                                                         className="h-10 w-10 rounded-full"
-                                                        src={userData.profilePhoto}
-                                                        alt="User Profile"
+                                                        src={userData.profilePhoto || dfaultimg}
+                                                        alt="Profile"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = dfaultimg;
+                                                        }}
                                                     />
                                                 </div>
                                                 <div className="ml-3">
@@ -360,7 +370,16 @@ export default function Navbar() {
                                             ))}
                                         </div>
                                     )}
+                                    <div className="text-center">
+                                        <button
+                                            onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')}
+                                            className="text-sm text-gray-300 hover:text-white px-2 py-1 rounded border border-gray-500"
+                                        >
+                                            {i18n.language === 'en' ? 'AR' : 'EN'}
+                                        </button>
+                                    </div>
                                 </div>
+
                             </DisclosurePanel>
 
                         </>
@@ -385,16 +404,20 @@ export default function Navbar() {
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center relative">
                                     <img
-                                        src={userData.profilePhoto || "/default-avatar.png"}
                                         className="w-[75px] h-[75px] rounded-full mx-auto"
-                                        alt="User Profile"
+                                        src={userData.profilePhoto || dfaultimg}
+                                        alt="Profile"
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = dfaultimg;
+                                        }}
                                     />
                                     <input
                                         type="file"
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
                                         className="hidden"
                                         id="profileUpload"
-                                    onChange={(e) => handleImageUpload(e)}
+                                        onChange={(e) => handleImageUpload(e)}
                                     />
                                     <label
                                         htmlFor="profileUpload"
@@ -408,7 +431,7 @@ export default function Navbar() {
 
 
                                 <div className="w-full flex flex-col items-center">
-                                {updateUser !== "" && <div className={`${updateUserColor} text-md pb-4`}>{updateUser}</div>}
+                                    {updateUser !== "" && <div className={`${updateUserColor} text-md pb-4`}>{updateUser}</div>}
                                     <form onSubmit={handleUpdateProfile} className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
                                         <div className="flex sm:flex-row gap-y-4 flex-col sm:items-start items-center">
                                             <input
