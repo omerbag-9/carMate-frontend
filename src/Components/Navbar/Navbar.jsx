@@ -138,7 +138,7 @@ export default function Navbar() {
             const formData = new FormData();
             formData.append("firstName", userData.firstName);
             formData.append("lastName", userData.lastName);
-            formData.append("phone", userData.phone ? userData.phone : "");
+            formData.append("phone", userData.phone ? userData.phone : "phone");
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
