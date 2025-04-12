@@ -114,7 +114,7 @@ export default function Navbar() {
                 headers: { token: `${token}` }
             });
             // console.log(response.data.data);
-            setUserData(response.data.data);
+            setUserData(response.data.data.user);
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
@@ -123,6 +123,7 @@ export default function Navbar() {
         fetchUserData();
     }, []);
 
+    
     const [updateUser, setUpdateUser] = useState("")
     const [loading, setLoading] = useState(false);
     const [updateUserColor, setUpdateUserColor] = useState("");
@@ -160,7 +161,7 @@ export default function Navbar() {
             setLoading(false); // إيقاف التحميل سواء نجحت العملية أم فشلت
         }
     };
-
+    
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
