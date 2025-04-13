@@ -208,7 +208,7 @@ export default function Home() {
             <Link to={`/moredetails/${product.id}`}>
             <div key={product.id} className="relative group overflow-hidden w-[100%]">
               {/* الصورة بنفس الحجم المحدد */}
-              <img src={product.mainImage} className="w-[90%] h-auto rounded-2xl mx-auto" alt={product.title} />
+              <img src={product.mainImage} className="w-[90%] h-[350px] object-cover rounded-2xl mx-auto" alt={product.title} />
 
               {/* Gradient Overlay */}
               <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
