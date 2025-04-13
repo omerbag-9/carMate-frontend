@@ -215,7 +215,7 @@ export default function Community() {
         }
     } catch (err) {
         console.error('Error fetching posts:', err);
-        setError('Failed to load posts. Please try again later.');
+        setError('Please Login First to access our Community');
     } finally {
         setLoading(false);
         setIsLoadingMore(false);
@@ -511,7 +511,7 @@ useEffect(() => {
               )}
               
               {error && (
-                <div className="text-center py-10 text-red-500 bg-[#232326] p-5 rounded-xl">
+                <div className="text-center py-10  bg-[#232326] p-5 rounded-xl">
                   <i className="fa-solid fa-triangle-exclamation text-2xl"></i>
                   <p className="mt-2">{error}</p>
                 </div>
