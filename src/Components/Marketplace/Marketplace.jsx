@@ -9,7 +9,7 @@ import img3 from '../../assets/images/image55.png';
 import img4 from '../../assets/images/img22.png';
 import img5 from '../../assets/images/Image.png';
 import img6 from '../../assets/images/img44.png';
-
+import cookies from 'js-cookie'
 const images = [img1, img2, img3, img4, img5, img6];
 
 export default function Marketplace() {
@@ -34,7 +34,7 @@ export default function Marketplace() {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(9);
-
+  const language = cookies.get('i18next') || 'en';
   // Fetch categories from API
   const getCategories = async () => {
     setIsLoading(true);
@@ -185,8 +185,13 @@ export default function Marketplace() {
                   <option value="Categories">{t('categories')}</option>
                   {categories && categories.length > 0 ? (
                     categories.map((category) => (
-                      <option key={category.id} value={category.name || category.categoryName}>
-                        {category.name || category.categoryName}
+                      <option
+                        key={category.id}
+                        value={category.name}
+                      >
+                        {language === 'en'
+                          ? (category.name)
+                          : (category.arabicName || category.name)}
                       </option>
                     ))
                   ) : (
@@ -211,8 +216,8 @@ export default function Marketplace() {
                         <img className="w-full h-[300px] object-cover" src={product.mainImage} alt={product.title} />
                         <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 lg:pt-[100px]">
                           <div className="absolute left-0 bottom-2.5 w-full px-2">
-                            <h3>{product.title}</h3>
-                            <p className="text-sm font-normal line-clamp-3">{product.description}</p>
+                            <h3>{language === 'en' ? product.title : product.arabicTitle || product.title}</h3>
+                            <p className="text-sm font-normal line-clamp-3">{language === 'en' ? product.description : product.arabicDescription}</p>
                             <div className="flex justify-around">
                               <div>
                                 <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-32 h-10 px-6 lg:px-3 text-center py-[6px] mt-2">
