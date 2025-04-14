@@ -22,6 +22,7 @@ export default function Navbar() {
     const [modalContent, setModalContent] = useState('');
     const [token, setToken] = useState(Cookies.get("token") || null);
     const navigate = useNavigate();
+    const [showPopup, setShowPopup] = useState(false);
 
     const toggleLanguage = () => {
         const newLang = language === 'en' ? 'ar' : 'en';
@@ -123,7 +124,7 @@ export default function Navbar() {
         fetchUserData();
     }, []);
 
-    
+
     const [updateUser, setUpdateUser] = useState("")
     const [loading, setLoading] = useState(false);
     const [updateUserColor, setUpdateUserColor] = useState("");
@@ -161,7 +162,7 @@ export default function Navbar() {
             setLoading(false); // إيقاف التحميل سواء نجحت العملية أم فشلت
         }
     };
-    
+
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -404,15 +405,23 @@ export default function Navbar() {
                         {userData ? (
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center relative">
-                                    <img
-                                        className="w-[75px] h-[75px] rounded-full mx-auto"
-                                        src={userData.profilePhoto || dfaultimg}
-                                        alt="Profile"
-                                        onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src = dfaultimg;
-                                        }}
-                                    />
+                                    {/* Profile image container */}
+                                    <div
+                                        className="w-[75px] h-[75px] rounded-full mx-auto overflow-hidden bg-gray-200 relative cursor-pointer"
+                                        onClick={() => setShowPopup(true)}
+                                    >
+                                        <img
+                                            className="w-full h-full object-cover absolute top-0 left-0"
+                                            src={userData.profilePhoto || dfaultimg}
+                                            alt="Profile"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = dfaultimg;
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* File input for uploading */}
                                     <input
                                         type="file"
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
@@ -420,14 +429,39 @@ export default function Navbar() {
                                         id="profileUpload"
                                         onChange={(e) => handleImageUpload(e)}
                                     />
+
+                                    {/* Edit button */}
                                     <label
                                         htmlFor="profileUpload"
-                                        className="cursor-pointer absolute md:top-[34%] md:left-10 left-[35%] top-[40%] bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md">
+                                        className="cursor-pointer absolute md:top-[34%] md:left-10 left-[35%] top-[40%] bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md"
+                                    >
                                         <i className="fas fa-camera text-white text-[10px]"></i>
                                     </label>
 
                                     <p className="pt-2 font-medium">{userData.firstName} {userData.lastName}</p>
                                     <p className="text-xs text-gray-600">{userData.email}</p>
+
+                                    {/* Image pop-up overlay */}
+                                    {showPopup && (
+                                        <div
+                                            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+                                            onClick={() => setShowPopup(false)}
+                                        >
+                                            <div className="relative max-w-2xl max-h-[80vh]">
+                                                <img
+                                                    className="max-w-full max-h-[80vh] object-contain"
+                                                    src={userData.profilePhoto || dfaultimg}
+                                                    alt="Profile"
+                                                />
+                                                <button
+                                                    className="absolute top-4 right-4 bg-gray-800 text-white rounded-full w-8 h-8 flex items-center justify-center"
+                                                    onClick={() => setShowPopup(false)}
+                                                >
+                                                    <span className="text-xl">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
 

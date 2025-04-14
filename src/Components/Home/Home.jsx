@@ -136,7 +136,7 @@ export default function Home() {
           </div>
           <p className='text-center sm:text-start'>{t('Track, maintain, and never forget your car’s needs!')}<br />{t('Stay ahead with smart reminders and effortless')} <br /> {t('updates for every ride.')}</p>
           <div className="ms-0 text-center sm:text-start">
-           <a href="#download-section"> <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button></a>
+            <a href="#download-section"> <button className='bg-[#5D5D60] mt-5 p-1'> {t('Download App Now')}</button></a>
           </div>
 
         </div>
@@ -195,36 +195,36 @@ export default function Home() {
       </div>
       {/* sixth part of home */}
       <div className="pt-10 mb-20">
-      <div className="flex mb-4 px-4">
-        <p className="font-bold text-xl">{t("Some of Product Market Place")}</p>
-        <Link to="/marketplace" className="ltr:ml-auto rtl:mr-auto text-start text-xl">
-          {t("View All")} <i className="fa-solid fa-angle-right ms-2"></i>
-        </Link>
-      </div>
+        <div className="flex mb-4 px-4">
+          <p className="font-bold text-xl">{t("Some of Product Market Place")}</p>
+          <Link to="/marketplace" className="ltr:ml-auto rtl:mr-auto text-start text-xl">
+            {t("View All")} <i className="fa-solid fa-angle-right ms-2"></i>
+          </Link>
+        </div>
 
-      <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
-        {products.length > 0 ? (
-          products.map((product, index) => (
-            <Link to={`/moredetails/${product.id}`}>
-            <div key={product.id} className="relative group overflow-hidden w-[100%]">
-              {/* الصورة بنفس الحجم المحدد */}
-              <img src={product.mainImage} className="w-[90%] h-[350px] object-cover rounded-2xl mx-auto" alt={product.title} />
+        <div className="grid sm:grid-cols-3 grid-cols-1 gap-3">
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <Link to={`/moredetails/${product.id}`}>
+                <div key={product.id} className="relative group overflow-hidden w-[100%]">
+                  {/* الصورة بنفس الحجم المحدد */}
+                  <img src={product.mainImage} className="w-[90%] h-[350px] object-cover rounded-2xl mx-auto" alt={product.title} />
 
-              {/* Gradient Overlay */}
-              <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
-                  <p className="font-bold text-2xl text-start">{product.title}</p> {/* عرض العنوان بدون ترجمة */}
-                  <p className="text-start">{product.description}</p> {/* عرض الوصف بدون ترجمة */}
+                  {/* Gradient Overlay */}
+                  <div className="absolute w-[90%] mx-auto rounded-2xl top-0 left-0 right-0 bottom-0 bg-gradient-to-t from-black/100 to-transparent opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-300">
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white opacity-0 group-hover:opacity-100 translate-y-full group-hover:translate-y-0 transition-all duration-500">
+                      <p className="font-bold text-2xl text-start">{product.title}</p> {/* عرض العنوان بدون ترجمة */}
+                      <p className="text-start">{product.description}</p> {/* عرض الوصف بدون ترجمة */}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            </Link>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">No products available</p>
-        )}
+              </Link>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">No products available</p>
+          )}
+        </div>
       </div>
-    </div>
       {/* seventh part of home */}
       <div className="pt-10 mb-20">
         <div className="flex mb-4">
@@ -234,7 +234,8 @@ export default function Home() {
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container mb-4">
               {reviews.map((review, index) => (
-                <div key={review.id} className="embla__slide p-6 relative">
+                <div key={review.id} className="embla__slide p-6 relative h-[280px] flex flex-col">
+                  {/* Header with title and comma */}
                   <div className="flex">
                     <div>
                       <p className="text-2xl">{index % 2 === 0 ? "Great Work" : "Good Job"}</p>
@@ -243,17 +244,23 @@ export default function Home() {
                       <img src={comma} className="w-10 h-10" alt="Comma Icon" />
                     </div>
                   </div>
-                  <div className="relative px-2">
+
+                  {/* Review content */}
+                  <div className="flex-grow px-2 overflow-hidden mb-2">
                     <p className="text-[16px] mt-5 font-medium line-clamp-5 overflow-y-auto scrollbar-custom max-h-[120px]">
                       {review.reviewContent}
                     </p>
                   </div>
-                  <div className="mt-4 flex items-center relative bottom-0">
-                    <img
-                      src={review.author.profilePhoto[0]}
-                      className="w-14 h-14 rounded-full"
-                      alt="User"
-                    />
+
+                  {/* User info fixed at bottom - reduced spacing */}
+                  <div className="flex items-center">
+                    <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+                      <img
+                        src={review.author.profilePhoto[0]}
+                        className="w-full h-full object-cover"
+                        alt={`${review.author.firstName} ${review.author.lastName}`}
+                      />
+                    </div>
                     <div className="ms-5">
                       <p className="text-[16px]">
                         {review.author.firstName} {review.author.lastName}
