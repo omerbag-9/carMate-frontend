@@ -98,6 +98,8 @@ export default function Footer() {
           <p className='font-bold'><span className='text-[#be0202]'>Car</span>Mate</p>
           <div className="w-[70px] rtl:sm:mr-0 bg-gradient-to-l sm:ml-0 m-auto from-black to-red-500 h-[1px] my-2"></div>
           <span>{t('Social Media')}</span>
+          <br />
+          <a className='underline text-[#be0202]' target="_blank" href="https://car-mate-admin-panel-git-main-omers-projects-70d4da40.vercel.app">Admin panel</a>
           <div className="mt-3">
             <i className="fa-brands fa-facebook text-white"></i>
             <i className="fa-brands fa-youtube text-white rtl:mr-3 ltr:ml-3"></i>
