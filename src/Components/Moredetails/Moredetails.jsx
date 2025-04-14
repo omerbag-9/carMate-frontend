@@ -108,7 +108,7 @@ export default function Moredetails() {
                     <i className="fa-brands fa-facebook-f"></i>
                   </a>
                   <a
-                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(SpecificProduct.title)}`}
+                    href={`https://twitter.com/intent/tweet?url=${URL}&text=${URL}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="social-icon bg-black text-white p-2 rounded-full hover:bg-gray-800 transition-colors"
@@ -117,7 +117,7 @@ export default function Moredetails() {
                     <i className="fa-brands fa-x-twitter"></i>
                   </a>
                   <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${URL}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="social-icon bg-blue-700 text-white p-2 rounded-full hover:bg-blue-800 transition-colors"
@@ -126,7 +126,7 @@ export default function Moredetails() {
                     <i className="fa-brands fa-linkedin-in"></i>
                   </a>
                   <a
-                    href={`https://plus.google.com/share?url=${encodeURIComponent(window.location.href)}`}
+                    href={`https://plus.google.com/share?url=${URL}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="social-icon bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-colors"
