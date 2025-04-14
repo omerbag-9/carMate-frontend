@@ -65,22 +65,22 @@ export default function Moredetails() {
             </h1>
             <p className="lg:w-[32%] sm:w-full mx-auto">{t('moredetailsTitle')}</p>
           </div>
-
+  
           <div className="moredetails flex flex-col lg:flex-row my-14 lg:justify-between" dir='ltr'>
             <div className="images mb-6 lg:mb-0 lg:w-[50%] w-full flex flex-col md:items-center md:justify-center justify-center items-center">
               <div className="relative w-[72%] lg:ml-[75px]">
                 <img
                   src={SpecificProduct.mainImage}
                   alt="Main product"
-                  className="w-full object-cover rounded-md"
+                  className="w-full object-cover rounded-md shadow-lg hover:shadow-xl transition-shadow duration-300"
                 />
-
+  
                 <div className="flex mt-3 justify-center gap-2">
                   {SpecificProduct.subImages &&
                     SpecificProduct.subImages.slice(0, 2).map((image, index) => (
                       <img
                         key={index}
-                        className="w-[48%] rounded-md"
+                        className="w-[48%] rounded-md shadow-md hover:shadow-lg transition-shadow duration-300"
                         src={image}
                         alt={`Product view ${index + 1}`}
                       />
@@ -89,14 +89,30 @@ export default function Moredetails() {
                 </div>
               </div>
             </div>
-            <div className="info text-center ltr:lg:text-left rtl:lg:text-right lg:w-[50%] w-full" dir='ltr'>
-              <h2 className="text-3xl font-bold mb-3">{SpecificProduct.title}</h2>
-              <span className="font-bold block lg:inline-block mb-2">{t('category')}</span>
-              <p className="mt-3 lg:text-[19px] sm:text-[15px] lg:font-semibold sm:font-normal">{SpecificProduct.description}</p>
-
+            
+            <div className="info lg:w-[50%] w-full lg:pl-8 lg:pr-4" dir='ltr'>
+              {/* Enhanced Product Header Section */}
+              <div className="p-6">
+                <div className="flex items-center mb-2">
+                  <span className="px-3 py-1 bg-gray-700 text-xs uppercase tracking-wide rounded-full text-gray-300 font-semibold">
+                    {t('category')}
+                  </span>
+                  <div className="h-1 w-1 bg-gray-500 rounded-full mx-3"></div>
+                  <span className="text-gray-400 text-sm">ID: {SpecificProduct.id || 'N/A'}</span>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-white mb-4">{SpecificProduct.title}</h2>
+                
+                <div className="relative mt-4 pt-4 border-t border-gray-700">
+                  <p className="text-gray-300 leading-relaxed lg:text-lg sm:text-base">
+                    {SpecificProduct.description}
+                  </p>
+                </div>
+              </div>
+  
               {/* Social Media Sharing */}
-              <div className="social-share mt-6 flex items-center justify-center lg:justify-start gap-4">
-                <span className="text-lg font-medium">{t('share')}:</span>
+              <div className="social-share mt-6  bg-opacity-50 rounded-lg p-4 flex items-center justify-center lg:justify-start gap-4">
+                <span className="text-lg font-medium text-gray-300">{t('share')}:</span>
                 <div className="flex gap-3">
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${URL}`}
@@ -108,7 +124,7 @@ export default function Moredetails() {
                     <i className="fa-brands fa-facebook-f"></i>
                   </a>
                   <a
-                    href={`https://twitter.com/intent/tweet?url=${URL}&text=${URL}`}
+                    href={`https://twitter.com/intent/tweet?url=${URL}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="social-icon bg-black text-white p-2 rounded-full hover:bg-gray-800 transition-colors"
@@ -136,22 +152,26 @@ export default function Moredetails() {
                   </a>
                 </div>
               </div>
-
-              <div className="buttons mt-10 flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:mx-20 sm:mx-0 mb-3">
-                <span className="bg-slate-50 border-2 border-black rounded-lg text-[#086302] text-[16px] font-bold w-32 py-2 flex items-center justify-center mb-4 lg:mb-0 lg:mr-4">
-                  $ {SpecificProduct.price}
-                </span>
-                <Link to={SpecificProduct.productLink}>
-                  <button className="bg-slate-50 border-2 border-black rounded-lg text-black text-[16px] font-bold px-12 py-2 mx-3">
-                    <i className="fa-solid fa-link"></i> {t('productLink')}
+  
+              {/* Price and Buy Button */}
+              <div className="buttons mt-6 flex flex-col lg:flex-row items-center justify-center lg:justify-start mb-3">
+                <div className="price-tag bg-gray-800 border-l-2  rounded-lg p-4 flex items-center mb-4 lg:mb-0 lg:mr-4 w-full lg:w-auto">
+                  <span className="text-green-700 text-2xl font-bold">
+                    ${SpecificProduct.price}
+                  </span>
+                </div>
+                
+                <Link to={SpecificProduct.productLink} className="w-full lg:w-auto">
+                  <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-4 px-8 rounded-lg w-full lg:w-auto transition-colors duration-300 flex items-center justify-center">
+                    <i className="fa-solid fa-link mr-2"></i> {t('productLink')}
                   </button>
                 </Link>
               </div>
             </div>
           </div>
-
+  
           <UnderLine />
-
+  
           <div className="sellerInfo flex flex-col lg:flex-row lg:justify-center mt-14 mb-10 px-4">
             <div className="seller text-center mt-10 lg:mx-20">
               <h2 className="text-3xl font-bold mb-3">{t('sellerInfo')}</h2>
@@ -160,9 +180,9 @@ export default function Moredetails() {
               </div>
               <p className="text-lg lg:text-[20px] w-4/5 mx-auto">{t('contactSeller')}</p>
             </div>
-
+  
             <div className="hidden lg:block bg-gradient-to-b from-[#454545] via-[#FFFFFF] to-[#454545] h-[200px] w-[1px] my-2"></div>
-
+  
             <div className="sellerContact flex flex-col lg:flex-row items-center lg:items-start mt-20 lg:mt-0">
               <div className="sellerImg ltr:lg:ml-14 rtl:lg:mr-14 mb-5 lg:mb-0 mt-3">
                 <img src={seller.profilePhoto} alt="seller" className="w-36 h-32 lg:w-40 lg:h-40 object-cover rounded-full mx-auto" />
@@ -177,7 +197,7 @@ export default function Moredetails() {
                   <span className="text-zinc-500 px-3">|</span>
                   {seller.email}
                 </p>
-
+  
                 <p className="pt-5 text-lg lg:text-xl">
                   <i className="px-[10px] fa-solid fa-phone text-green-800"></i>
                   <span className="text-zinc-500 px-3">|</span> {seller.phone}
