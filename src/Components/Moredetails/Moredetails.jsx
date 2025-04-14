@@ -156,7 +156,7 @@ export default function Moredetails() {
               {/* Price and Buy Button */}
               <div className="buttons mt-6 flex flex-col lg:flex-row items-center justify-center lg:justify-start mb-3">
                 <div className="price-tag bg-gray-800 border-l-2  rounded-lg p-4 flex items-center mb-4 lg:mb-0 lg:mr-4 w-full lg:w-auto">
-                  <span className="text-green-700 text-2xl font-bold">
+                  <span className="text-[#086302] text-2xl font-bold">
                     ${SpecificProduct.price}
                   </span>
                 </div>
