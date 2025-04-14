@@ -7,11 +7,11 @@ import img3 from '../../assets/images/image55.png';
 import person from '../../assets/images/Ellipse25.png';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Moredetails() {
 
-let {  id } = useParams();
+  let { id } = useParams();
 
   const { t } = useTranslation()
 
@@ -25,7 +25,8 @@ let {  id } = useParams();
   });
   const [seller, setseller] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const URL = window.location.href;
+  
   function getSpecificProducts(id) {
     setIsLoading(true); // Set loading to true before fetch
     axios.get(`https://fb-m90x.onrender.com/seller/getSpecificProduct/${id}`)
@@ -40,7 +41,7 @@ let {  id } = useParams();
         setIsLoading(false); // Set loading to false after fetch
       });
   }
-  
+
   useEffect(() => {
     getSpecificProducts(id)
 
@@ -75,7 +76,7 @@ let {  id } = useParams();
                 />
 
                 <div className="flex mt-3 justify-center gap-2">
-                  {SpecificProduct.subImages && 
+                  {SpecificProduct.subImages &&
                     SpecificProduct.subImages.slice(0, 2).map((image, index) => (
                       <img
                         key={index}
@@ -92,9 +93,53 @@ let {  id } = useParams();
               <h2 className="text-3xl font-bold mb-3">{SpecificProduct.title}</h2>
               <span className="font-bold block lg:inline-block mb-2">{t('category')}</span>
               <p className="mt-3 lg:text-[19px] sm:text-[15px] lg:font-semibold sm:font-normal">{SpecificProduct.description}</p>
-              <div className="buttons mt-16 flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:mx-20 sm:mx-0 mb-3">
+
+              {/* Social Media Sharing */}
+              <div className="social-share mt-6 flex items-center justify-center lg:justify-start gap-4">
+                <span className="text-lg font-medium">{t('share')}:</span>
+                <div className="flex gap-3">
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${URL}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors"
+                    aria-label="Share on Facebook"
+                  >
+                    <i className="fa-brands fa-facebook-f"></i>
+                  </a>
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(SpecificProduct.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon bg-black text-white p-2 rounded-full hover:bg-gray-800 transition-colors"
+                    aria-label="Share on X (Twitter)"
+                  >
+                    <i className="fa-brands fa-x-twitter"></i>
+                  </a>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon bg-blue-700 text-white p-2 rounded-full hover:bg-blue-800 transition-colors"
+                    aria-label="Share on LinkedIn"
+                  >
+                    <i className="fa-brands fa-linkedin-in"></i>
+                  </a>
+                  <a
+                    href={`https://plus.google.com/share?url=${encodeURIComponent(window.location.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-colors"
+                    aria-label="Share on Google+"
+                  >
+                    <i className="fa-brands fa-google-plus-g"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div className="buttons mt-10 flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:mx-20 sm:mx-0 mb-3">
                 <span className="bg-slate-50 border-2 border-black rounded-lg text-[#086302] text-[16px] font-bold w-32 py-2 flex items-center justify-center mb-4 lg:mb-0 lg:mr-4">
-                 $ {SpecificProduct.price}
+                  $ {SpecificProduct.price}
                 </span>
                 <Link to={SpecificProduct.productLink}>
                   <button className="bg-slate-50 border-2 border-black rounded-lg text-black text-[16px] font-bold px-12 py-2 mx-3">

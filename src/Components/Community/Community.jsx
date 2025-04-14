@@ -613,8 +613,8 @@ useEffect(() => {
         <div className="flex items-center space-x-2 bg-black/20 rounded-full p-2">
           <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
             <img 
-              src={currentUser?.profilePhoto?.[0] || post.user?.profilePhoto?.[0] || img1} 
-              alt={`${currentUser?.firstName || 'User'}`}
+              src={currentUser?.user?.profilePhoto?.[0] || img1} 
+              alt={`${currentUser?.user.firstName || 'User'}`}
               className="w-full h-full object-cover"
              
             />
