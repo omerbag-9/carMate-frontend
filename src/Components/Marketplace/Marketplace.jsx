@@ -24,7 +24,9 @@ export default function Marketplace() {
   };
 
   const [selectedOption, setSelectedOption] = useState('Categories');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('All');
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [products, setProducts] = useState([]);
@@ -35,21 +37,14 @@ export default function Marketplace() {
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(9);
   const language = cookies.get('i18next') || 'en';
+  
   // Fetch categories from API
   const getCategories = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('https://fb-m90x.onrender.com/seller/getCategories');
-      console.log('API Response:', response.data); // Debug log
-
-      if (response.data && response.data.data && response.data.data.categories) {
-        const categoriesData = response.data.data.categories; // Correct path to categories
-        console.log('Categories Data:', categoriesData); // Debug log
-        setCategories(categoriesData);
-      } else {
-        console.error('Invalid API response structure:', response.data);
-        setCategories([]); // Handle invalid structure gracefully
-      }
+      const {data} = await axios.get('https://fb-m90x.onrender.com/seller/getCategories');
+      console.log(data.data.catrgory_with_subCat);
+      setCategories(data?.data?.catrgory_with_subCat);
     } catch (error) {
       console.error('Error fetching categories:', error);
       setCategories([]); // Handle errors gracefully
@@ -57,6 +52,23 @@ export default function Marketplace() {
       setIsLoading(false);
     }
   };
+
+  // Update subcategories when category changes
+  useEffect(() => {
+    if (selectedOption && selectedOption !== 'Categories') {
+      const category = categories.find(cat => cat.name === selectedOption);
+      if (category && category.subcategories && category.subcategories.length > 0) {
+        setSubcategories(category.subcategories);
+      } else {
+        setSubcategories([]);
+      }
+    } else {
+      setSubcategories([]);
+    }
+    setSelectedSubcategory('All');
+    // Reset to page 1 when changing category
+    setCurrentPage(1);
+  }, [selectedOption, categories]);
 
   // Fetch products from API
   const getProducts = async () => {
@@ -72,10 +84,20 @@ export default function Marketplace() {
       // Add category filter if selected
       if (selectedOption && selectedOption !== 'Categories') {
         const selectedCategory = categories.find(
-          category => category.name === selectedOption || category.categoryName === selectedOption
+          category => category.name === selectedOption
         );
         if (selectedCategory) {
           params.append('categoryId', selectedCategory.id);
+          
+          // Add subcategory filter if selected
+          if (selectedSubcategory && selectedSubcategory !== 'All') {
+            const selectedSubcat = selectedCategory.subcategories.find(
+              subcat => subcat.name === selectedSubcategory
+            );
+            if (selectedSubcat) {
+              params.append('subcategoryId', selectedSubcat.id);
+            }
+          }
         }
       }
 
@@ -88,13 +110,16 @@ export default function Marketplace() {
       if (response.data) {
         setProducts(response.data.data || []);
         setTotalCount(response.data.count || 0);
-        setTotalPages(response.data.totalPages || 1);
+        setTotalPages(Math.ceil((response.data.count || 0) / pageSize) || 1);
+        setFilteredProducts(response.data.data || []);
       } else {
         setProducts([]);
+        setFilteredProducts([]);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
       setProducts([]);
+      setFilteredProducts([]);
     } finally {
       setIsLoading(false);
     }
@@ -106,11 +131,19 @@ export default function Marketplace() {
 
   useEffect(() => {
     getProducts();
-  }, [currentPage, selectedOption]);
+  }, [currentPage, selectedOption, selectedSubcategory]);
 
-  useEffect(() => {
-    setFilteredProducts(products);
-  }, [products]);
+  // Handle category change
+  const handleCategoryChange = (e) => {
+    setSelectedOption(e.target.value);
+    setCurrentPage(1); // Reset to first page when changing category
+  };
+
+  // Handle subcategory change
+  const handleSubcategoryChange = (e) => {
+    setSelectedSubcategory(e.target.value);
+    setCurrentPage(1); // Reset to first page when changing subcategory
+  };
 
   // Add a new function to handle filtering
   const filterProducts = (searchValue) => {
@@ -120,11 +153,20 @@ export default function Marketplace() {
     }
 
     const filtered = products.filter(product =>
-      product.title.toLowerCase().includes(searchValue.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchValue.toLowerCase())
+      (product.title || '').toLowerCase().includes(searchValue.toLowerCase()) ||
+      (product.description || '').toLowerCase().includes(searchValue.toLowerCase())
     );
     setFilteredProducts(filtered);
   };
+
+  // Reset search when products change
+  useEffect(() => {
+    if (searchTerm) {
+      filterProducts(searchTerm);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [products]);
 
   // Update pagination handlers
   const goToPreviousPage = () => {
@@ -158,52 +200,81 @@ export default function Marketplace() {
             <p className="mx-5 ">{t('marketplaceDescription')}</p>
           </div>
 
-          {/* Search Section */}
+          {/* Search and Filter Section - All in one line */}
           <div className="flex mb-7 flex-wrap lg:w-[90%] sm:w-full justify-center justify-items-center">
-            <div className="search flex mt-3 mb-7 flex-wrap sm:w-full justify-center justify-items-center">
-              <div className="w-[80%] relative my-2" dir={isArabic ? 'rtl' : 'ltr'}>
-                <p className={`absolute ${isArabic ? 'right-4' : 'left-4'} top-2 text-black`}>
-                  <i className="fa-solid fa-magnifying-glass"></i>
-                </p>
-                <input
-                  className={`w-full rounded-xl px-8 text-black ${isArabic ? 'text-right' : 'text-left'}`}
-                  type="text"
-                  placeholder={t('searchPlaceholder')}
-                  value={searchTerm}
-                  onChange={handleChange}
-                  dir={isArabic ? 'rtl' : 'ltr'}
-                />
-              </div>
+            <div className="search flex mt-3 mb-7 w-full justify-center items-center">
+              {/* All three components in one row */}
+              <div className="flex flex-row w-full max-w-4xl justify-center items-center space-x-2">
+                {/* Search Bar - LARGER */}
+                <div className="w-[60%] relative" dir={isArabic ? 'rtl' : 'ltr'}>
+                  <p className={`absolute ${isArabic ? 'right-2' : 'left-2'} top-2 text-black`}>
+                    <i className="fa-solid fa-magnifying-glass"></i>
+                  </p>
+                  <input
+                    className={`w-full h-10 rounded-xl px-8 text-black ${isArabic ? 'text-right' : 'text-left'}`}
+                    type="text"
+                    placeholder={t('searchPlaceholder')}
+                    value={searchTerm}
+                    onChange={handleChange}
+                    dir={isArabic ? 'rtl' : 'ltr'}
+                  />
+                </div>
 
-              <div className="list mx-2 my-2">
-                <select
-                  className="rounded-xl px-11 font-semibold text-black"
-                  value={selectedOption}
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  disabled={isLoading}
-                >
-                  <option value="Categories">{t('categories')}</option>
-                  {categories && categories.length > 0 ? (
-                    categories.map((category) => (
-                      <option
-                        key={category.id}
-                        value={category.name}
-                      >
-                        {language === 'en'
-                          ? (category.name)
-                          : (category.arabicName || category.name)}
-                      </option>
-                    ))
-                  ) : (
-                    <option disabled>{isLoading ? t('loading') : t('noCategories')}</option>
-                  )}
-                </select>
+                {/* Category Dropdown - SMALLER */}
+                <div className="w-[20%]">
+                  <select
+                    className="w-full h-10 rounded-xl px-2 text-sm font-semibold text-black"
+                    value={selectedOption}
+                    onChange={handleCategoryChange}
+                    disabled={isLoading}
+                  >
+                    <option value="Categories">{t('categories')}</option>
+                    {categories && categories.length > 0 ? (
+                      categories.map((category) => (
+                        <option
+                          key={category.id}
+                          value={category.name}
+                        >
+                          {language === 'en'
+                            ? (category.name)
+                            : (category.arabicName || category.name)}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>{isLoading ? t('loading') : t('noCategories')}</option>
+                    )}
+                  </select>
+                </div>
+                
+                {/* Subcategory Dropdown - SMALLER */}
+                <div className="w-[20%]">
+                  <select
+                    className="w-full h-10 rounded-xl px-2 text-sm font-semibold text-black"
+                    value={selectedSubcategory}
+                    onChange={handleSubcategoryChange}
+                    disabled={isLoading || selectedOption === 'Categories' || subcategories.length === 0}
+                  >
+                    <option value="All">{t('allSubcategories') || 'All Subcategories'}</option>
+                    {subcategories && subcategories.length > 0 ? (
+                      subcategories.map((subcategory) => (
+                        <option
+                          key={subcategory.id}
+                          value={subcategory.name}
+                        >
+                          {language === 'en'
+                            ? (subcategory.name)
+                            : (subcategory.arabicName || subcategory.name)}
+                        </option>
+                      ))
+                    ) : null}
+                  </select>
+                </div>
               </div>
             </div>
 
             {/* Product Grid */}
             {isLoading ? (
-              <div className="text-center py-10  w-full">
+              <div className="text-center py-10 w-full">
                 <i className="fa-solid fa-spinner fa-spin text-3xl"></i>
                 <p className="mt-2">Loading products...</p>
               </div>
