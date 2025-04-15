@@ -276,7 +276,11 @@
     "delete": "Delete",
     "change_language": "Switch to Arabic",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "team_title_line1": "Meet the talented team",
+    "team_title_line2": "who make all this happen",
+    "team_description": "Our philosophy is simple; hire great\npeople and give them the resources\nand support to do their best work"
+  
   }
   
   
