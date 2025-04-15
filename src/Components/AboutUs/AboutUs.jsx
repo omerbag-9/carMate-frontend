@@ -7,12 +7,19 @@ import ezzat from '../../assets/images/ezzat.jpg';
 import walid from '../../assets/images/walid.jpg';
 import fawzy from '../../assets/images/fawzy.jpg';
 import dina from '../../assets/images/dina.jpg';
+import rawan from '../../assets/images/rawan.jpg';
+import elhawy from '../../assets/images/elhawy.jpg';
+import loaa from '../../assets/images/loaa.jpg';
+import mamdoh from '../../assets/images/mamdoh.jpeg';
+import shefoo from '../../assets/images/shefoo.jpeg';
 import { useTranslation } from 'react-i18next';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 
 export default function AboutUs() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation()
+  const isRtl = i18n.dir() === 'rtl'
+  const currentLang = i18n.language;
   const team = {
     yousef: {
       name: "Yousef Mohamed",
@@ -46,7 +53,7 @@ export default function AboutUs() {
       name: "Abdulrahman Fawzy",
       role: "Technical lead/ UX / UI",
       linkedin: "https://www.linkedin.com/in/abddulrhman-fawzy-97582231a/",
-      github: "https://www.behance.net/abdulrhmanfawzy",
+      behance: "https://www.behance.net/abdulrhmanfawzy",
       image: fawzy
     },
     dina: {
@@ -55,6 +62,41 @@ export default function AboutUs() {
       linkedin: "https://www.linkedin.com/in/dina-mohsen-608880278",
       github: "https://github.com/dina0a",
       image: dina
+    },
+    loaa: {
+      name: "Loaa Abdelmonem",
+      role: "Frontend developer",
+      linkedin: "https://www.linkedin.com/in/loaa-abdelmonem/",
+      github: "https://github.com/Loaa17",
+      image: loaa
+    },
+    rawan: {
+      name: "Rawan Ayman",
+      role: "MobileApp developer",
+      linkedin: "https://www.linkedin.com/in/rawan-ayman-a4a86630b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+      github: "https://github.com/rawan118",
+      image: rawan
+    },
+    elhawy: {
+      name: "Abdulrahman Elhawy",
+      role: "MobileApp developer",
+      linkedin: "https://www.linkedin.com/in/abdelrahman-mohamed-567964276?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+      github: "https://www.linkedin.com/in/abdelrahman-mohamed-567964276?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+      image: elhawy
+    },
+    mamdoh: {
+      name: "Mohamed Mammdoh",
+      role: "MobileApp developer",
+      linkedin: "https://www.linkedin.com/in/mohamedmammdoh/",
+      github: "https://github.com/mohamedmammdoh",
+      image: mamdoh
+    },
+    shefoo: {
+      name: "Abdulrahman Sherif",
+      role: "Backend developer",
+      linkedin: "https://www.linkedin.com/in/abdelrahman-sherif-38870530a/",
+      github: "https://github.com/Shefoo74",
+      image: shefoo
     }
   };
 
@@ -134,62 +176,88 @@ export default function AboutUs() {
 
           </div>
         </div>
-        <div className="w-full p-0">
-          <div className="flex justify-between items-center px-12">
-            <p className="text-3xl font-medium leading-relaxed">
-              <span className="block">Meet the talented team</span>
-              <span className="block">who make all this happen</span>
-            </p>
-            <p className="text-center">
-              Our philosophy is simple; hire great<br />
-              people and give them the resources<br />
-              and support to do their best work
-            </p>
-          </div>
-          <div className="py-12">
-            <Splide
-              options={{
-                type: 'loop',
-                perPage: 5.5,        // عرض 4 صور في كل مرة
-                arrows: false,
-                pagination: false,
-                drag: 'free',      // تفعيل السحب بحرية
-                direction: 'ltr',
-                gap: '25px',
-              }}
-              aria-label="معرض الصور"
-            >
-              {Object.entries(team).map(([key, member]) => (
-                <SplideSlide key={key}>
-                  <img
-                    src={member.image}
-                    className="w-full h-[225px] rounded-2xl pb-2 object-cover"
-                    alt={member.name}
-                  />
-                  <p className="text-left font-medium text-lg">{member.name}</p>
-                  <p className="text-left text-sm pt-1 text-gray-400">{member.role}</p>
-                  <div className="flex justify-start w-full space-x-3 mt-2">
-                    <a
-                      href={member.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="fa-brands fa-linkedin text-white text-xl"></i>
-                    </a>
-                    <a
-                      href={member.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className="fa-brands fa-github text-white text-xl"></i>
-                    </a>
-                  </div>
-                </SplideSlide>
-              ))}
-            </Splide>
+       <div className="w-full p-0">
+  <div className="flex justify-between items-center px-12 flex-wrap">
+    <p className="text-3xl font-medium leading-relaxed w-full sm:w-auto text-center sm:text-left">
+      <span className="block">{t('team_title_line1')}</span>
+      <span className="block">{t('team_title_line2')}</span>
+    </p>
+    <p className="text-center whitespace-pre-line w-full sm:w-auto">{t('team_description')}</p>
+  </div>
 
+  <div className="py-12">
+    <Splide
+      options={{
+        type: 'loop',
+        perPage: 5.5,              // 5 صور في اللابتوب
+        perMove: 1,
+        arrows: false,
+        pagination: false,
+        drag: 'free',
+        direction: isRtl ? 'rtl' : 'ltr',
+        gap: '25px',
+        autoplay: true,          
+        interval: 2000,          
+        speed: 1000,             
+        pauseOnHover: true,
+        resetProgress: false,
+        breakpoints: {
+          640: { perPage: 1 }, // عرض صورة واحدة على الهواتف
+          768: { perPage: 3 }, // عرض 3 صور على التابلت
+          1024: { perPage: 5.5 }, // عرض 5 صور على الكمبيوتر
+        }
+      }}
+      aria-label="معرض الصور"
+    >
+      {Object.entries(team).map(([key, member]) => (
+        <SplideSlide key={key}>
+          <div className="h-[335px] flex flex-col justify-between">
+            <div>
+              <img
+                src={member.image}
+                className="w-full h-[225px] rounded-2xl pb-2 object-cover"
+                alt={member.name}
+              />
+              <p className="text-left font-medium text-lg">{member.name}</p>
+              <p className="text-left text-sm text-gray-400">{member.role}</p>
+            </div>
+            <div className="flex justify-start rtl:justify-end w-full space-x-3 mt-2">
+              <a
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rtl:mx-3"
+              >
+                <i className="fa-brands fa-linkedin text-white text-xl"></i>
+              </a>
+
+              {/* التحقق من الشخص وتغيير الأيقونة */}
+              {member.name === 'Abdulrahman Fawzy' ? (
+                <a
+                  href={member.behance} // رابط behance بدلاً من github
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fa-brands fa-behance text-white text-xl"></i>
+                </a>
+              ) : (
+                <a
+                  href={member.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fa-brands fa-github text-white text-xl"></i>
+                </a>
+              )}
+            </div>
           </div>
-        </div>
+        </SplideSlide>
+      ))}
+    </Splide>
+  </div>
+</div>
+
+
 
       </div>
     </>
