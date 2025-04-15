@@ -1,10 +1,62 @@
 import React from 'react';
 import img1 from '../../assets/images/porsche-model1.png';
 import img2 from '../../assets/images/Values.png';
+import youssef from '../../assets/images/youssef.png';
+import omerr from '../../assets/images/omerrr.jpg';
+import ezzat from '../../assets/images/ezzat.jpg';
+import walid from '../../assets/images/walid.jpg';
+import fawzy from '../../assets/images/fawzy.jpg';
+import dina from '../../assets/images/dina.jpg';
 import { useTranslation } from 'react-i18next';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
 
 export default function AboutUs() {
   const { t } = useTranslation();
+  const team = {
+    yousef: {
+      name: "Yousef Mohamed",
+      role: "Team leader / Backend developer",
+      linkedin: "https://www.linkedin.com/in/yousef-fadel-716244270/",
+      github: "https://github.com/YousefMohamed19",
+      image: youssef
+    },
+    omer: {
+      name: "Omer mustafa",
+      role: "Technical lead / Fullstack developer / Software tester",
+      linkedin: "https://www.linkedin.com/in/omer-bag-a20562287/",
+      github: "https://github.com/omerbag-9",
+      image: omerr
+    },
+    mohamed: {
+      name: "Mohamed Ezzat",
+      role: "Technical lead/MobileApp developer",
+      linkedin: "https://github.com/Ezoooooo1235",
+      github: "https://github.com/Ezoooooo1235",
+      image: ezzat
+    },
+    abdulrahman: {
+      name: "Abdulrahman Walid",
+      role: "Technical lead/Backend developer",
+      linkedin: "https://www.linkedin.com/in/abdelrahman-walid-16449a218",
+      github: "https://github.com/wello88",
+      image: walid
+    },
+    abdulrahmanf: {
+      name: "Abdulrahman Fawzy",
+      role: "Technical lead/ UX / UI",
+      linkedin: "https://www.linkedin.com/in/abddulrhman-fawzy-97582231a/",
+      github: "https://www.behance.net/abdulrhmanfawzy",
+      image: fawzy
+    },
+    dina: {
+      name: "Dina Mohsen",
+      role: "Fullstack developer",
+      linkedin: "https://www.linkedin.com/in/dina-mohsen-608880278",
+      github: "https://github.com/dina0a",
+      image: dina
+    }
+  };
 
   return (
     <>
@@ -82,6 +134,63 @@ export default function AboutUs() {
 
           </div>
         </div>
+        <div className="w-full p-0">
+          <div className="flex justify-between items-center px-12">
+            <p className="text-3xl font-medium leading-relaxed">
+              <span className="block">Meet the talented team</span>
+              <span className="block">who make all this happen</span>
+            </p>
+            <p className="text-center">
+              Our philosophy is simple; hire great<br />
+              people and give them the resources<br />
+              and support to do their best work
+            </p>
+          </div>
+          <div className="py-12">
+            <Splide
+              options={{
+                type: 'loop',
+                perPage: 5.5,        // عرض 4 صور في كل مرة
+                arrows: false,
+                pagination: false,
+                drag: 'free',      // تفعيل السحب بحرية
+                direction: 'ltr',
+                gap: '25px',
+              }}
+              aria-label="معرض الصور"
+            >
+              {Object.entries(team).map(([key, member]) => (
+                <SplideSlide key={key}>
+                  <img
+                    src={member.image}
+                    className="w-full h-[225px] rounded-2xl pb-2 object-cover"
+                    alt={member.name}
+                  />
+                  <p className="text-left font-medium text-lg">{member.name}</p>
+                  <p className="text-left text-sm pt-1 text-gray-400">{member.role}</p>
+                  <div className="flex justify-start w-full space-x-3 mt-2">
+                    <a
+                      href={member.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className="fa-brands fa-linkedin text-white text-xl"></i>
+                    </a>
+                    <a
+                      href={member.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <i className="fa-brands fa-github text-white text-xl"></i>
+                    </a>
+                  </div>
+                </SplideSlide>
+              ))}
+            </Splide>
+
+          </div>
+        </div>
+
       </div>
     </>
   );
