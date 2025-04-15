@@ -185,6 +185,20 @@ export default function Marketplace() {
     setCurrentPage(pageNumber);
   };
 
+  // Custom dropdown styles for RTL support
+  const getSelectStyles = () => {
+    return {
+      appearance: 'none',
+      backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'m6 8 4 4 4-4\'/%3E%3C/svg%3E")',
+      backgroundPosition: isArabic ? 'left 0.5rem center' : 'right 0.5rem center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '1.5em 1.5em',
+      paddingRight: isArabic ? '0.75rem' : '2rem',
+      paddingLeft: isArabic ? '2rem' : '0.75rem',
+      textAlign: isArabic ? 'right' : 'left'
+    };
+  };
+
   return (
     <div className="marketplace">
       <div className="container mx-auto">
@@ -211,7 +225,7 @@ export default function Marketplace() {
                     <i className="fa-solid fa-magnifying-glass"></i>
                   </p>
                   <input
-                    className={`w-full h-10 rounded-xl px-8 text-black ${isArabic ? 'text-right' : 'text-left'}`}
+                    className={`w-full h-10 rounded-xl ${isArabic ? 'pr-8 pl-2 text-right' : 'pl-8 pr-2 text-left'} text-black`}
                     type="text"
                     placeholder={t('searchPlaceholder')}
                     value={searchTerm}
@@ -220,13 +234,15 @@ export default function Marketplace() {
                   />
                 </div>
 
-                {/* Category Dropdown - SMALLER */}
-                <div className="w-[20%]">
+                {/* Category Dropdown - SMALLER with custom styling for arrow */}
+                <div className="w-[20%] relative">
                   <select
-                    className="w-full h-10 rounded-xl px-2 text-sm font-semibold text-black"
+                    className="w-full h-10 rounded-xl text-sm font-semibold text-black"
                     value={selectedOption}
                     onChange={handleCategoryChange}
                     disabled={isLoading}
+                    dir={isArabic ? 'rtl' : 'ltr'}
+                    style={getSelectStyles()}
                   >
                     <option value="Categories">{t('categories')}</option>
                     {categories && categories.length > 0 ? (
@@ -246,13 +262,15 @@ export default function Marketplace() {
                   </select>
                 </div>
                 
-                {/* Subcategory Dropdown - SMALLER */}
-                <div className="w-[20%]">
+                {/* Subcategory Dropdown - SMALLER with custom styling for arrow */}
+                <div className="w-[20%] relative">
                   <select
-                    className="w-full h-10 rounded-xl px-2 text-sm font-semibold text-black"
+                    className="w-full h-10 rounded-xl text-sm font-semibold text-black"
                     value={selectedSubcategory}
                     onChange={handleSubcategoryChange}
                     disabled={isLoading || selectedOption === 'Categories' || subcategories.length === 0}
+                    dir={isArabic ? 'rtl' : 'ltr'}
+                    style={getSelectStyles()}
                   >
                     <option value="All">{t('allSubcategories') || 'All Subcategories'}</option>
                     {subcategories && subcategories.length > 0 ? (
