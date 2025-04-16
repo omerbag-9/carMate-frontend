@@ -189,7 +189,7 @@ export default function AboutUs() {
     <Splide
       options={{
         type: 'loop',
-        perPage: 5.5,              // 5 صور في اللابتوب
+        perPage: 5.5,             
         perMove: 1,
         arrows: false,
         pagination: false,
@@ -202,9 +202,9 @@ export default function AboutUs() {
         pauseOnHover: true,
         resetProgress: false,
         breakpoints: {
-          640: { perPage: 1 }, // عرض صورة واحدة على الهواتف
-          768: { perPage: 3 }, // عرض 3 صور على التابلت
-          1024: { perPage: 5.5 }, // عرض 5 صور على الكمبيوتر
+          640: { perPage: 1 }, 
+          768: { perPage: 3 }, 
+          1024: { perPage: 5.5 }, 
         }
       }}
       aria-label="معرض الصور"
@@ -231,10 +231,9 @@ export default function AboutUs() {
                 <i className="fa-brands fa-linkedin text-white text-xl"></i>
               </a>
 
-              {/* التحقق من الشخص وتغيير الأيقونة */}
               {member.name === 'Abdulrahman Fawzy' ? (
                 <a
-                  href={member.behance} // رابط behance بدلاً من github
+                  href={member.behance} 
                   target="_blank"
                   rel="noopener noreferrer"
                 >
