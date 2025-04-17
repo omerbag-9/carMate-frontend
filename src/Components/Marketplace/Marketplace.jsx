@@ -17,25 +17,20 @@ export default function Marketplace() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === 'ar';
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    filterProducts(value);
-  };
-
+  
   const [selectedOption, setSelectedOption] = useState('Categories');
   const [selectedSubcategory, setSelectedSubcategory] = useState('All');
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); // Store all products
+  const [products, setProducts] = useState([]); // Products for current page
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9; // Flexible number of products per page
+  const itemsPerPage = 9; // Products per page
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(9);
   const language = cookies.get('i18next') || 'en';
   
   // Fetch categories from API
@@ -43,7 +38,6 @@ export default function Marketplace() {
     setIsLoading(true);
     try {
       const {data} = await axios.get('https://fb-m90x.onrender.com/seller/getCategories');
-      console.log(data.data.catrgory_with_subCat);
       setCategories(data?.data?.catrgory_with_subCat);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -52,7 +46,7 @@ export default function Marketplace() {
       setIsLoading(false);
     }
   };
-
+  
   // Update subcategories when category changes
   useEffect(() => {
     if (selectedOption && selectedOption !== 'Categories') {
@@ -70,56 +64,37 @@ export default function Marketplace() {
     setCurrentPage(1);
   }, [selectedOption, categories]);
 
-  // Fetch products from API
-  const getProducts = async () => {
+  // Fetch all products from API without filtering
+  const getAllProducts = async () => {
     setIsLoading(true);
     try {
       let url = 'https://fb-m90x.onrender.com/seller/getProducts';
+      
+      // Only add pagination parameters
       const params = new URLSearchParams();
-
-      // Add pagination parameters
-      params.append('page', currentPage);
-      params.append('size', pageSize);
-
-      // Add category filter if selected
-      if (selectedOption && selectedOption !== 'Categories') {
-        const selectedCategory = categories.find(
-          category => category.name === selectedOption
-        );
-        if (selectedCategory) {
-          params.append('categoryId', selectedCategory.id);
-          
-          // Add subcategory filter if selected
-          if (selectedSubcategory && selectedSubcategory !== 'All') {
-            const selectedSubcat = selectedCategory.subcategories.find(
-              subcat => subcat.name === selectedSubcategory
-            );
-            if (selectedSubcat) {
-              params.append('subcategoryId', selectedSubcat.id);
-            }
-          }
-        }
-      }
+      params.append('page', 1);
+      params.append('size', 1000); // Get a large number of products to filter client-side
 
       url += `?${params.toString()}`;
-      console.log('Fetching products from URL:', url);
-
+      
       const response = await axios.get(url);
-      console.log('Products Response:', response.data);
 
       if (response.data) {
-        setProducts(response.data.data || []);
+        setAllProducts(response.data.data || []);
         setTotalCount(response.data.count || 0);
-        setTotalPages(Math.ceil((response.data.count || 0) / pageSize) || 1);
-        setFilteredProducts(response.data.data || []);
+        
+        // Initially apply any filters
+        applyFilters(response.data.data || [], selectedOption, selectedSubcategory, searchTerm);
       } else {
-        setProducts([]);
+        setAllProducts([]);
         setFilteredProducts([]);
+        setProducts([]);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
-      setProducts([]);
+      setAllProducts([]);
       setFilteredProducts([]);
+      setProducts([]);
     } finally {
       setIsLoading(false);
     }
@@ -127,11 +102,66 @@ export default function Marketplace() {
 
   useEffect(() => {
     getCategories();
+    getAllProducts();
   }, []);
 
+  // Apply all filters and pagination
+  const applyFilters = (productsList, category, subcategory, search) => {
+    let filtered = [...productsList];
+    
+    // Filter by category
+    if (category && category !== 'Categories') {
+      const selectedCat = categories.find(cat => cat.name === category);
+      if (selectedCat) {
+        filtered = filtered.filter(product => {
+          // Check if Subcategory exists and if its category matches our selected category
+          return product.Subcategory && product.Subcategory.category && 
+                 product.Subcategory.category.id === selectedCat.id;
+        });
+      }
+    }
+    
+    // Filter by subcategory
+    if (subcategory && subcategory !== 'All') {
+      const selectedSub = subcategories.find(sub => sub.name === subcategory);
+      if (selectedSub) {
+        filtered = filtered.filter(product => {
+          return product.Subcategory && product.Subcategory.id === selectedSub.id;
+        });
+      }
+    }
+    
+    // Filter by search term
+    if (search && search.trim()) {
+      filtered = filtered.filter(product =>
+        (product.title || '').toLowerCase().includes(search.toLowerCase()) ||
+        (product.description || '').toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    
+    // Update total count and pages
+    setFilteredProducts(filtered);
+    setTotalCount(filtered.length);
+    setTotalPages(Math.ceil(filtered.length / itemsPerPage));
+    
+    // Apply pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedProducts = filtered.slice(startIndex, startIndex + itemsPerPage);
+    setProducts(paginatedProducts);
+  };
+
+  // Handle when filters or pagination change
   useEffect(() => {
-    getProducts();
-  }, [currentPage, selectedOption, selectedSubcategory]);
+    if (allProducts.length > 0) {
+      applyFilters(allProducts, selectedOption, selectedSubcategory, searchTerm);
+    }
+  }, [selectedOption, selectedSubcategory, searchTerm, currentPage, categories]);
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    setCurrentPage(1); // Reset to first page when searching
+  };
 
   // Handle category change
   const handleCategoryChange = (e) => {
@@ -144,29 +174,6 @@ export default function Marketplace() {
     setSelectedSubcategory(e.target.value);
     setCurrentPage(1); // Reset to first page when changing subcategory
   };
-
-  // Add a new function to handle filtering
-  const filterProducts = (searchValue) => {
-    if (!searchValue.trim()) {
-      setFilteredProducts(products);
-      return;
-    }
-
-    const filtered = products.filter(product =>
-      (product.title || '').toLowerCase().includes(searchValue.toLowerCase()) ||
-      (product.description || '').toLowerCase().includes(searchValue.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  };
-
-  // Reset search when products change
-  useEffect(() => {
-    if (searchTerm) {
-      filterProducts(searchTerm);
-    } else {
-      setFilteredProducts(products);
-    }
-  }, [products]);
 
   // Update pagination handlers
   const goToPreviousPage = () => {
@@ -299,8 +306,8 @@ export default function Marketplace() {
             ) : (
               <>
                 <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
-                  {filteredProducts.map((product) => (
-                    <div key={product._id || product.id} className="product embla__slide overflow-hidden relative">
+                  {products.map((product) => (
+                    <div key={product.id} className="product embla__slide overflow-hidden relative">
                       <div className="card w-full lg:w-[100%] mx-auto">
                         <img className="w-full h-[300px] object-cover" src={product.mainImage} alt={product.title} />
                         <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 lg:pt-[100px]">
@@ -314,7 +321,7 @@ export default function Marketplace() {
                                 </span>
                               </div>
                               <div>
-                                <Link to={`/moredetails/${product._id || product.id}`}>
+                                <Link to={`/moredetails/${product.id}`}>
                                   <button className="bg-slate-100 rounded-lg text-black text-[20px] ltr:px-11 rtl:px-5 py-1">
                                     {t("moreDetailsbutton")}
                                   </button>
@@ -328,10 +335,10 @@ export default function Marketplace() {
                   ))}
                 </div>
 
-                {filteredProducts.length === 0 && (
+                {products.length === 0 && (
                   <div className="flex items-center justify-center h-full mx-auto ml-7 ltr:ml-7 rtl:mx-[32rem] text-center">
                     <p className="text-xl">
-                      {searchTerm ? t('noproductsavailable') : t('loading')}
+                      {searchTerm || selectedOption !== 'Categories' ? t('noproductsavailable') : t('loading')}
                     </p>
                   </div>
                 )}
