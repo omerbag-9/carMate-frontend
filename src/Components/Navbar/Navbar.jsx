@@ -12,11 +12,11 @@ import Cookies from "js-cookie";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import cookie from 'js-cookie';
 
 
 export default function Navbar() {
-    const [language, setLanguage] = useState('en');
+    const [language, setLanguage] = useState(cookie.get("i18next") || 'en');
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
@@ -28,6 +28,7 @@ export default function Navbar() {
         const newLang = language === 'en' ? 'ar' : 'en';
         setLanguage(newLang);
         i18n.changeLanguage(newLang);
+        window.location.reload()
         document.documentElement.setAttribute('lang', newLang);
         document.documentElement.setAttribute('dir', newLang === 'ar' ? 'rtl' : 'ltr');
         document.body.classList.toggle('rtl', newLang === 'ar');
@@ -374,7 +375,7 @@ export default function Navbar() {
                                     )}
                                     <div className="text-center">
                                         <button
-                                            onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ar' : 'en')}
+                                            onClick={toggleLanguage}
                                             className="text-sm text-gray-300 hover:text-white px-2 py-1 rounded border border-gray-500"
                                         >
                                             {i18n.language === 'en' ? 'AR' : 'EN'}

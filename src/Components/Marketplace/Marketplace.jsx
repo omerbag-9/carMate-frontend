@@ -308,21 +308,21 @@ export default function Marketplace() {
                 <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
                   {products.map((product) => (
                     <div key={product.id} className="product embla__slide overflow-hidden relative">
-                      <div className="card w-full lg:w-[100%] mx-auto">
+                      <div className="card w-full mx-auto">
                         <img className="w-full h-[300px] object-cover" src={product.mainImage} alt={product.title} />
-                        <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 lg:pt-[100px]">
+                        <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 sm:pt-28 md:pt-32 lg:pt-[100px]">
                           <div className="absolute left-0 bottom-2.5 w-full px-2">
-                            <h3>{language === 'en' ? product.title : product.arabicTitle || product.title}</h3>
+                            <h3 className="text-lg md:text-xl">{language === 'en' ? product.title : product.arabicTitle || product.title}</h3>
                             <p className="text-sm font-normal line-clamp-3">{language === 'en' ? product.description : product.arabicDescription}</p>
-                            <div className="flex justify-around">
-                              <div>
-                                <span className="bg-slate-100 rounded-lg text-[#086302] text-[20px] w-32 h-10 px-6 lg:px-3 text-center py-[6px] mt-2">
+                            <div className="flex justify-around items-center mt-2 gap-2">
+                              <div className="flex-1">
+                                <span className="bg-slate-100 rounded-lg text-[#086302] text-xl w-full h-10 px-2 text-center flex items-center justify-center truncate">
                                   ${product.price}
                                 </span>
                               </div>
-                              <div>
-                                <Link to={`/moredetails/${product.id}`}>
-                                  <button className="bg-slate-100 rounded-lg text-black text-[20px] ltr:px-11 rtl:px-5 py-1">
+                              <div className="flex-1">
+                                <Link to={`/moredetails/${product.id}`} className="block w-full">
+                                  <button className="bg-slate-100 rounded-lg text-black text-sm h-10 w-full px-2 flex items-center justify-center truncate">
                                     {t("moreDetailsbutton")}
                                   </button>
                                 </Link>

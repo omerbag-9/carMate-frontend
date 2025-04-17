@@ -45,11 +45,14 @@ function App() {
   const { i18n } = useTranslation();
   useEffect(() => {
     document.documentElement.setAttribute('dir', i18n.language === 'ar' ? 'rtl' : 'ltr');
+    // Add overflow-x-hidden to body to prevent horizontal scrolling
+    document.body.style.overflowX = 'hidden';
+    document.body.style.width = '100%';
   }, [i18n.language]);
   return (
-    <>
+    <div className="w-full overflow-x-hidden">
       <RouterProvider router={routers}></RouterProvider>
-    </>
+    </div>
   )
 }
 

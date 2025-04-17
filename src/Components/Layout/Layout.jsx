@@ -12,8 +12,8 @@ export default function Layout() {
   };
   
   return (
-    <div className="bg-dark-900 min-h-screen flex flex-col">
-      <div className="sm:w-[90%] m-auto p-0 text-white flex-grow">
+    <div className="bg-dark-900 min-h-screen flex flex-col overflow-x-hidden w-full">
+      <div className="sm:w-[90%] w-full m-auto p-0 text-white flex-grow">
         <Navbar />
         <Outlet />
         <Footer />

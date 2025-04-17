@@ -15,10 +15,10 @@ import shefoo from '/shefoo.jpeg';
 import { useTranslation } from 'react-i18next';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
-
+import cookie from 'js-cookie'
 export default function AboutUs() {
   const { t, i18n } = useTranslation()
-  const isRtl = i18n.dir() === 'rtl'
+  const isRtl = cookie.get('i18next') === 'ar';
   const currentLang = i18n.language;
   const team = {
     yousef: {
@@ -102,7 +102,7 @@ export default function AboutUs() {
 
   return (
     <>
-      <div className="container mx-auto pt-10 px-4 sm:px-6 lg:px-8 flex flex-wrap sm:justify-center sm:justify-items-center sm:text-center">
+      <div className="container mx-auto pt-10 px-4 sm:px-6 lg:px-8 flex flex-wrap sm:justify-center sm:justify-items-center sm:text-center w-full overflow-hidden">
         {/* first section of about us */}
         <div className="aboutUs flex justify-items-center lg:justify-around mt-10 flex-wrap sm:justify-center">
           <div className="aboutcontent sm:text-start bg-white relative lg:w-1/2 sm:w-full border rounded-2xl pl-9 py-10 text-xl font-semibold my-2">
@@ -149,7 +149,7 @@ export default function AboutUs() {
             </div>
 
             {/* values */}
-            <div className="values text-start text-white rounded-2xl lg:w-[82%] lg:mx-auto sm:w-full mx-2
+            <div className="values text-start text-white rounded-2xl lg:w-[82%] lg:mx-auto sm:w-full mx-0 sm:mx-2
   ltr:bg-gradient-to-r ltr:from-[#29292c] ltr:via-[#0e0e0e] ltr:to-[#0C0C0C]
   rtl:bg-gradient-to-l rtl:from-[#29292c] rtl:via-[#0e0e0e] rtl:to-[#0C0C0C]">
 
@@ -176,76 +176,89 @@ export default function AboutUs() {
 
           </div>
         </div>
-       <div className="w-full p-0">
-  <div className="flex justify-between items-center px-12 flex-wrap">
-    <p className="text-3xl font-medium leading-relaxed w-full sm:w-auto text-center sm:text-left">
-      <span className="block">{t('team_title_line1')}</span>
-      <span className="block">{t('team_title_line2')}</span>
-    </p>
-    <p className="text-center whitespace-pre-line w-full sm:w-auto">{t('team_description')}</p>
+       <div className="w-full p-0 mb-10">
+  <div className="flex flex-col md:flex-row justify-between items-center px-4 sm:px-8 lg:px-12 gap-4 mb-6">
+    <div className="w-full md:w-1/2">
+      <h2 className="text-2xl sm:text-3xl font-medium leading-relaxed text-center md:text-left">
+        <span className="block">{t('team_title_line1')}</span>
+        <span className="block">{t('team_title_line2')}</span>
+      </h2>
+    </div>
+    <div className="w-full md:w-1/2">
+      <p className="text-center md:text-right whitespace-pre-line text-sm sm:text-base">{t('team_description')}</p>
+    </div>
   </div>
 
-  <div className="py-12">
+  <div className="py-6 sm:py-8 lg:py-12 px-0 sm:px-4 lg:px-6 w-full">
     <Splide
       options={{
         type: 'loop',
-        perPage: 5.5,             
+        perPage: 4,
         perMove: 1,
         arrows: false,
         pagination: false,
-        drag: 'free',
+        drag: true,
         direction: isRtl ? 'rtl' : 'ltr',
-        gap: '25px',
-        autoplay: true,          
-        interval: 2000,          
-        speed: 1000,             
+        gap: '1rem',
+        autoplay: true,
+        interval: 3000,
+        speed: 800,
         pauseOnHover: true,
         resetProgress: false,
+        focus: 'center',
+        trimSpace: true,
         breakpoints: {
-          640: { perPage: 1 }, 
-          768: { perPage: 3 }, 
-          1024: { perPage: 5.5 }, 
+          480: { perPage: 1, gap: '0.5rem', arrows: false, pagination: false, width: '100%' },
+          640: { perPage: 2, gap: '0.75rem', arrows: false, pagination: false, width: '100%' },
+          768: { perPage: 2, gap: '1rem', width: '100%' },
+          1024: { perPage: 3, gap: '1.25rem', width: '100%' },
+          1280: { perPage: 4, width: '100%' }
         }
       }}
-      aria-label="معرض الصور"
+      aria-label={isRtl ? "معرض الصور" : "Team Gallery"}
+      className="team-splide"
     >
       {Object.entries(team).map(([key, member]) => (
-        <SplideSlide key={key}>
-          <div className="h-[335px] flex flex-col justify-between">
-            <div>
-              <img
-                src={member.image}
-                className="w-full h-[225px] rounded-2xl pb-2 object-cover"
-                alt={member.name}
-              />
-              <p className="text-left font-medium text-lg">{member.name}</p>
-              <p className="text-left text-sm text-gray-400">{member.role}</p>
+        <SplideSlide key={key} className="py-2">
+          <div className="h-full flex flex-col justify-around bg-[#1a1a1a] bg-opacity-30 rounded-xl overflow-hidden transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg">
+            <div className="p-3">
+              <div className="relative overflow-hidden rounded-xl mb-3">
+                <img
+                  src={member.image}
+                  className="w-full h-[350px] sm:h-[300px] md:h-[250px] rounded-xl object-cover transition-transform duration-500 hover:scale-110"
+                  alt={member.name}
+                />
+              </div>
+              <p className={`font-medium text-base sm:text-lg ${isRtl ? 'text-right' : 'text-left'}`}>{member.name}</p>
+              <p className={`text-xs sm:text-sm text-gray-400 ${isRtl ? 'text-right' : 'text-left'}`}>{member.role}</p>
             </div>
-            <div className="flex justify-start rtl:justify-end w-full space-x-3 mt-2">
+            <div className={`flex ${isRtl ? 'justify-end' : 'justify-start'} w-full p-1 gap-2`}>
               <a
                 href={member.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rtl:mx-3"
+                className="text-white hover:text-red-700 transition-colors duration-300"
               >
-                <i className="fa-brands fa-linkedin text-white text-xl"></i>
+                <i className="fa-brands fa-linkedin text-xl"></i>
               </a>
 
               {member.name === 'Abdulrahman Fawzy' ? (
                 <a
-                  href={member.behance} 
+                  href={member.behance}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-white hover:text-red-700 transition-colors duration-300"
                 >
-                  <i className="fa-brands fa-behance text-white text-xl"></i>
+                  <i className="fa-brands fa-behance text-xl"></i>
                 </a>
               ) : (
                 <a
                   href={member.github}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-white hover:text-red-700 transition-colors duration-300"
                 >
-                  <i className="fa-brands fa-github text-white text-xl"></i>
+                  <i className="fa-brands fa-github text-xl"></i>
                 </a>
               )}
             </div>
