@@ -324,8 +324,8 @@ export default function Navbar() {
     
                                 {/* Login and Register buttons for mobile */}
                                 {!token && (
-                                    <div className="px-4 py-2 flex flex-col space-y-2 ">
-                                        <Link to="/login" className="block text-center px-2 py-1 text-sm text-white bg-red-600 rounded-lg ">
+                                    <div className="px-4 py-2 flex flex-col space-y-2">
+                                        <Link to="/login" className="block text-center px-2 py-1 text-sm text-white bg-red-600 rounded-lg">
                                             {t('login')}
                                         </Link>
                                         <Link to="/register" className="block text-center px-2 py-1 text-sm text-white bg-gray-700 rounded-lg">
@@ -334,7 +334,7 @@ export default function Navbar() {
                                     </div>
                                 )}
     
-                                <div className="border-t border-gray-700 pb-3 pt-4 navindex">
+                                <div className="border-t border-gray-700 pb-3 pt-4">
                                     <div className="flex items-center justify-center px-5">
                                         {token && (
                                             <>
@@ -366,7 +366,7 @@ export default function Navbar() {
                                                 <DisclosureButton
                                                     key={item.name}
                                                     onClick={item.action}
-                                                    className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-700 hover:text-white"
+                                                    className="block rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-700 hover:text-white"
                                                 >
                                                     {item.name}
                                                 </DisclosureButton>
@@ -392,7 +392,7 @@ export default function Navbar() {
                     <Box sx={{ 
                         ...style, 
                         width: { xs: '80%', sm: '50%' },
-                        bgcolor: '#111827', // Grey background (gray-600)
+                        bgcolor: '#4b5563', // Grey background (gray-600)
                         color: '#f3f4f6' // Light text 
                     }}>
                         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10, color: '#ffffff' }}>

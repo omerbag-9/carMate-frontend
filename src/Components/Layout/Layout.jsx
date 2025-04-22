@@ -19,11 +19,11 @@ export default function Layout() {
         <Footer />
         
         {/* Chat button */}
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
           <button
             onClick={toggleChat}
             className={`rounded-full shadow-lg overflow-hidden flex items-center justify-center transition-all duration-300 ${
-              isChatOpen ? 'bg-red-900 hover:bg-red-800 p-3' : 'p-0 w-16 h-16'
+              isChatOpen ? 'bg-red-900 hover:bg-red-800 p-2 sm:p-3' : 'p-0 w-12 h-12 sm:w-16 sm:h-16'
             }`}
             aria-label="Open chat"
           >
@@ -37,7 +37,7 @@ export default function Layout() {
         
         {/* Chat iframe container */}
         {isChatOpen && (
-          <div className="fixed bottom-24 right-6 z-40 w-full max-w-md h-96 md:h-128 shadow-xl rounded-lg overflow-hidden border border-gray-700 bg-gray-800">
+          <div className="fixed bottom-20 sm:bottom-24 right-2 sm:right-6 z-40 w-[90%] sm:w-[70%] md:w-[50%] lg:w-[40%] xl:max-w-md mx-auto sm:mx-0 h-80 sm:h-96 md:h-128 shadow-xl rounded-lg overflow-hidden border border-gray-700 bg-gray-800">
             <iframe
               src="https://www.chatbase.co/chatbot-iframe/uHgSFn5RAsRr_-OZFyP3c"
               width="100%"
