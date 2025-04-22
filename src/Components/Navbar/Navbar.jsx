@@ -264,10 +264,10 @@ export default function Navbar() {
                                                                 />
                                                             </MenuButton>
                                                         </div>
-                                                        <MenuItems className="absolute ltr:right-0 rtl:left-0 z-10 mt-2 w-48 rounded-md bg-gray-800 py-1 shadow-lg focus:outline-none">
+                                                        <MenuItems className="absolute ltr:right-0 rtl:left-0 z-10 mt-2 w-48 rounded-md bg-gray-900 py-1 shadow-lg focus:outline-none">
                                                             {userNavigation.map((item) => (
                                                                 <MenuItem key={item.name}>
-                                                                    <Button onClick={item.action} className="block w-full px-4 py-2 text-start text-sm text-gray-300 hover:bg-gray-700 hover:text-white">
+                                                                    <Button onClick={item.action} className="block w-full px-4 py-2 text-start text-sm modalColors  hover:bg-gray-700 hover:text-white">
                                                                         {item.name}
                                                                     </Button>
                                                                 </MenuItem>
@@ -366,7 +366,7 @@ export default function Navbar() {
                                                 <DisclosureButton
                                                     key={item.name}
                                                     onClick={item.action}
-                                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                                                    className="block rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-700 hover:text-white"
                                                 >
                                                     {item.name}
                                                 </DisclosureButton>
@@ -392,7 +392,7 @@ export default function Navbar() {
                     <Box sx={{ 
                         ...style, 
                         width: { xs: '80%', sm: '50%' },
-                        bgcolor: '#121212', // Dark background
+                        bgcolor: '#4b5563', // Grey background (gray-600)
                         color: '#f3f4f6' // Light text 
                     }}>
                         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10, color: '#ffffff' }}>

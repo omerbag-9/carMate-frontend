@@ -162,6 +162,10 @@ button:focus-visible {
   line-height: 17px;
 }
 
+.modalColors{
+  color: #ffffff !important;
+}
+
 /* Increase text size on tablets */
 @media (min-width: 768px) {
   .about-text {
