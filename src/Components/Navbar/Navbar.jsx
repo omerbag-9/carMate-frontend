@@ -392,7 +392,7 @@ export default function Navbar() {
                     <Box sx={{ 
                         ...style, 
                         width: { xs: '80%', sm: '50%' },
-                        bgcolor: '#4b5563', // Grey background (gray-600)
+                        bgcolor: '#111827', // Grey background (gray-600)
                         color: '#f3f4f6' // Light text 
                     }}>
                         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10, color: '#ffffff' }}>
