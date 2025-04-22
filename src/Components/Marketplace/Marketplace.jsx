@@ -131,11 +131,14 @@ export default function Marketplace() {
       }
     }
     
-    // Filter by search term
+    // Filter by search term - now supports both Arabic and English titles
     if (search && search.trim()) {
+      const searchLower = search.toLowerCase();
       filtered = filtered.filter(product =>
-        (product.title || '').toLowerCase().includes(search.toLowerCase()) ||
-        (product.description || '').toLowerCase().includes(search.toLowerCase())
+        (product.title || '').toLowerCase().includes(searchLower) ||
+        (product.arabicTitle || '').toLowerCase().includes(searchLower) ||
+        (product.description || '').toLowerCase().includes(searchLower) ||
+        (product.arabicDescription || '').toLowerCase().includes(searchLower)
       );
     }
     
@@ -344,33 +347,35 @@ export default function Marketplace() {
                 )}
 
                 {filteredProducts.length > 0 && (
-                  <div className="flex justify-center my-5">
-                    <button
-                      onClick={goToPreviousPage}
-                      disabled={currentPage === 1}
-                      className="px-4 py-2 mx-2 embla__button embla__button--prev"
-                    >
-                      <i className="fa-solid fa-chevron-left ltr:rotate-0 rtl:rotate-180"></i>
-                    </button>
+                  <div className="w-full flex justify-center my-5">
+                    <div className="pagination-container flex items-center justify-center gap-1 w-auto">
+                      <button
+                        onClick={goToPreviousPage}
+                        disabled={currentPage === 1}
+                        className="px-2 py-1 embla__button embla__button--prev"
+                      >
+                        <i className="fa-solid fa-chevron-left ltr:rotate-0 rtl:rotate-180"></i>
+                      </button>
 
-                    <div className="embla__controls flex justify-center mt-4 mx-auto">
-                      {Array.from({ length: totalPages }).map((_, index) => (
-                        <button
-                          key={index}
-                          className={`embla__dot mx-1 w-3 h-3 rounded-full ${index + 1 === currentPage ? "is-selected" : ""
-                            }`}
-                          onClick={() => goToPage(index + 1)}
-                        ></button>
-                      ))}
+                      <div className="embla__controls flex justify-center items-center">
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                          <button
+                            key={index}
+                            className={`embla__dot mx-1 w-3 h-3 rounded-full ${index + 1 === currentPage ? "is-selected" : ""
+                              }`}
+                            onClick={() => goToPage(index + 1)}
+                          ></button>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={goToNextPage}
+                        disabled={currentPage === totalPages}
+                        className="px-2 py-1 embla__button embla__button--next"
+                      >
+                        <i className="fa-solid fa-chevron-right ltr:rotate-0 rtl:rotate-180"></i>
+                      </button>
                     </div>
-
-                    <button
-                      onClick={goToNextPage}
-                      disabled={currentPage === totalPages}
-                      className="px-4 py-2 mx-2 embla__button embla__button--next"
-                    >
-                      <i className="fa-solid fa-chevron-right ltr:rotate-0 rtl:rotate-180"></i>
-                    </button>
                   </div>
                 )}
               </>
