@@ -23,7 +23,7 @@ export default function AboutUs() {
   const team = {
     yousef: {
       name: "Yousef Mohamed",
-      role: "Team leader / Backend developer",
+      role: "Team leader / ai developer /Backend developer",
       linkedin: "https://www.linkedin.com/in/yousef-fadel-716244270/",
       github: "https://github.com/YousefMohamed19",
       image: youssef
@@ -51,14 +51,14 @@ export default function AboutUs() {
     },
     abdulrahmanf: {
       name: "Abdulrahman Fawzy",
-      role: "Technical lead/ UX / UI",
+      role: "Technical lead/ UX-UI / logo designer / video editor",
       linkedin: "https://www.linkedin.com/in/abddulrhman-fawzy-97582231a/",
       behance: "https://www.behance.net/abdulrhmanfawzy",
       image: fawzy
     },
     dina: {
       name: "Dina Mohsen",
-      role: "Fullstack developer",
+      role: "Frontend developer",
       linkedin: "https://www.linkedin.com/in/dina-mohsen-608880278",
       github: "https://github.com/dina0a",
       image: dina
