@@ -366,7 +366,7 @@ export default function Navbar() {
                                                 <DisclosureButton
                                                     key={item.name}
                                                     onClick={item.action}
-                                                    className="block rounded-md px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-700 hover:text-white"
+                                                    className="block rounded-md px-3 py-2 text-base font-medium  hover:bg-gray-700 hover:text-white"
                                                 >
                                                     {item.name}
                                                 </DisclosureButton>
