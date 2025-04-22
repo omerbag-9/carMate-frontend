@@ -313,7 +313,7 @@ export default function Marketplace() {
                     <div key={product.id} className="product embla__slide overflow-hidden relative">
                       <div className="card w-full mx-auto">
                         <img className="w-full h-[300px] object-cover" src={product.mainImage} alt={product.title} />
-                        <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-50 text-start pt-36 sm:pt-28 md:pt-32 lg:pt-[100px]">
+                        <div className="absolute bottom-0 left-0 top-0 w-full bg-black bg-opacity-40 text-white text-center p-2 z-40 text-start pt-36 sm:pt-28 md:pt-32 lg:pt-[100px]">
                           <div className="absolute left-0 bottom-2.5 w-full px-2">
                             <h3 className="text-lg md:text-xl">{language === 'en' ? product.title : product.arabicTitle || product.title}</h3>
                             <p className="text-sm font-normal line-clamp-3">{language === 'en' ? product.description : product.arabicDescription}</p>

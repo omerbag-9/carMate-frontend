@@ -324,8 +324,8 @@ export default function Navbar() {
     
                                 {/* Login and Register buttons for mobile */}
                                 {!token && (
-                                    <div className="px-4 py-2 flex flex-col space-y-2">
-                                        <Link to="/login" className="block text-center px-2 py-1 text-sm text-white bg-red-600 rounded-lg">
+                                    <div className="px-4 py-2 flex flex-col space-y-2 ">
+                                        <Link to="/login" className="block text-center px-2 py-1 text-sm text-white bg-red-600 rounded-lg ">
                                             {t('login')}
                                         </Link>
                                         <Link to="/register" className="block text-center px-2 py-1 text-sm text-white bg-gray-700 rounded-lg">
@@ -334,7 +334,7 @@ export default function Navbar() {
                                     </div>
                                 )}
     
-                                <div className="border-t border-gray-700 pb-3 pt-4">
+                                <div className="border-t border-gray-700 pb-3 pt-4 navindex">
                                     <div className="flex items-center justify-center px-5">
                                         {token && (
                                             <>
