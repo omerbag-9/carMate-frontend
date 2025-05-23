@@ -4,7 +4,7 @@ import tailwindcssRTL from 'tailwindcss-rtl';
 
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
-  // Remove darkMode: 'class' if it exists - we won't use toggling
+  darkMode: 'class', // Enable class-based dark mode
   theme: {
     extend: {
       // Add RTL-specific utilities
@@ -23,14 +23,28 @@ export default {
     forms,
     tailwindcssRTL,
     // Force dark mode with a plugin
-    plugin(function({ addBase }) {
+    plugin(function({ addBase, addUtilities }) {
       addBase({
         ':root': {
           'color-scheme': 'dark',
         },
-        'html, body': {
+        'html': {
           'background-color': '#121212',
           'color': '#f3f4f6',
+          'class': 'dark',
+        },
+        'body': {
+          'background-color': '#121212',
+          'color': '#f3f4f6',
+        },
+      });
+      
+      // Add utility to force dark mode
+      addUtilities({
+        '.force-dark': {
+          'color-scheme': 'dark !important',
+          'background-color': '#121212 !important',
+          'color': '#f3f4f6 !important',
         },
       });
     }),

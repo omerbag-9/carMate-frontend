@@ -46,6 +46,7 @@ export default function Navbar() {
         { name: t('MarketPlace'), href: '/marketplace', current: false },
         { name: t('community'), href: '/community', current: false },
         { name: t('about'), href: '/about', current: false },
+        { name: t('Contact_US'), href: '/Contact', current: false },
     ];
 
     const userNavigation = [
@@ -252,7 +253,7 @@ export default function Navbar() {
     
                                                     <Menu as="div" className="relative">
                                                         <div>
-                                                            <MenuButton className="relative flex max-w-xs items-center text-sm mx-auto focus:outline-none">
+                                                            <MenuButton className="relative bg-darkBg flex max-w-xs items-center text-sm mx-auto focus:outline-none">
                                                                 <img
                                                                     className="h-8 w-8 rounded-full object-cover"
                                                                     src={userData.profilePhoto || dfaultimg}
@@ -392,7 +393,7 @@ export default function Navbar() {
                     <Box sx={{ 
                         ...style, 
                         width: { xs: '80%', sm: '50%' },
-                        bgcolor: '#4b5563', // Grey background (gray-600)
+                        bgcolor: '#121212', // Grey background (gray-600)
                         color: '#f3f4f6' // Light text 
                     }}>
                         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10, color: '#ffffff' }}>

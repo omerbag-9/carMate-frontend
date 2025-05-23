@@ -308,7 +308,7 @@ export default function Marketplace() {
               </div>
             ) : (
               <>
-                <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-2">
+                <div className="embla_container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
                   {products.map((product) => (
                     <div key={product.id} className="product embla__slide overflow-hidden relative">
                       <div className="card w-full mx-auto">
@@ -339,7 +339,7 @@ export default function Marketplace() {
                 </div>
 
                 {products.length === 0 && (
-                  <div className="flex items-center justify-center h-full mx-auto ml-7 ltr:ml-7 rtl:mx-[32rem] text-center">
+                  <div className="flex items-center justify-center h-full mx-auto ltr:mx-[32rem] rtl:mx-[32rem] text-center ">
                     <p className="text-xl">
                       {searchTerm || selectedOption !== 'Categories' ? t('noproductsavailable') : t('loading')}
                     </p>

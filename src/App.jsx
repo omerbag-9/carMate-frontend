@@ -44,13 +44,18 @@ function App() {
   const [count, setCount] = useState(0)
   const { i18n } = useTranslation();
   useEffect(() => {
+    // Set direction based on language
     document.documentElement.setAttribute('dir', i18n.language === 'ar' ? 'rtl' : 'ltr');
+    // Force dark mode by adding the dark class to html element
+    document.documentElement.classList.add('dark');
     // Add overflow-x-hidden to body to prevent horizontal scrolling
     document.body.style.overflowX = 'hidden';
     document.body.style.width = '100%';
+    // Apply force-dark utility class to body
+    document.body.classList.add('force-dark');
   }, [i18n.language]);
   return (
-    <div className="w-full overflow-x-hidden">
+    <div className="w-full overflow-x-hidden dark:bg-darkBg dark:text-darkText force-dark">
       <RouterProvider router={routers}></RouterProvider>
     </div>
   )

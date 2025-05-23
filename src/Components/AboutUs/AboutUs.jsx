@@ -9,7 +9,7 @@ import fawzy from '/Fawzy.jpg';
 import dina from '/dina.jpg';
 import rawan from '/rawan.jpg';
 import elhawy from '/elhawy.jpg';
-import loaa from '/loaa.jpg';
+import loaa from '/loaa.png';
 import mamdoh from '/mamdoh.jpeg';
 import shefoo from '/shefoo.jpeg';
 import mostafa from '/mostafa.jpg';
