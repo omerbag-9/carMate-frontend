@@ -12,6 +12,7 @@ import elhawy from '/elhawy.jpg';
 import loaa from '/loaa.jpg';
 import mamdoh from '/mamdoh.jpeg';
 import shefoo from '/shefoo.jpeg';
+import mostafa from '/mostafa.jpg';
 import { useTranslation } from 'react-i18next';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
@@ -97,6 +98,13 @@ export default function AboutUs() {
       linkedin: "https://www.linkedin.com/in/abdelrahman-sherif-38870530a/",
       github: "https://github.com/Shefoo74",
       image: shefoo
+    },
+    mostafa: {
+      name: "Mostafa Mohamed",
+      role: "MobileApp developer",
+      linkedin: "https://www.linkedin.com/in/mostafa-mohamed911/",
+      github: "https://github.com/mostafa9011",
+      image: mostafa
     }
   };
 
