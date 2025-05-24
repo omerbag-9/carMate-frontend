@@ -4,16 +4,37 @@ import UnderLine from "../UnderLine/UnderLine";
 import img1 from "../../assets/images/ProfilePhoto.png";
 import img2 from "../../assets/images/ProfilePhoto2.png";
 import img3 from "../../assets/images/Ellipse7.png";
-
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useEffect, useState } from "react";
 export default function Notifications() {
   const { t, i18n } = useTranslation();
+  const [notifications, setNotifications] = useState([]);
+  async function getNotifications() {
+    let { data } = await axios.get(`https://fb-m90x.onrender.com/notification`, {
+      headers: {
+        token: Cookies.get("token")
+      }
+    })
+    console.log(data?.data?.notifications);
+    
+    setNotifications(data?.data?.notifications)
+  }
 
-  const notifications = [
-    { img: img1, name: "Ahmed Ali", type: "comment", time: "1 day" },
-    { img: img2, name: "Salama Mohamed", type: "like", time: "4 days" },
-    { img: img3, name: "Mohamed Elsaid", type: "comment", time: "1 week" },
-    { img: img1, name: "Noor Mohamed", type: "like", time: "last month" }
-  ];
+  useEffect(() => {
+    getNotifications()
+  }, [])
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+    return `${Math.floor(diffInSeconds / 86400)} days ago`;
+  };
 
   return (
     <div className="container mx-auto">
@@ -28,19 +49,19 @@ export default function Notifications() {
             </h2>
           </div>
 
-          {notifications.map((notif, index) => (
-            <React.Fragment key={index}>
+
+          {notifications.length !== 0 ? notifications.map((item, index) => <>
               <div className="flex justify-between">
                 <div className=" py-4 flex">
                   <div className="image w-10 mx-2">
-                    <img src={notif.img} alt={notif.name} />
+                    <img src={img1} alt={'omer'} />
                   </div>
                   <div className="info font-light">
-                    <h3>{notif.name}</h3>
+                    <h3>{item.id}</h3>
                     <p className="text-sm pb-0">
-                      {t(notif.type, { name: notif.name })}
+                      {item.message}
                     </p>
-                    <span className="text-xs">{t("time_ago", { time: notif.time })}</span>
+                    <span className="text-xs">{formatDate(item.createdAt)}</span>
                   </div>
                 </div>
                 <div className="px-3 py-4 text-red-600 text-xl">
@@ -50,10 +71,11 @@ export default function Notifications() {
               <div className="w-full">
                 <UnderLine />
               </div>
-            </React.Fragment>
-          ))}
+            </>) : <>
+            <h2 className='my-4'>you don't have notifications</h2>
+            </>}
 
-         
+
         </div>
       </div>
     </div>
