@@ -31,6 +31,9 @@ export default function NotFound() {
           <Link to="/about" className="text-lg hover:underline">
             {t('about')}
           </Link>
+          <Link to="/contact" className="text-lg hover:underline">
+            {t('Contact_US')}
+          </Link>
         </nav>
       </div>
     </div>

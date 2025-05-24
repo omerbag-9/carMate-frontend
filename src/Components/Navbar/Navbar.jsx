@@ -1,18 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import i18n from '../../i18n';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import UnderLine from '../UnderLine/UnderLine';
 import dfaultimg from '../../assets/images/defualtIMG.jpg'
-// import Notification from '../Notification/Notification';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import cookie from 'js-cookie';
+
+// API function to fetch notifications
+const fetchNotifications = async () => {
+    const token = Cookies.get("token");
+    if (!token) return [];
+    
+    const { data } = await axios.get(`https://fb-m90x.onrender.com/notification`, {
+        headers: { token }
+    });
+    return data?.data?.notifications || [];
+};
 
 
 export default function Navbar() {
@@ -22,7 +33,25 @@ export default function Navbar() {
     const [modalContent, setModalContent] = useState('');
     const [token, setToken] = useState(Cookies.get("token") || null);
     const navigate = useNavigate();
+    const location = useLocation();
     const [showPopup, setShowPopup] = useState(false);
+
+    // Fetch notifications using React Query
+    const {
+        data: notifications = [],
+        refetch: refetchNotifications
+    } = useQuery({
+        queryKey: ['notifications'],
+        queryFn: fetchNotifications,
+        enabled: !!token, // Only fetch if user is logged in
+        refetchInterval: 30000, // Refetch every 30 seconds
+        refetchIntervalInBackground: true,
+        refetchOnWindowFocus: true,
+        staleTime: 0,
+    });
+
+    // Count unread notifications (assuming notifications have an 'isRead' property)
+    const unreadCount = notifications.filter(notification => !notification.isRead).length;
 
     const toggleLanguage = () => {
         const newLang = language === 'en' ? 'ar' : 'en';
@@ -61,7 +90,6 @@ export default function Navbar() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        // width: 400,
         bgcolor: 'black',
         border: '2px solid #000',
         borderRadius: '30px',
@@ -92,7 +120,7 @@ export default function Navbar() {
         Cookies.remove("token");
         setToken(null);
         window.dispatchEvent(new Event("tokenUpdated"));
-        window.location.href = "/login"; // This refreshes and navigates to /login
+        window.location.href = "/login";
     }
 
     const [userData, setUserData] = useState({
@@ -100,13 +128,15 @@ export default function Navbar() {
         firstName: "",
         lastName: "",
         email: "",
-    }); // تخزين بيانات المستخدم
+    });
+
     const actions = [
         {
             name: t('navbar.your profile'),
             action: () => handleOpen('Profile Details')
         }
     ];
+
     const fetchUserData = async () => {
         try {
             const token = Cookies.get("token");
@@ -116,32 +146,31 @@ export default function Navbar() {
             const response = await axios.get("https://fb-m90x.onrender.com/user/myprofile", {
                 headers: { token: `${token}` }
             });
-            // console.log(response.data.data);
             setUserData(response.data.data.user);
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
     };
+
     useEffect(() => {
         fetchUserData();
     }, []);
 
-
     const [updateUser, setUpdateUser] = useState("")
     const [loading, setLoading] = useState(false);
     const [updateUserColor, setUpdateUserColor] = useState("");
+
     const handleUpdateProfile = async (e) => {
-        e.preventDefault(); // منع إعادة تحميل الصفحة
+        e.preventDefault();
         setLoading(true);
 
         try {
-            const token = Cookies.get("token"); // جلب التوكن
-
-            // إنشاء FormData
+            const token = Cookies.get("token");
             const formData = new FormData();
             formData.append("firstName", userData.firstName);
             formData.append("lastName", userData.lastName);
             formData.append("phone", userData.phone ? userData.phone : "phone");
+            
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -149,19 +178,17 @@ export default function Navbar() {
                 }
             });
 
-            // console.log("Profile updated successfully:", response.data.data.user);
             setUserData(response.data.data.user);
             setUpdateUserColor("text-green-600");
             setUpdateUser("Profile updated successfully!")
             setTimeout(() => {
-                setUpdateUser(""); // إخفاء الرسالة بعد 3 ثوانٍ
+                setUpdateUser("");
             }, 3000);
         } catch (error) {
-            // console.error("Error updating profile:", error);
             setUpdateUserColor("text-red-600");
             setUpdateUser("Failed to update profile!")
         } finally {
-            setLoading(false); // إيقاف التحميل سواء نجحت العملية أم فشلت
+            setLoading(false);
         }
     };
 
@@ -244,12 +271,20 @@ export default function Navbar() {
     
                                             {token ? (
                                                 <>
-                                                    <Link to="/notification"
+                                                    {/* Notification Bell with Count */}
+                                                   <Link to={"/notification"} className="relative">
+                                                   <button
                                                         className="relative rounded-lg px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
                                                     >
                                                         <span className="sr-only">View notifications</span>
                                                         <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                                    </Link>
+                                                        {unreadCount > 0 && (
+                                                            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center min-w-[20px]">
+                                                                {unreadCount > 99 ? '99+' : unreadCount}
+                                                            </span>
+                                                        )}
+                                                    </button>
+                                                   </Link>
     
                                                     <Menu as="div" className="relative">
                                                         <div>
@@ -322,6 +357,25 @@ export default function Navbar() {
                                         </DisclosureButton>
                                     ))}
                                 </div>
+
+                                {/* Mobile Notification Bell */}
+                                {token && (
+                                    <div className="px-4 py-2">
+                                        <Link to={"/notification"} className="block w-full">
+                                        <button
+                                            className="relative flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                                        >
+                                            <BellIcon className="h-5 w-5 mr-3" aria-hidden="true" />
+                                            Notifications
+                                            {unreadCount > 0 && (
+                                                <span className="ml-auto bg-red-600 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                                                    {unreadCount > 99 ? '99+' : unreadCount}
+                                                </span>
+                                            )}
+                                        </button>
+                                        </Link>
+                                    </div>
+                                )}
     
                                 {/* Login and Register buttons for mobile */}
                                 {!token && (
@@ -393,8 +447,8 @@ export default function Navbar() {
                     <Box sx={{ 
                         ...style, 
                         width: { xs: '80%', sm: '50%' },
-                        bgcolor: '#121212', // Grey background (gray-600)
-                        color: '#f3f4f6' // Light text 
+                        bgcolor: '#121212',
+                        color: '#f3f4f6'
                     }}>
                         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10, color: '#ffffff' }}>
                             <i className="fa-solid fa-xmark text-white"></i>
@@ -411,7 +465,6 @@ export default function Navbar() {
                         {userData ? (
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center relative">
-                                    {/* Profile image container */}
                                     <div
                                         className="w-[75px] h-[75px] rounded-full mx-auto overflow-hidden bg-gray-800 relative cursor-pointer"
                                         onClick={() => setShowPopup(true)}
@@ -427,7 +480,6 @@ export default function Navbar() {
                                         />
                                     </div>
     
-                                    {/* File input for uploading */}
                                     <input
                                         type="file"
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
@@ -436,7 +488,6 @@ export default function Navbar() {
                                         onChange={(e) => handleImageUpload(e)}
                                     />
     
-                                    {/* Edit button */}
                                     <label
                                         htmlFor="profileUpload"
                                         className="cursor-pointer absolute md:top-[34%] md:left-10 left-[35%] top-[40%] bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md"
@@ -447,7 +498,6 @@ export default function Navbar() {
                                     <p className="pt-2 font-medium">{userData.firstName} {userData.lastName}</p>
                                     <p className="text-xs text-gray-400">{userData.email}</p>
     
-                                    {/* Image pop-up overlay */}
                                     {showPopup && (
                                         <div
                                             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"

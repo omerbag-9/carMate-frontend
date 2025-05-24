@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Layout from './Components/Layout/Layout'
 import Home from './Components/Home/Home'
 import AboutUs from './Components/AboutUs/AboutUs'
@@ -15,8 +16,23 @@ import ResetPassword from './Components/ResetPassword/ResetPassword'
 import Community from './Components/Community/Community'
 import Notification from './Components/Notification/Notification'
 import Marketplace from './Components/Marketplace/Marketplace'
+import ContactUs from './Components/ContactUs/ContactUs'
 import "react-toastify/dist/ReactToastify.css";
 
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnWindowFocus: true,
+      refetchOnReconnect: true,
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
 
 let routers = createBrowserRouter([
   {
@@ -32,6 +48,7 @@ let routers = createBrowserRouter([
       {path: "moredetails/:id", element: <Moredetails/>},
       {path: "community", element: <Community/>},
       {path: "notification", element: <Notification/>},
+      {path: "Contact", element: <ContactUs />},
     ]
   },
   // Separate route for NotFound page
@@ -40,9 +57,11 @@ let routers = createBrowserRouter([
     element: <NotFound />
   }
 ])
+
 function App() {
   const [count, setCount] = useState(0)
   const { i18n } = useTranslation();
+  
   useEffect(() => {
     // Set direction based on language
     document.documentElement.setAttribute('dir', i18n.language === 'ar' ? 'rtl' : 'ltr');
@@ -54,10 +73,15 @@ function App() {
     // Apply force-dark utility class to body
     document.body.classList.add('force-dark');
   }, [i18n.language]);
+
   return (
-    <div className="w-full overflow-x-hidden dark:bg-darkBg dark:text-darkText force-dark">
-      <RouterProvider router={routers}></RouterProvider>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="w-full overflow-x-hidden dark:bg-darkBg dark:text-darkText force-dark">
+        <RouterProvider router={routers}></RouterProvider>
+      </div>
+      
+
+    </QueryClientProvider>
   )
 }
 
