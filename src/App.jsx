@@ -18,6 +18,7 @@ import Notification from './Components/Notification/Notification'
 import Marketplace from './Components/Marketplace/Marketplace'
 import ContactUs from './Components/ContactUs/ContactUs'
 import "react-toastify/dist/ReactToastify.css";
+import OwnPosts from './Components/OwnPosts/OwnPosts'
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -49,6 +50,7 @@ let routers = createBrowserRouter([
       {path: "community", element: <Community/>},
       {path: "notification", element: <Notification/>},
       {path: "Contact", element: <ContactUs />},
+      {path: "ownposts", element: <OwnPosts />},
     ]
   },
   // Separate route for NotFound page

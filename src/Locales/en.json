@@ -187,7 +187,8 @@
   "navbar": {
     "title": "My Application",
     "your profile": "Your Profile",
-    "Sign out": "Sign out"
+    "Sign out": "Sign out",
+    "ownPosts": "My Posts"
   
 },
 "Community": {

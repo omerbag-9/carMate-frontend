@@ -18,7 +18,7 @@ import cookie from 'js-cookie';
 const fetchNotifications = async () => {
     const token = Cookies.get("token");
     if (!token) return [];
-    
+
     const { data } = await axios.get(`https://fb-m90x.onrender.com/notification`, {
         headers: { token }
     });
@@ -80,6 +80,7 @@ export default function Navbar() {
 
     const userNavigation = [
         { name: t('navbar.your profile'), action: () => handleOpen('Profile Details') },
+        { name: t('navbar.ownPosts'), action: () => navigate('/ownposts') },
         { name: t('navbar.Sign out'), action: handleLogout },
     ];
 
@@ -170,7 +171,7 @@ export default function Navbar() {
             formData.append("firstName", userData.firstName);
             formData.append("lastName", userData.lastName);
             formData.append("phone", userData.phone ? userData.phone : "phone");
-            
+
             const response = await axios.put("https://fb-m90x.onrender.com/user/updateprofile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -239,7 +240,7 @@ export default function Navbar() {
                                             <Link to="/" className="text-white"><span className='text-red-600'>Car</span>Mate</Link>
                                         </div>
                                     </div>
-    
+
                                     {/* Centered Navigation */}
                                     <div className="absolute left-1/2 transform -translate-x-1/2">
                                         <div className="hidden md:block">
@@ -261,31 +262,31 @@ export default function Navbar() {
                                             </div>
                                         </div>
                                     </div>
-    
+
                                     {/* Right side - Notifications and Profile */}
                                     <div className="hidden md:block">
                                         <div className="flex items-center md:ml-6">
                                             <button onClick={toggleLanguage} className='px-2 py-1 bg-zinc-900 my-3 text-gray-400 hover:text-white' aria-label='Toggle Language'>
                                                 {language === 'en' ? 'AR' : 'EN'}
                                             </button>
-    
+
                                             {token ? (
                                                 <>
                                                     {/* Notification Bell with Count */}
-                                                   <Link to={"/notification"} className="relative">
-                                                   <button
-                                                        className="relative rounded-lg px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
-                                                    >
-                                                        <span className="sr-only">View notifications</span>
-                                                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                                        {unreadCount > 0 && (
-                                                            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center min-w-[20px]">
-                                                                {unreadCount > 99 ? '99+' : unreadCount}
-                                                            </span>
-                                                        )}
-                                                    </button>
-                                                   </Link>
-    
+                                                    <Link to={"/notification"} className="relative">
+                                                    <button
+                                                            className="relative rounded-lg px-2 py-1 text-gray-400 hover:text-white mx-4 bg-zinc-900"
+                                                        >
+                                                            <span className="sr-only">View notifications</span>
+                                                            <BellIcon className="h-6 w-6" aria-hidden="true" />
+                                                            {unreadCount > 0 && (
+                                                                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center min-w-[20px]">
+                                                                    {unreadCount > 99 ? '99+' : unreadCount}
+                                                                </span>
+                                                            )}
+                                                        </button>
+                                                    </Link>
+
                                                     <Menu as="div" className="relative">
                                                         <div>
                                                             <MenuButton className="relative bg-darkBg flex max-w-xs items-center text-sm mx-auto focus:outline-none">
@@ -303,6 +304,7 @@ export default function Navbar() {
                                                         <MenuItems className="absolute ltr:right-0 rtl:left-0 z-10 mt-2 w-48 rounded-md bg-gray-900 py-1 shadow-lg focus:outline-none">
                                                             {userNavigation.map((item) => (
                                                                 <MenuItem key={item.name}>
+                                                                    {/* This is the key change */}
                                                                     <Button onClick={item.action} className="block w-full px-4 py-2 text-start text-sm modalColors  hover:bg-gray-700 hover:text-white">
                                                                         {item.name}
                                                                     </Button>
@@ -323,7 +325,7 @@ export default function Navbar() {
                                             )}
                                         </div>
                                     </div>
-    
+
                                     {/* Mobile Menu Button */}
                                     <div className="md:hidden">
                                         <DisclosureButton className="inline-flex items-center justify-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -337,7 +339,7 @@ export default function Navbar() {
                                     </div>
                                 </div>
                             </div>
-    
+
                             {/* Mobile Menu */}
                             <DisclosurePanel className="md:hidden bg-gray-800">
                                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
@@ -363,20 +365,20 @@ export default function Navbar() {
                                     <div className="px-4 py-2">
                                         <Link to={"/notification"} className="block w-full">
                                         <button
-                                            className="relative flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
-                                        >
-                                            <BellIcon className="h-5 w-5 mr-3" aria-hidden="true" />
-                                            Notifications
-                                            {unreadCount > 0 && (
-                                                <span className="ml-auto bg-red-600 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
-                                                    {unreadCount > 99 ? '99+' : unreadCount}
-                                                </span>
-                                            )}
-                                        </button>
+                                                className="relative flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md"
+                                            >
+                                                <BellIcon className="h-5 w-5 mr-3" aria-hidden="true" />
+                                                Notifications
+                                                {unreadCount > 0 && (
+                                                    <span className="ml-auto bg-red-600 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                                                        {unreadCount > 99 ? '99+' : unreadCount}
+                                                    </span>
+                                                )}
+                                            </button>
                                         </Link>
                                     </div>
                                 )}
-    
+
                                 {/* Login and Register buttons for mobile */}
                                 {!token && (
                                     <div className="px-4 py-2 flex flex-col space-y-2">
@@ -388,7 +390,7 @@ export default function Navbar() {
                                         </Link>
                                     </div>
                                 )}
-    
+
                                 <div className="border-t border-gray-700 pb-3 pt-4">
                                     <div className="flex items-center justify-center px-5">
                                         {token && (
@@ -420,7 +422,7 @@ export default function Navbar() {
                                             {userNavigation.map((item) => (
                                                 <DisclosureButton
                                                     key={item.name}
-                                                    onClick={item.action}
+                                                    onClick={item.action} // Ensure this triggers the action
                                                     className="block rounded-md px-3 py-2 text-base font-medium  hover:bg-gray-700 hover:text-white"
                                                 >
                                                     {item.name}
@@ -441,11 +443,11 @@ export default function Navbar() {
                         </>
                     )}
                 </Disclosure>
-                
+
                 {/* Modal with dark theme */}
                 <Modal open={open} onClose={handleClose}>
-                    <Box sx={{ 
-                        ...style, 
+                    <Box sx={{
+                        ...style,
                         width: { xs: '80%', sm: '50%' },
                         bgcolor: '#121212',
                         color: '#f3f4f6'
@@ -453,7 +455,7 @@ export default function Navbar() {
                         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10, color: '#ffffff' }}>
                             <i className="fa-solid fa-xmark text-white"></i>
                         </IconButton>
-    
+
                         <Typography variant="h6" component="h2">
                             <p className='font-bold text-center'>{t('profilePage.title')}</p>
                             <div className="w-[35%] m-auto">
@@ -461,7 +463,7 @@ export default function Navbar() {
                             </div>
                             <p className='text-center text-sm'>{t('profilePage.subtitle1')}<br />{t('profilePage.subtitle2')}</p>
                         </Typography>
-    
+
                         {userData ? (
                             <div className="flex p-2 sm:flex-row flex-col">
                                 <div className="text-center relative">
@@ -479,7 +481,7 @@ export default function Navbar() {
                                             }}
                                         />
                                     </div>
-    
+
                                     <input
                                         type="file"
                                         accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.tif,.webp"
@@ -487,17 +489,17 @@ export default function Navbar() {
                                         id="profileUpload"
                                         onChange={(e) => handleImageUpload(e)}
                                     />
-    
+
                                     <label
                                         htmlFor="profileUpload"
                                         className="cursor-pointer absolute md:top-[34%] md:left-10 left-[35%] top-[40%] bg-gray-700 text-white p-1 rounded-full w-6 h-6 flex items-center justify-center shadow-md"
                                     >
                                         <i className="fas fa-camera text-white text-[10px]"></i>
                                     </label>
-    
+
                                     <p className="pt-2 font-medium">{userData.firstName} {userData.lastName}</p>
                                     <p className="text-xs text-gray-400">{userData.email}</p>
-    
+
                                     {showPopup && (
                                         <div
                                             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
@@ -519,7 +521,7 @@ export default function Navbar() {
                                         </div>
                                     )}
                                 </div>
-    
+
                                 <div className="w-full flex flex-col items-center">
                                     {updateUser !== "" && <div className={`${updateUserColor} text-md pb-4`}>{updateUser}</div>}
                                     <form onSubmit={handleUpdateProfile} className="flex flex-col gap-y-4 sm:mt-0 mt-4 w-full sm:w-auto">
@@ -550,7 +552,7 @@ export default function Navbar() {
                                                 pattern="[0-9]*"
                                                 onInput={(e) => (e.target.value = e.target.value.replace(/\D/g, ""))}
                                             />
-    
+
                                             <input
                                                 type="email"
                                                 value={userData.email}
