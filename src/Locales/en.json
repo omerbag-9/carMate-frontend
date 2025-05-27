@@ -280,7 +280,21 @@
     "register": "Register",
     "team_title_line1": "Meet the talented team",
     "team_title_line2": "who make all this happen",
-    "team_description": "Our philosophy is simple; hire great\npeople and give them the resources\nand support to do their best work"
+    "team_description": "Our philosophy is simple; hire great\npeople and give them the resources\nand support to do their best work",
+    "dir": "ltr",
+    "contactUsHeaderAlt": "Contact Us Header",
+    "phoneIconAlt": "Phone Icon",
+    "emailIconAlt": "Email Icon",
+    "followIconAlt": "Follow Icon",
+    "phoneNumber": "Phone Number",
+    "emailAddress": "Email address",
+    "followUs": "Follow Us",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "commentt": "Comment",
+    "sendMessage": "SEND MESSAGE",
+    "inputPlaceholder": "Input text"
   
   }
   
