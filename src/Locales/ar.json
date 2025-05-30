@@ -273,11 +273,26 @@
               "phone": "رقم الهاتف",
               "commentt": "التعليق",
               "sendMessage": "إرسال الرسالة",
-              "inputPlaceholder": "أدخل النص"
-            
-          
-          
-          
+              "inputPlaceholder": "أدخل النص",
+                
+  "validation": {
+    "nameRequired": "الاسم مطلوب",
+    "nameMin": "يجب ألا يقل الاسم عن حرفين",
+    "nameMax": "يجب ألا يزيد الاسم عن 50 حرفًا",
+    "emailInvalid": "البريد الإلكتروني غير صالح",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "phoneInvalid": "رقم الهاتف غير صالح (يجب أن يبدأ بـ01 ويتكون من 11 رقمًا)",
+    "phoneRequired": "رقم الهاتف مطلوب",
+    "messageRequired": "الرسالة مطلوبة"
+  },
+   "toast": {
+    "messageSent": "تم إرسال الرسالة بنجاح!",
+    "messageFailed": "فشل في إرسال الرسالة.",
+    "somethingWrong": "حدث خطأ ما."
+  }
+
+        
+                  
         }
         
 

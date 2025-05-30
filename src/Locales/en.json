@@ -295,7 +295,22 @@
     "phone": "Phone Number",
     "commentt": "Comment",
     "sendMessage": "SEND MESSAGE",
-    "inputPlaceholder": "Input text"
+    "inputPlaceholder": "Input text",
+      "validation": {
+    "nameRequired": "Name is required",
+    "nameMin": "Name must be at least 2 characters",
+    "nameMax": "Name must be at most 50 characters",
+    "emailInvalid": "Invalid email",
+    "emailRequired": "Email is required",
+    "phoneInvalid": "Invalid phone number (should be 11 digits and start with 01)",
+    "phoneRequired": "Phone number is required",
+    "messageRequired": "Message is required"
+  },
+    "toast": {
+    "messageSent": "Message sent successfully!",
+    "messageFailed": "Failed to send message.",
+    "somethingWrong": "Something went wrong."
+  }
   
   }
   
